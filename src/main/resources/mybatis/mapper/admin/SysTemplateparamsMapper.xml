@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intflag.springboot.mapper.admin.SysTemplateparamsMapper" >
+  <resultMap id="BaseResultMap" type="com.intflag.springboot.entity.admin.SysTemplateparams" >
+    <id column="template_id" property="templateId" jdbcType="VARCHAR" />
+    <result column="tableName" property="tablename" jdbcType="VARCHAR" />
+    <result column="functionComment" property="functioncomment" jdbcType="VARCHAR" />
+    <result column="classNames" property="classnames" jdbcType="VARCHAR" />
+    <result column="classPath" property="classpath" jdbcType="VARCHAR" />
+    <result column="filePath" property="filepath" jdbcType="VARCHAR" />
+    <result column="keyWordColumn" property="keywordcolumn" jdbcType="VARCHAR" />
+    <result column="pkColumn" property="pkcolumn" jdbcType="VARCHAR" />
+    <result column="actionUrl" property="actionurl" jdbcType="VARCHAR" />
+    <result column="addFun" property="addfun" jdbcType="VARCHAR" />
+    <result column="updateFun" property="updatefun" jdbcType="VARCHAR" />
+    <result column="selectFun" property="selectfun" jdbcType="VARCHAR" />
+    <result column="deleteFun" property="deletefun" jdbcType="VARCHAR" />
+    <result column="addmenu" property="addmenu" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="pattern" property="pattern" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="cdate" property="cdate" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    template_id, tableName, functionComment, classNames, classPath, filePath, keyWordColumn, 
+    pkColumn, actionUrl, addFun, updateFun, selectFun, deleteFun, addmenu, pid, author, 
+    pattern, flag, sort, cdate, description
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.admin.SysTemplateparamsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_templateparams
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_templateparams
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_templateparams
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.intflag.springboot.entity.admin.SysTemplateparamsExample" >
+    delete from sys_templateparams
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.intflag.springboot.entity.admin.SysTemplateparams" >
+    insert into sys_templateparams (template_id, tableName, functionComment, 
+      classNames, classPath, filePath, 
+      keyWordColumn, pkColumn, actionUrl, 
+      addFun, updateFun, selectFun, 
+      deleteFun, addmenu, pid, 
+      author, pattern, flag, 
+      sort, cdate, description
+      )
+    values (#{templateId,jdbcType=VARCHAR}, #{tablename,jdbcType=VARCHAR}, #{functioncomment,jdbcType=VARCHAR}, 
+      #{classnames,jdbcType=VARCHAR}, #{classpath,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR}, 
+      #{keywordcolumn,jdbcType=VARCHAR}, #{pkcolumn,jdbcType=VARCHAR}, #{actionurl,jdbcType=VARCHAR}, 
+      #{addfun,jdbcType=VARCHAR}, #{updatefun,jdbcType=VARCHAR}, #{selectfun,jdbcType=VARCHAR}, 
+      #{deletefun,jdbcType=VARCHAR}, #{addmenu,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{pattern,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{cdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.intflag.springboot.entity.admin.SysTemplateparams" >
+    insert into sys_templateparams
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="tablename != null" >
+        tableName,
+      </if>
+      <if test="functioncomment != null" >
+        functionComment,
+      </if>
+      <if test="classnames != null" >
+        classNames,
+      </if>
+      <if test="classpath != null" >
+        classPath,
+      </if>
+      <if test="filepath != null" >
+        filePath,
+      </if>
+      <if test="keywordcolumn != null" >
+        keyWordColumn,
+      </if>
+      <if test="pkcolumn != null" >
+        pkColumn,
+      </if>
+      <if test="actionurl != null" >
+        actionUrl,
+      </if>
+      <if test="addfun != null" >
+        addFun,
+      </if>
+      <if test="updatefun != null" >
+        updateFun,
+      </if>
+      <if test="selectfun != null" >
+        selectFun,
+      </if>
+      <if test="deletefun != null" >
+        deleteFun,
+      </if>
+      <if test="addmenu != null" >
+        addmenu,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="pattern != null" >
+        pattern,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="cdate != null" >
+        cdate,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="templateId != null" >
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="tablename != null" >
+        #{tablename,jdbcType=VARCHAR},
+      </if>
+      <if test="functioncomment != null" >
+        #{functioncomment,jdbcType=VARCHAR},
+      </if>
+      <if test="classnames != null" >
+        #{classnames,jdbcType=VARCHAR},
+      </if>
+      <if test="classpath != null" >
+        #{classpath,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordcolumn != null" >
+        #{keywordcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="pkcolumn != null" >
+        #{pkcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="actionurl != null" >
+        #{actionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="addfun != null" >
+        #{addfun,jdbcType=VARCHAR},
+      </if>
+      <if test="updatefun != null" >
+        #{updatefun,jdbcType=VARCHAR},
+      </if>
+      <if test="selectfun != null" >
+        #{selectfun,jdbcType=VARCHAR},
+      </if>
+      <if test="deletefun != null" >
+        #{deletefun,jdbcType=VARCHAR},
+      </if>
+      <if test="addmenu != null" >
+        #{addmenu,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="pattern != null" >
+        #{pattern,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.intflag.springboot.entity.admin.SysTemplateparamsExample" resultType="java.lang.Integer" >
+    select count(*) from sys_templateparams
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_templateparams
+    <set >
+      <if test="record.templateId != null" >
+        template_id = #{record.templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tablename != null" >
+        tableName = #{record.tablename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.functioncomment != null" >
+        functionComment = #{record.functioncomment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classnames != null" >
+        classNames = #{record.classnames,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classpath != null" >
+        classPath = #{record.classpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filepath != null" >
+        filePath = #{record.filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywordcolumn != null" >
+        keyWordColumn = #{record.keywordcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkcolumn != null" >
+        pkColumn = #{record.pkcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionurl != null" >
+        actionUrl = #{record.actionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addfun != null" >
+        addFun = #{record.addfun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatefun != null" >
+        updateFun = #{record.updatefun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selectfun != null" >
+        selectFun = #{record.selectfun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deletefun != null" >
+        deleteFun = #{record.deletefun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addmenu != null" >
+        addmenu = #{record.addmenu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pattern != null" >
+        pattern = #{record.pattern,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.cdate != null" >
+        cdate = #{record.cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_templateparams
+    set template_id = #{record.templateId,jdbcType=VARCHAR},
+      tableName = #{record.tablename,jdbcType=VARCHAR},
+      functionComment = #{record.functioncomment,jdbcType=VARCHAR},
+      classNames = #{record.classnames,jdbcType=VARCHAR},
+      classPath = #{record.classpath,jdbcType=VARCHAR},
+      filePath = #{record.filepath,jdbcType=VARCHAR},
+      keyWordColumn = #{record.keywordcolumn,jdbcType=VARCHAR},
+      pkColumn = #{record.pkcolumn,jdbcType=VARCHAR},
+      actionUrl = #{record.actionurl,jdbcType=VARCHAR},
+      addFun = #{record.addfun,jdbcType=VARCHAR},
+      updateFun = #{record.updatefun,jdbcType=VARCHAR},
+      selectFun = #{record.selectfun,jdbcType=VARCHAR},
+      deleteFun = #{record.deletefun,jdbcType=VARCHAR},
+      addmenu = #{record.addmenu,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      pattern = #{record.pattern,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      cdate = #{record.cdate,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.intflag.springboot.entity.admin.SysTemplateparams" >
+    update sys_templateparams
+    <set >
+      <if test="tablename != null" >
+        tableName = #{tablename,jdbcType=VARCHAR},
+      </if>
+      <if test="functioncomment != null" >
+        functionComment = #{functioncomment,jdbcType=VARCHAR},
+      </if>
+      <if test="classnames != null" >
+        classNames = #{classnames,jdbcType=VARCHAR},
+      </if>
+      <if test="classpath != null" >
+        classPath = #{classpath,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        filePath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordcolumn != null" >
+        keyWordColumn = #{keywordcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="pkcolumn != null" >
+        pkColumn = #{pkcolumn,jdbcType=VARCHAR},
+      </if>
+      <if test="actionurl != null" >
+        actionUrl = #{actionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="addfun != null" >
+        addFun = #{addfun,jdbcType=VARCHAR},
+      </if>
+      <if test="updatefun != null" >
+        updateFun = #{updatefun,jdbcType=VARCHAR},
+      </if>
+      <if test="selectfun != null" >
+        selectFun = #{selectfun,jdbcType=VARCHAR},
+      </if>
+      <if test="deletefun != null" >
+        deleteFun = #{deletefun,jdbcType=VARCHAR},
+      </if>
+      <if test="addmenu != null" >
+        addmenu = #{addmenu,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="pattern != null" >
+        pattern = #{pattern,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        cdate = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.intflag.springboot.entity.admin.SysTemplateparams" >
+    update sys_templateparams
+    set tableName = #{tablename,jdbcType=VARCHAR},
+      functionComment = #{functioncomment,jdbcType=VARCHAR},
+      classNames = #{classnames,jdbcType=VARCHAR},
+      classPath = #{classpath,jdbcType=VARCHAR},
+      filePath = #{filepath,jdbcType=VARCHAR},
+      keyWordColumn = #{keywordcolumn,jdbcType=VARCHAR},
+      pkColumn = #{pkcolumn,jdbcType=VARCHAR},
+      actionUrl = #{actionurl,jdbcType=VARCHAR},
+      addFun = #{addfun,jdbcType=VARCHAR},
+      updateFun = #{updatefun,jdbcType=VARCHAR},
+      selectFun = #{selectfun,jdbcType=VARCHAR},
+      deleteFun = #{deletefun,jdbcType=VARCHAR},
+      addmenu = #{addmenu,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      pattern = #{pattern,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      cdate = #{cdate,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR}
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectTablesByDataBase" parameterType="java.lang.String" resultType="java.util.HashMap">
+	select TABLE_NAME  as TABLENAME  
+	from information_schema.TABLES t 
+	where t.TABLE_SCHEMA=#{dataBase}
+  </select>
+  <select id="selectFieldByTableName" parameterType="java.lang.String" resultType="java.util.HashMap">
+	SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS T 
+    WHERE TABLE_NAME = #{tableName} AND T.TABLE_SCHEMA= #{dataBase} AND DATA_TYPE = 'varchar' AND COLUMN_KEY != 'PRI'
+  </select>
+  <select id="selectPrimaryKeyByTableName" parameterType="java.lang.String" resultType="java.lang.String">
+  	SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS T 
+	WHERE TABLE_NAME = #{tableName} AND T.TABLE_SCHEMA= #{dataBase} AND DATA_TYPE = 'varchar' AND COLUMN_KEY = 'PRI'
+  </select>
+</mapper>

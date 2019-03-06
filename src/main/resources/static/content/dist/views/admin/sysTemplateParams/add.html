@@ -1,0 +1,118 @@
+<title>代码生成器</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>代码构建</cite></a>
+        <a><cite>代码生成器</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+  <!-- 内容主体区域 -->
+  <div class="layui-card">
+      <div class="layui-tab-content">
+      	<div class="layui-field-box">
+			<blockquote class="layui-elem-quote">
+				注意：请在开发环境下使用此功能，谨慎操作！</blockquote>
+			<form id="addTemplateParamsForm" class="layui-form layui-form-pane" action="" onsubmit="return false;">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="color: #F00">数据库表</label>
+						<div class="layui-input-block">
+							<select name="tablename" lay-filter="selectTableName"
+								lay-verify="required" id="tableNameBox">
+							</select>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="color: #F00">查询字段</label>
+						<div class="layui-input-block">
+							<select name="keywordcolumn" lay-verify="required" id="pkColumnBox">
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="color: #F00">添加菜单</label>
+						<div class="layui-input-block">
+							<select name="addmenu" id="addmenu" lay-verify="required">
+								<option value="1" selected="">是</option>
+								<option value="2">否</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="color: #F00">上一级菜单</label>
+						<div class="layui-input-inline">
+							<input value="" id="demo" cyType="treeTool" cyProps="url:'/admin/sysUser/menu',name:'pid'" placeholder="请选择上级菜单" class="layui-input"/>
+						</div>
+<!-- 						<div class="layui-input-inline">
+							<input value="" id="menuTree" menuTree="url:'/admin/sysUser/menu',name:'pid'" placeholder="请选择上级菜单" class="layui-input"/>
+							<input type="hidden" id="pid" />
+						</div> -->
+						<!-- <div class="layui-input-inline">
+							<button class="layui-btn layui-btn-normal" type="button"
+								id="treeSelect">请选择</button>
+						</div> -->
+					</div>
+				</div>
+	
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="color: #F00">CRUD_URL</label>
+					<div class="layui-input-block">
+						<input type="text" name="actionurl"
+							lay-verify="required" placeholder="请输入增删改查请求地址" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="color: #F00">功能说明</label>
+					<div class="layui-input-block">
+						<input type="text" name="functioncomment" value=""
+							lay-verify="required" placeholder="请输入功能说明" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="color: #F00">工程根路径</label>
+					<div class="layui-input-block">
+						<input type="text" name="filepath" value="D:/test/template"
+							lay-verify="required" placeholder="请输入工程根路径" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="color: #F00">作者</label>
+					<div class="layui-input-block">
+						<input type="text" name="author" value="刘国鑫QQ1598749808"
+							lay-verify="required" placeholder="请输入作者" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+	
+	
+				<div class="page-footer">
+					<div class="btn-list">
+						<div class="btnlist">
+							<button class="layui-btn" lay-submit lay-filter="saveTemplateParamsObj"><i class="fa fa-floppy-o">&nbsp;</i>生成代码</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+      </div>
+  </div>
+</div>
+<!-- <link rel="stylesheet" href="/admin-static/layui/css/layui.css"> -->
+<link rel="stylesheet" href="/admin-static/ztree/css/metroStyle/metroStyle.css">
+<!-- <link rel="stylesheet" href="/admin-static/css/cyStyle.css"> -->
+<link rel="stylesheet" href="/admin-static/css/cyType.css">
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/treeTool.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/sysTemplateParams/sysTemplateParams.js"></script>
+<script type="text/javascript">
+
+</script>

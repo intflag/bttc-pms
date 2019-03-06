@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intflag.springboot.mapper.admin.SysResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.intflag.springboot.entity.admin.SysResource" >
+    <id column="resource_id" property="resourceId" jdbcType="VARCHAR" />
+    <result column="resname" property="resname" jdbcType="VARCHAR" />
+    <result column="resurl" property="resurl" jdbcType="VARCHAR" />
+    <result column="rescode" property="rescode" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_parent" property="isParent" jdbcType="TINYINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="cdate" property="cdate" jdbcType="TIMESTAMP" />
+    <result column="mdate" property="mdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    resource_id, resname, resurl, rescode, type, icon, parent_id, is_parent, description, 
+    flag, sort, cdate, mdate
+  </sql>
+  <!-- 根据用户查询权限 -->
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	SELECT DISTINCT 
+  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+    s.flag, s.sort, s.cdate, s.mdate 
+  	FROM sys_resource s
+	LEFT JOIN sys_role_res rs ON s.resource_id = rs.resource_id
+	LEFT JOIN sys_role r ON rs.role_id = r.role_id
+	LEFT JOIN sys_role_user ru ON r.role_id = ru.role_id
+	LEFT JOIN sys_user u ON ru.user_id = u.user_id
+	WHERE u.user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据类型查询菜单 -->
+  <select id="selectByType" resultMap="MyBaseResultMap" parameterType="java.lang.String" >
+  	SELECT DISTINCT 
+  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+    s.flag, s.sort, s.cdate, s.mdate 
+  	FROM sys_resource s
+	WHERE s.type = #{type,jdbcType=VARCHAR}
+	ORDER BY s.sort
+  </select>
+  <select id="selectMenuByType" resultMap="MyBaseResultMap2" parameterType="java.lang.String" >
+  	SELECT DISTINCT 
+  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+    s.flag, s.sort, s.cdate, s.mdate 
+  	FROM sys_resource s
+	WHERE s.type = #{type,jdbcType=VARCHAR}
+	ORDER BY s.sort
+  </select>
+  <!-- 根据用户查询*所有顶级权限* -->
+  <select id="selectAllByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	SELECT DISTINCT 
+  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+    s.flag, s.sort, s.cdate, s.mdate 
+  	FROM sys_resource s
+	LEFT JOIN sys_role_res rs ON s.resource_id = rs.resource_id
+	LEFT JOIN sys_role r ON rs.role_id = r.role_id
+	LEFT JOIN sys_role_user ru ON r.role_id = ru.role_id
+	LEFT JOIN sys_user u ON ru.user_id = u.user_id
+	WHERE u.user_id = #{userId,jdbcType=VARCHAR}
+	ORDER BY s.sort
+  </select>
+ 	<!-- 一对多          extends将一的一方的属性全部继承过来           -->
+	<resultMap id="MyBaseResultMap" type="com.intflag.springboot.entity.admin.SysResource" extends="BaseResultMap">
+		<collection property="sysResources" javaType="List" ofType="com.intflag.springboot.entity.admin.SysResource" 
+			select="selectResourceByPId" column="resource_id">
+		</collection>
+  	</resultMap>
+	<resultMap id="MyBaseResultMap2" type="com.intflag.springboot.entity.admin.SysResource" extends="BaseResultMap">
+		<collection property="sysResources" javaType="List" ofType="com.intflag.springboot.entity.admin.SysResource" 
+			select="selectResourceByPId2" column="resource_id">
+		</collection>
+  	</resultMap>
+  	
+  	<!-- 查询多的一方的sql语句 -->
+	<select id="selectResourceByPId" resultMap="MyBaseResultMap" resultType="com.intflag.springboot.entity.admin.SysResource">
+	    SELECT DISTINCT 
+		  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+		    s.flag, s.sort, s.cdate, s.mdate 
+	  	FROM sys_resource s
+		WHERE s.parent_id = #{resourceId}
+  	</select> 
+	<select id="selectResourceByPId2" resultType="com.intflag.springboot.entity.admin.SysResource">
+	    SELECT DISTINCT 
+		  	s.resource_id, s.resname, s.resurl, s.rescode, s.type, s.icon, s.parent_id, s.is_parent, s.description, 
+		    s.flag, s.sort, s.cdate, s.mdate 
+	  	FROM sys_resource s
+		WHERE s.parent_id = #{resourceId}
+  	</select> 
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.admin.SysResourceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_resource
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.intflag.springboot.entity.admin.SysResourceExample" >
+    delete from sys_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.intflag.springboot.entity.admin.SysResource" >
+    insert into sys_resource (resource_id, resname, resurl, 
+      rescode, type, icon, 
+      parent_id, is_parent, description, 
+      flag, sort, cdate, 
+      mdate)
+    values (#{resourceId,jdbcType=VARCHAR}, #{resname,jdbcType=VARCHAR}, #{resurl,jdbcType=VARCHAR}, 
+      #{rescode,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{isParent,jdbcType=TINYINT}, #{description,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{cdate,jdbcType=TIMESTAMP}, 
+      #{mdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.intflag.springboot.entity.admin.SysResource" >
+    insert into sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        resource_id,
+      </if>
+      <if test="resname != null" >
+        resname,
+      </if>
+      <if test="resurl != null" >
+        resurl,
+      </if>
+      <if test="rescode != null" >
+        rescode,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="isParent != null" >
+        is_parent,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="cdate != null" >
+        cdate,
+      </if>
+      <if test="mdate != null" >
+        mdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resname != null" >
+        #{resname,jdbcType=VARCHAR},
+      </if>
+      <if test="resurl != null" >
+        #{resurl,jdbcType=VARCHAR},
+      </if>
+      <if test="rescode != null" >
+        #{rescode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isParent != null" >
+        #{isParent,jdbcType=TINYINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdate != null" >
+        #{mdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.intflag.springboot.entity.admin.SysResourceExample" resultType="java.lang.Integer" >
+    select count(*) from sys_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_resource
+    <set >
+      <if test="record.resourceId != null" >
+        resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resname != null" >
+        resname = #{record.resname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resurl != null" >
+        resurl = #{record.resurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rescode != null" >
+        rescode = #{record.rescode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isParent != null" >
+        is_parent = #{record.isParent,jdbcType=TINYINT},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.cdate != null" >
+        cdate = #{record.cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mdate != null" >
+        mdate = #{record.mdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_resource
+    set resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      resname = #{record.resname,jdbcType=VARCHAR},
+      resurl = #{record.resurl,jdbcType=VARCHAR},
+      rescode = #{record.rescode,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=VARCHAR},
+      is_parent = #{record.isParent,jdbcType=TINYINT},
+      description = #{record.description,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      cdate = #{record.cdate,jdbcType=TIMESTAMP},
+      mdate = #{record.mdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.intflag.springboot.entity.admin.SysResource" >
+    update sys_resource
+    <set >
+      <if test="resname != null" >
+        resname = #{resname,jdbcType=VARCHAR},
+      </if>
+      <if test="resurl != null" >
+        resurl = #{resurl,jdbcType=VARCHAR},
+      </if>
+      <if test="rescode != null" >
+        rescode = #{rescode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isParent != null" >
+        is_parent = #{isParent,jdbcType=TINYINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        cdate = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdate != null" >
+        mdate = #{mdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.intflag.springboot.entity.admin.SysResource" >
+    update sys_resource
+    set resname = #{resname,jdbcType=VARCHAR},
+      resurl = #{resurl,jdbcType=VARCHAR},
+      rescode = #{rescode,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      is_parent = #{isParent,jdbcType=TINYINT},
+      description = #{description,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      cdate = #{cdate,jdbcType=TIMESTAMP},
+      mdate = #{mdate,jdbcType=TIMESTAMP}
+    where resource_id = #{resourceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

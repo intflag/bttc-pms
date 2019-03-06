@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="editForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" name="userId" value="" data-name="userId">
+  <div class="layui-form-item">
+    <label class="layui-form-label">账户</label>
+    <div class="layui-input-block">
+      <input type="text" name="username" data-name="username" value="" lay-verify="required" placeholder="请输入账户登录名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">昵称</label>
+    <div class="layui-input-block">
+      <input type="text" name="nickname" value="" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">密码</label>
+    <div class="layui-input-block">
+      <input type="password" name="password" value="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+      <label class="layui-form-label">手机</label>
+      <div class="layui-input-block">
+        <input type="tel" name="telephone" value="" lay-verify="required|phone" placeholder="请输入正确的手机号" autocomplete="off" class="layui-input">
+      </div>
+  </div>
+  <div class="layui-form-item">
+      <label class="layui-form-label">邮箱</label>
+      <div class="layui-input-block">
+        <input type="text" name="email" value="" lay-verify="email" placeholder="请输入正确的邮箱" autocomplete="off" class="layui-input">
+      </div>
+  </div>
+  
+  	<div class="layui-form-item">
+		<div class="layui-inline">
+        	<label class="layui-form-label">性别</label>
+        	<div class="layui-input-block">
+	       		<input type="radio" name="gender" value="1" title="男" >
+	            <input type="radio" name="gender" value="2" title="女" >
+            </div>
+        </div>
+		<div class="layui-inline">
+        	<label class="layui-form-label">状态</label>
+		    <div class="layui-input-block">
+		      <select name="flag" lay-filter="flag">
+		        <option value="1" selected="">正常</option>
+		        <option value="2">禁用</option>
+		      </select>
+		    </div>
+        </div>
+	</div>
+	
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">角色</label>
+	         <div class="layui-input-block" id="roleBox"></div>
+        </div>
+     </div>
+     
+	<div class="page-footer">
+    	<div class="btn-list">
+        	<div class="btnlist">
+            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/sysUser/sysUser.js"></script>
+<script type="text/javascript">
+$(function(){
+	//数据回显
+	var editObjId = getUrlParam('editObjId');
+	$.ajax({
+		type:"GET",
+		url:crudUrl+"/"+editObjId,
+		data:$("#addForm").serialize(),
+		success:function(resData) {
+			if (resData.status === 200) {
+				var findObj = resData.data;
+				setFormData("editForm",findObj);
+			} else {
+				layer.msg(resData.msg, {icon: 5});
+			}
+			//查找角色
+			$.ajax({
+				type:"GET",
+				url:sysRoleListUrl,
+				success:function(resData) {
+					var list = resData.data;
+					var html = "";
+					$("#roleBox").html(html);
+					for (var i = 0; i < list.length; i++) {
+						var obj = list[i];
+						html += '<input type="checkbox" name="roleId" value="'+obj.roleId+'" title="'+obj.rolename+'" lay-skin="primary">';
+					}
+					$("#roleBox").html(html);
+					
+					//回显角色
+					$.ajax({
+						type:"GET",
+						url:sysRoleUserKeysUrl+"/"+editObjId,
+						success:function(resData) {
+							//console.log(resData);
+							var list = resData.data;
+							for (var i = 0; i < list.length; i++) {
+								var obj = list[i];
+								var checkboxs = $("#roleBox input");
+								checkboxs.each(function(i,n){
+									var val = $(this).val();
+									if (obj.roleId == val) {
+										$(this).prop("checked",true);
+										return;
+									}
+								});
+							}
+							  //重新渲染
+							  layui.use(['form'], function () {
+							  	var form = layui.form;
+								form.render();
+							  });
+						}
+					});
+				}
+			});
+		}
+	});
+	
+	
+});
+</script>
+</html>

@@ -1,0 +1,45 @@
+server:
+  port: 8989
+spring:
+  datasource:
+    username: root
+    password: admin123
+    url: jdbc:mysql://127.0.0.1:3306/dev-bttc-pms?characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+#   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+#   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙  
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true  
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  thymeleaf:
+    mode: HTML
+    cache: false
+  devtools:
+    restart:
+      enabled: true
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*/*.xml
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+logging:
+  level:
+    com.intflag.springboot: DEBUG
+   

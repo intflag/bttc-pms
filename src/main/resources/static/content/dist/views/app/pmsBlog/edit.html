@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="editForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" name="blogId" value="">
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<select name="flag" lay-filter="flag">
+					<option value="1" selected="">正常</option>
+					<option value="2">禁用</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">公告主题</label>
+		<div class="layui-input-block">
+			<input type="text" name="blogTitle" value=""
+				   lay-verify="required" placeholder="请输入公告主题" autocomplete="off"
+				   class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">详细内容</label>
+		<div class="layui-input-block">
+			<textarea id="blogDesc" style="display: none;" name="description" placeholder="请输入详细内容" autocomplete="off"></textarea>
+			<div id="editor"></div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">摘要</label>
+		<div class="layui-input-block">
+			<textarea name="summary" lay-verify="required" placeholder="请输入摘要" autocomplete="off" class="layui-textarea"></textarea>
+		</div>
+	</div>
+     
+	<div class="page-footer">
+    	<div class="btn-list">
+        	<div class="btnlist">
+            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/pmsBlog/pmsBlog.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/wangEditor.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	//数据回显
+	var editObjId = getUrlParam('editObjId');
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    var $blogDesc = $('#blogDesc');
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        $blogDesc.val(html);
+    }
+    editor.create();
+    // 初始化 textarea 的值
+    $blogDesc.val(editor.txt.html());
+	$.ajax({
+		type:"GET",
+		url:crudUrl+"/"+editObjId,
+		success:function(resData) {
+			if (resData.status === 200) {
+				var findObj = resData.data;
+				setFormData("editForm",findObj);
+				//设置富文本值
+				console.log(resData);
+                editor.txt.html(findObj.description);
+			} else {
+				layer.msg(resData.msg, {icon: 5});
+			}
+		}
+	});
+});
+</script>
+</html>

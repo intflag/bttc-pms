@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="editForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" name="resourceId" value="">
+	<div class="layui-form-item">
+		<div class="layui-inline">
+        	<label class="layui-form-label">菜单类型</label>
+        	<div class="layui-input-block">
+	            <input type="radio" name="type" value="0" title="目录" lay-filter="radioType">
+	       		<input type="radio" name="type" value="1" title="菜单" lay-filter="radioType">
+	            <input type="radio" name="type" value="2" title="按钮" lay-filter="radioType">
+            </div>
+        </div>
+        <div class="layui-inline">
+        	<label class="layui-form-label">状态</label>
+		    <div class="layui-input-block">
+		      <select name="flag" lay-filter="flag">
+		        <option value=""></option>
+		        <option value="1" selected="">正常</option>
+		        <option value="2">禁用</option>
+		      </select>
+		    </div>
+        </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">菜单名称</label>
+	  <div class="layui-input-block">
+	    <input type="text" id="resname" name="resname" value="" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item" id="parentIdBox">
+	  <label class="layui-form-label">上级菜单</label>
+	  <div class="layui-input-block">
+	  	<select name="parentId" id="parentId">
+        </select>
+	  </div>
+	</div>
+	<div class="layui-form-item" id="resurlID">
+	  <label class="layui-form-label">菜单URL</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="resurl" value="" lay-verify="" placeholder="请输入菜单URL" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item" id="rescodeID">
+	  <label class="layui-form-label">授权标识</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="rescode" value="" lay-verify="" placeholder="请输入授权标识" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">菜单图标</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="icon" value="" lay-verify="required" placeholder="请输入菜单图标" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">菜单描述</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="description" value="" lay-verify="" placeholder="请输入菜单描述" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">排序号</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="sort" value="" lay-verify="required|number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+     
+	<div class="page-footer">
+    	<div class="btn-list">
+        	<div class="btnlist">
+            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/sysResource/sysResource.js"></script>
+<script type="text/javascript">
+$(function(){
+	//数据回显
+	var editObjId = getUrlParam('editObjId');
+	$.ajax({
+		type:"GET",
+		url:crudUrl+"/"+editObjId,
+		success:function(resData) {
+			if (resData.status === 200) {
+				var findObj = resData.data;
+				setFormData("editForm",findObj);
+				//根据菜单类型显示必填控件
+				var type = findObj.type;
+				if (type == '0') {
+					  $("#resurlID").css({"display":"none"});
+					  $("#parentIdBox").css({"display":"none"});
+					  //$("#rescodeID").css({"display":"none"});
+				} else {
+					  $("#resurlID").css({"display":"block"});
+					  $("#parentIdBox").css({"display":"block"});
+				}
+				//设置父菜单
+				var parentId = findObj.parentId;
+				  var findType;
+				  if (type == "1") {
+					  findType = "0";
+				  }
+				  if (type == "2") {
+					  findType = "1";
+				  }
+				  $.ajax({
+					  type:"GET",
+					  url: sysResourceByTypeUrl+findType,
+					  success:function(resData) {
+						  var list = resData.data;
+						  var html = "";
+						  $("#parentId").html(html);
+						  for (var i = 0; i < list.length; i++) {
+							  var obj = list[i];
+							  if (parentId == obj.resourceId) {
+								  html += '<option value="'+obj.resourceId+'" selected>'+obj.resname+'</option>';
+							  } else {
+								  html += '<option value="'+obj.resourceId+'">'+obj.resname+'</option>';
+							  }
+						  }
+						  $("#parentId").html(html);
+						  layui.use(['form'], function () {
+							  var form = layui.form;
+							  form.render();
+						  });
+					  }
+				  });
+			} else {
+				layer.msg(resData.msg, {icon: 5});
+			}
+		}
+	});
+	
+	
+});
+</script>
+</html>

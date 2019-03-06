@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+  <link rel="stylesheet" href="/admin-static/ztree/css/metroStyle/metroStyle.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="editForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" name="roleId" value="">
+	<div class="layui-form-item">
+	  <div class="layui-inline">
+       	<label class="layui-form-label">状态</label>
+	    <div class="layui-input-block">
+	      <select name="flag" lay-filter="flag">
+	        <option value=""></option>
+	        <option value="1" selected="">正常</option>
+	        <option value="2">禁用</option>
+	      </select>
+	    </div>
+       </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">角色名称</label>
+	  <div class="layui-input-block">
+	    <input type="text" id="rolename" name="rolename" value="" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">角色描述</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="description" value="" lay-verify="" placeholder="请输入角色描述" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">排序号</label>
+	  <div class="layui-input-block">
+	    <input type="text" name="sort" value="" lay-verify="required|number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+	  </div>
+	</div>
+	<div class="layui-form-item">
+	  <label class="layui-form-label">授权</label>
+	  <div class="layui-input-block">
+	    <ul id="resourceTree" class="ztree"></ul>
+	  </div>
+	</div>
+     
+	<div class="page-footer">
+    	<div class="btn-list">
+        	<div class="btnlist">
+            	<button class="layui-btn" lay-submit lay-filter="updateRoleObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/sysRole/sysRole.js"></script>
+<script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript">
+	var setting = {
+		check: {
+			enable: true,
+			chkDisabledInherit: true,
+			chkboxType:{"Y":"p","N":"s"}
+		},
+		data: {
+			simpleData: {
+				enable: false
+			},
+			key: {
+	            url: "nourl",
+	            name: "resname",
+          		children:"sysResources"
+	        }
+		}
+	};
+	
+	//数据回显
+	var editObjId = getUrlParam('editObjId');
+	$.ajax({
+		type:"GET",
+		url:crudUrl+"/"+editObjId,
+		data:$("#addForm").serialize(),
+		success:function(resData) {
+			if (resData.status === 200) {
+				var findObj = resData.data;
+				setFormData("editForm",findObj);
+			} else {
+				layer.msg(resData.msg, {icon: 5});
+			}
+		}
+	});
+	$(function() {
+		$.ajax({
+            type: "GET",
+            url: resourceListUrl,
+            success: function (R) {
+                if (R.status === 200) {
+                    ztree = $.fn.zTree.init($("#resourceTree"), setting, R.data);
+                    //通过角色ID查找角色，从而得到角色关联的资源菜单
+                    $.ajax({
+			            type: "GET",
+			            url: sysRoleResKeysUrl+"/"+editObjId,
+			            success: function (R) {
+			                if (R.status === 200) {
+			                    var treeNode = R.data;
+			                   	console.info(treeNode);
+			                    if (treeNode.length > 0) {
+				                    //获取ztree对象
+				                    var treeObj = $.fn.zTree.getZTreeObj("resourceTree");
+				                    //遍历勾选角色关联的菜单数据
+				                    for (var i = 0; i < treeNode.length; i++) {
+				                    	//根据角色菜单节点数据的属性搜索，获取与完整菜单树完全匹配的节点JSON对象集合
+					                    var nodes = treeObj.getNodesByParam("resourceId", treeNode[i].resourceId, null);
+					                    //勾选当前选中的节点
+					                    treeObj.checkNode(nodes[0],true,true);
+				                    };
+			                   };
+			                }
+			            }
+			        });
+                }
+            }
+        });
+	});
+</script>
+</html>

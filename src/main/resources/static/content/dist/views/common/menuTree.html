@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+<link rel="stylesheet" href="/admin-static/ztree/css/metroStyle/metroStyle.css">
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
+</head>
+<body>
+<div style="padding: 15px;">
+	<ul id="menuTreeBox" class="ztree"></ul>
+</div>
+</body>
+<script type="text/javascript">
+var menuListUrl = "/admin/sysUser/menu";
+var setting = {
+	data: {
+		simpleData: {
+			enable: false
+		},
+		key: {
+            url: "nourl",
+            name: "resname",
+            children:"sysResources"
+        }
+	}
+};
+$(function(){
+	$.ajax({
+        type: "GET",
+        url: menuListUrl,
+        success: function (R) {
+            if (R.status === 200) {
+                ztree = $.fn.zTree.init($("#menuTreeBox"), setting, R.data);
+            }
+        }
+    });
+});	
+</script>
+</html>
