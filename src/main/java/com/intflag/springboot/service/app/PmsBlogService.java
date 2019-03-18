@@ -26,7 +26,7 @@ public interface PmsBlogService {
 	 * @param pmsBlog
 	 * @return
 	 */
-	StatusResult update(PmsBlog pmsBlog) throws Exception;
+	StatusResult update(PmsBlog pmsBlog,String[] appendixIds) throws Exception;
 
 	/**
 	 * 根据ID查询

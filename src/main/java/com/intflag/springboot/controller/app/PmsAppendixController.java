@@ -61,7 +61,7 @@ public class PmsAppendixController {
             //将附件信息插入附件表
             PmsAppendix pmsAppendix = new PmsAppendix();
             pmsAppendix.setAppendixName(originalFilename);
-            pmsAppendix.setSize(new BigDecimal(file.getSize()));
+            pmsAppendix.setSize(new BigDecimal(file.getSize()/1024.0/1024.0));
             SysUser loginUser = (SysUser) session.getAttribute("loginUser");
             if (loginUser != null) {
                 pmsAppendix.setPublisher(loginUser.getNickname());
@@ -98,6 +98,54 @@ public class PmsAppendixController {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsAppendix-list");//权限校验，配置菜单后去掉注释即可
             return pmsAppendixService.pageQuery(pageBean);
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+            return PageBean.noAuthority(pageBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PageBean.error(pageBean);
+        }
+    }
+    /**
+     * 分页
+     */
+    @GetMapping("api/app/pmsAppendixs")
+    public PageBean apiPageQuery(PageBean pageBean) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsAppendix-list");//权限校验，配置菜单后去掉注释即可
+            return pmsAppendixService.pageQuery(pageBean);
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+            return PageBean.noAuthority(pageBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PageBean.error(pageBean);
+        }
+    }
+    /**
+     * 分页
+     */
+    @GetMapping("/app/blogAndPmsAppendixs")
+    public PageBean blogAndPmsAppendixs(PageBean pageBean) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsAppendix-list");//权限校验，配置菜单后去掉注释即可
+            return pmsAppendixService.blogAndPmsAppendixs(pageBean);
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+            return PageBean.noAuthority(pageBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PageBean.error(pageBean);
+        }
+    }
+    /**
+     * 分页
+     */
+    @GetMapping("/api/app/blogAndPmsAppendixs")
+    public PageBean apiBlogAndPmsAppendixs(PageBean pageBean) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsAppendix-list");//权限校验，配置菜单后去掉注释即可
+            return pmsAppendixService.blogAndPmsAppendixs(pageBean);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return PageBean.noAuthority(pageBean);

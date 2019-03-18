@@ -66,6 +66,9 @@ public class StatusResult implements Serializable {
     public static StatusResult ok(Object data) {
         return new StatusResult(data);
     }
+    public static StatusResult ok(Object data,String msg) {
+        return new StatusResult(200, msg, data);
+    }
 
     /**
      * 不返回data

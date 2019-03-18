@@ -1,5 +1,7 @@
 package com.intflag.springboot.entity.app;
 
+import com.intflag.springboot.common.util.DateUtils;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -25,6 +27,14 @@ public class PmsAppendix {
     private Date mdate;
 
     private String description;
+
+    public String getCdateStr() {
+        return DateUtils.date2String(this.cdate);
+    }
+
+    public String getMdateStr() {
+        return DateUtils.date2String(this.mdate);
+    }
 
     public String getAppendixId() {
         return appendixId;

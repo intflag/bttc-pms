@@ -1,9 +1,12 @@
 package com.intflag.springboot.controller.app;
 
 import com.intflag.springboot.entity.admin.SysUser;
+import com.intflag.springboot.entity.app.PmsBlogAppendix;
+import com.intflag.springboot.service.app.PmsBlogAppendixService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,9 @@ public class PmsBlogController {
     @Autowired
     private PmsBlogService pmsBlogService;
 
+    @Autowired
+    private PmsBlogAppendixService pmsBlogAppendixService;
+
     /**
      * 分页
      */
@@ -50,8 +56,8 @@ public class PmsBlogController {
     /**
      * 前台分页
      */
-    @GetMapping("/v1/app/pmsBlogs")
-    public PageBean v1PageQuery(PageBean pageBean) {
+    @GetMapping("/api/app/pmsBlogs")
+    public PageBean apiPageQuery(PageBean pageBean) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsBlog-list");//权限校验，配置菜单后去掉注释即可
             return pmsBlogService.pageQuery(pageBean);
@@ -70,7 +76,7 @@ public class PmsBlogController {
      * @return
      */
     @PostMapping("/app/pmsBlog")
-    public StatusResult add(PmsBlog pmsBlog, HttpSession session,String[] appendixIds) {
+    public StatusResult add(PmsBlog pmsBlog, HttpSession session, String[] appendixIds) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsBlog-add");//权限校验，配置菜单后去掉注释即可
             //设置人员信息
@@ -79,7 +85,7 @@ public class PmsBlogController {
                 pmsBlog.setPublisher(loginUser.getNickname());
                 pmsBlog.setUserId(loginUser.getUserId());
             }
-            return pmsBlogService.add(pmsBlog,appendixIds);
+            return pmsBlogService.add(pmsBlog, appendixIds);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -105,14 +111,34 @@ public class PmsBlogController {
             return StatusResult.error(StatusResult.FIND_FAIL);
         }
     }
+
+    /**
+     * 根据ID查询所有附件
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/app/pmsBlogAppendix/{id}")
+    public StatusResult findPmsBlogAppendixById(@PathVariable String id) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsBlog-find");//权限校验，配置菜单后去掉注释即可
+            PmsBlogAppendix pmsBlogAppendix = new PmsBlogAppendix();
+            pmsBlogAppendix.setBlogId(id);
+            return pmsBlogAppendixService.findByBlogId(pmsBlogAppendix);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return StatusResult.error(StatusResult.FIND_FAIL);
+        }
+    }
+
     /**
      * app根据ID查询
      *
      * @param id
      * @return
      */
-    @GetMapping("/v1/app/pmsBlog/{id}")
-    public StatusResult v1FindById(@PathVariable String id) {
+    @GetMapping("/api/app/pmsBlog/{id}")
+    public StatusResult apiFindById(@PathVariable String id) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsBlog-find");//权限校验，配置菜单后去掉注释即可
             return pmsBlogService.findById(id);
@@ -129,7 +155,7 @@ public class PmsBlogController {
      * @return
      */
     @PutMapping("/app/pmsBlog")
-    public StatusResult update(PmsBlog pmsBlog, HttpSession session) {
+    public StatusResult update(PmsBlog pmsBlog, HttpSession session, String[] appendixIds) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsBlog-update");//权限校验，配置菜单后去掉注释即可
             //设置人员信息
@@ -138,7 +164,7 @@ public class PmsBlogController {
                 pmsBlog.setPublisher(loginUser.getNickname());
                 pmsBlog.setUserId(loginUser.getUserId());
             }
-            return pmsBlogService.update(pmsBlog);
+            return pmsBlogService.update(pmsBlog, appendixIds);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -159,6 +185,30 @@ public class PmsBlogController {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsBlog-delete");//权限校验，配置菜单后去掉注释即可
             return pmsBlogService.delete(ids);
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+            return StatusResult.error(StatusResult.NO_AUTHORITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return StatusResult.error(StatusResult.DELETE_FAIL);
+        }
+    }
+
+    /**
+     * 删除附件关系表
+     *
+     * @param blogId
+     * @param appendixId
+     * @return
+     */
+    @DeleteMapping("/app/pmsBlogAppendix/{blogId}/{appendixId}")
+    public StatusResult deletePmsBlogAppendix(@PathVariable("blogId") String blogId, @PathVariable("appendixId") String appendixId) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsBlog-delete");//权限校验，配置菜单后去掉注释即可
+            PmsBlogAppendix pmsBlogAppendix = new PmsBlogAppendix();
+            pmsBlogAppendix.setBlogId(blogId);
+            pmsBlogAppendix.setAppendixId(appendixId);
+            return pmsBlogAppendixService.delete(pmsBlogAppendix);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);

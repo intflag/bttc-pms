@@ -61,7 +61,7 @@ public class ShiroConfiguration {
 		// 释放静态资源
 		filterChainDefinitionMap.put("/admin-static/**", "anon");
 		// App端请求不拦截
-		filterChainDefinitionMap.put("/v1/app/**", "anon");
+		filterChainDefinitionMap.put("/api/app/**", "anon");
 
         // 表示需要认证才可以访问
         filterChainDefinitionMap.put("/content/**", "authc");

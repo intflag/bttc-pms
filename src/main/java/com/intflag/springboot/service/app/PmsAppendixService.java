@@ -51,4 +51,5 @@ public interface PmsAppendixService {
 	 */
 	StatusResult delete(String ids);
 
+    PageBean blogAndPmsAppendixs(PageBean pageBean);
 }

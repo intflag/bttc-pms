@@ -98,7 +98,7 @@ public class SysTemplateParamsController {
 	@PostMapping("/admin/sysTemplateParams")
 	public StatusResult add(SysTemplateparams sysTemplateparams) {
 		try {
-			SecurityUtils.getSubject().checkPermission("sysTemplateparams-add");
+//			SecurityUtils.getSubject().checkPermission("sysTemplateparams-add");
 			return sysTemplateParamsService.add(sysTemplateparams);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();

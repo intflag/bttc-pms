@@ -41,7 +41,37 @@
 			<textarea name="summary" lay-verify="required" placeholder="请输入摘要" autocomplete="off" class="layui-textarea"></textarea>
 		</div>
 	</div>
-     
+	<div class="layui-form-item">
+		<label class="layui-form-label">当前附件</label>
+		<div class="layui-input-block">
+			<table class="layui-table" id="appendixTable" lay-filter="appendixT"></table>
+			<div style="display: none;" id="oldAppendixIds">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label">新增附件</label>
+		<div class="layui-input-block">
+			<div class="layui-upload">
+				<button type="button" class="layui-btn layui-btn-normal" id="selectFileBtn">选择多个附件</button>
+				<button type="button" class="layui-btn" id="uploadFileBtn">开始上传</button>
+				<div class="layui-upload-list">
+					<table class="layui-table">
+						<thead>
+						<tr><th>文件名</th>
+							<th>大小</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr></thead>
+						<tbody id="fileList"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div style="display: none;" id="appendixIds">
+		</div>
+	</div>
+
 	<div class="page-footer">
     	<div class="btn-list">
         	<div class="btnlist">
@@ -59,6 +89,17 @@
 <script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/pmsBlog/pmsBlog.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/wangEditor.min.js"></script>
+<script type="text/html" id="deleteAppendixBtn">
+	<a class="layui-btn layui-btn-xs" lay-event="deleteAppendix">删除</a>
+</script>
+<script type="text/html" id="checkFlag">
+	{{#  if(d.flag == "1"){ }}
+	<span class="layui-badge">正常</span>
+	{{#  } }}
+	{{#  if(d.flag == "2"){ }}
+	<span class="layui-badge layui-bg-cyan">禁用</span>
+	{{#  } }}
+</script>
 <script type="text/javascript">
 $(function(){
 	//数据回显
@@ -88,6 +129,137 @@ $(function(){
 			}
 		}
 	});
+	//设置所有附件隐藏域
+	var allAppendixsUrl = "/app/pmsBlogAppendix/";
+    $.ajax({
+        type:"GET",
+        url:allAppendixsUrl+"/"+editObjId,
+        success:function(resData) {
+            if (resData.status === 200) {
+                var allAppendixsObj = resData.data;
+                console.log(allAppendixsObj);
+                $("#oldAppendixIds").html("");
+                for (var i =0; i < allAppendixsObj.length; i++) {
+					var res = allAppendixsObj[i];
+                    $("#oldAppendixIds").append('<input name="appendixIds" value="'+res.appendixId+'">');
+                }
+            } else {
+                //layer.msg(resData.msg, {icon: 5});
+            }
+        }
+    });
+});
+
+//基础配置
+var appendixPageQueryUrl = "/app/blogAndPmsAppendixs";//分页请求地址
+
+//扩展属性
+
+//topicId，userId
+//分页属性
+var pageField = [[
+    {field:'appendixName',fixed: 'left', title: '附件名', align: 'center', width:450}
+    ,{field:'publisher', title: '所属人', align: 'center', width:100}
+    ,{field:'flag', title: '状态', align: 'center',templet: '#checkFlag', unresize: true, sort: true}
+    //,{field:'flag', title: '状态', align: 'center', width:100}
+    ,{field:'size', title: '大小(MB)', align: 'center', width:100}
+    ,{field:'cdateStr', title: '上传时间', align: 'center', width:100}
+    ,{fixed: 'right', align:'center', toolbar: '#deleteAppendixBtn', width:100}
+]];
+
+layui.use(['element', 'layer', 'table', 'form'], function() {
+    var element = layui.element;
+    var layer = layui.layer;
+    var table = layui.table;
+    var form = layui.form;
+    var $ = layui.jquery;
+
+    //数据回显
+    var blogId = getUrlParam('editObjId');
+    console.log(blogId);
+
+    //分页
+    table.render({
+        elem: '#appendixTable',
+        page: true,
+        where: {
+        keyWords: blogId
+    	},
+        height: 200,
+        url: appendixPageQueryUrl,
+        request: {
+            pageName: 'currPage' //页码的参数名称，默认：page
+            ,
+            limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },
+        response: {
+            countName: 'totalCount' //数据总数的字段名称，默认：count
+            ,
+            statusCode: 200,
+            dataName: 'list' //数据列表的字段名称，默认：data
+        },
+        cellMinWidth: 120 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        ,
+        cols: pageField,
+        id: 'appendixReload',
+        done: function(res, curr, count) {
+            //关闭加载图标
+            //layer.close(loadIcon);
+        }
+    });
+
+    //监听工具条
+    table.on('tool(appendixT)', function(appendix) {
+        var data = appendix.data;
+        if (appendix.event === 'deleteAppendix') {
+            console.log(data);
+            var deleteBogAndAppendixUrl = "/app/pmsBlogAppendix";
+            var appendixId = data.appendixId;
+            console.log(blogId+" "+appendixId);
+            layer.confirm('确认要删除吗？', {
+                skin: 'layui-layer-molv',
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    type:"DELETE",
+                    url:deleteBogAndAppendixUrl+"/"+blogId+"/"+appendixId,
+                    success:function(resData) {
+                        if (resData.status === 200) {
+                            var res = resData.data;
+                            if (resData.status === 200) {
+                                layer.msg(resData.msg, {icon: 1});
+                            } else {
+                                layer.msg(resData.msg, {icon: 5});
+                            }
+                            //执行重载
+                            table.reload('appendixReload');
+                            //设置所有附件隐藏域
+                            var allAppendixsUrl = "/app/pmsBlogAppendix/";
+                            $.ajax({
+                                type:"GET",
+                                url:allAppendixsUrl+"/"+blogId,
+                                success:function(resData) {
+                                    if (resData.status === 200) {
+                                        var allAppendixsObj = resData.data;
+                                        console.log(allAppendixsObj);
+                                        $("#oldAppendixIds").html("");
+                                        for (var i =0; i < allAppendixsObj.length; i++) {
+                                            var res = allAppendixsObj[i];
+                                            $("#oldAppendixIds").append('<input name="appendixIds" value="'+res.appendixId+'">');
+                                        }
+                                    } else {
+                                        //layer.msg(resData.msg, {icon: 5});
+                                    }
+                                }
+                            });
+                        } else {
+                            //layer.msg(resData.msg, {icon: 5});
+                        }
+                    }
+                });
+            });
+        }
+    });
 });
 </script>
 </html>

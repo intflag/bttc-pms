@@ -20,7 +20,7 @@ public class AppInterceptorChainLoader extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/v1/app/**")
+		registry.addMapping("/api/app/**")
 				.allowedOrigins("*")
 				.allowedMethods("GET", "POST")
 				.allowCredentials(false).maxAge(3600);
