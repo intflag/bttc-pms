@@ -43,6 +43,19 @@ public class PmsGroupController {
 			return PageBean.error(pageBean);
 		}
 	}
+	/**
+	 * 分页
+	 */
+	@GetMapping("/app/pmsGroupList")
+	public StatusResult pmsGroupList() {
+		try {
+			//SecurityUtils.getSubject().checkPermission("pmsGroup-find");//权限校验，配置菜单后去掉注释即可
+			return pmsGroupService.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.FIND_FAIL);
+		}
+	}
 
 	/**
 	 * 添加

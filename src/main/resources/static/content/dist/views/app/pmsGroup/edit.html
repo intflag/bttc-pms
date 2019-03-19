@@ -62,6 +62,10 @@
 $(function(){
 	//数据回显
 	var editObjId = getUrlParam('editObjId');
+    var parentId = getUrlParam('parentId');
+    var parentName = getUrlParam('parentName');
+    console.log(parentId);
+    console.log(parentName);
 	$.ajax({
 		type:"GET",
 		url:crudUrl+"/"+editObjId,

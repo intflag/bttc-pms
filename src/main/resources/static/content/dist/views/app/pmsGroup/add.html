@@ -8,7 +8,15 @@
 <body>
 <div class="layui-field-box" style="margin-top: 10px;">
 <form id="addForm" class="layui-form" action="" onsubmit="return false;">
-    	<div class="layui-form-item">
+	<div class="layui-form-item">
+		<label class="layui-form-label">父级名称</label>
+		<div class="layui-input-block">
+			<input type="text" id="parentName" value=""
+				   lay-verify="" placeholder="请输入父级名称" autocomplete="off" readonly="readonly"
+				   class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
 		<label class="layui-form-label">组织名称</label>
 		<div class="layui-input-block">
 			<input type="text" name="groupName" value=""
@@ -16,11 +24,11 @@
 				class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
+	<div class="layui-form-item" style="display: none;">
 		<label class="layui-form-label">父ID</label>
 		<div class="layui-input-block">
-			<input type="text" name="pid" value=""
-				lay-verify="required" placeholder="请输入父ID" autocomplete="off"
+			<input type="text" id="parentId" name="pid" value=""
+				lay-verify="" placeholder="请输入父ID" autocomplete="off"
 				class="layui-input">
 		</div>
 	</div>
@@ -53,9 +61,21 @@
 </body>
 <script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
 <script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/pmsGroup/pmsGroup.js"></script>
 <script type="text/javascript">
-
+$(function(){
+    var parentId = getUrlParam('parentId');
+    var parentName = getUrlParam('parentName');
+    console.log(parentId);
+    console.log(parentName);
+    if (undefined != parentId && 'undefined' != parentId) {
+        $("#parentId").val(parentId);
+    }
+    if (undefined != parentName &&  'undefined' != parentName) {
+        $("#parentName").val(parentName);
+    }
+});
 </script>
 </html>

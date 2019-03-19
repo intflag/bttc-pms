@@ -75,7 +75,14 @@ public class PmsGroupServiceImpl implements PmsGroupService {
 			String[] objIds = ids.split(",");
 			if (objIds != null && objIds.length > 0) {
 				for (String id : objIds) {
-					// 根据主键删除
+                    PmsGroupExample example = new PmsGroupExample();
+                    example.or().andPidEqualTo(id);
+                    List<PmsGroup> pmsGroups = pmsGroupMapper.selectByExample(example);
+                    if (pmsGroups != null && pmsGroups.size() > 0) {{
+                        // 异常返回
+                        return StatusResult.error("删除失败，请先删除上级组织部门");
+                    }}
+                    // 根据主键删除
 					pmsGroupMapper.deleteByPrimaryKey(id);
 				}
 				// 正常返回
@@ -88,5 +95,16 @@ public class PmsGroupServiceImpl implements PmsGroupService {
 			// 异常返回
 			return StatusResult.error(StatusResult.DELETE_FAIL);
 		}
+	}
+
+	@Override
+	public StatusResult findAll() throws Exception {
+		// 执行查询
+		PmsGroupExample example = new PmsGroupExample();
+        List<PmsGroup> pmsGroups = pmsGroupMapper.selectByExample(example);
+        if (pmsGroups != null) {
+			return StatusResult.ok(pmsGroups);
+		}
+		return StatusResult.none(StatusResult.FIND_NONE);
 	}
 }

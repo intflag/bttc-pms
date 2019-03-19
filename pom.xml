@@ -106,7 +106,12 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-
+		<!--Excel导入导出-->
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-spring-boot-starter</artifactId>
+			<version>4.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

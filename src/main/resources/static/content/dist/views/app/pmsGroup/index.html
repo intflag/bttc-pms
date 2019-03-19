@@ -1,5 +1,7 @@
 <title>机构管理</title>
-
+<head>
+    <link rel="stylesheet" href="/admin-static/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
@@ -13,10 +15,22 @@
   <div class="layui-card">
       <div class="layui-tab-content">
           <div class="layui-row">
-              <div class="layui-col-xs12 layui-col-md4">
-                    sdasdasdasd
+              <div class="layui-col-xs12 layui-col-md3">
+                  <blockquote class="layui-elem-quote layui-text">所有机构</blockquote>
+                  <div class="layui-btn-group">
+                      <button class="layui-btn  layui-btn-normal" id="addBtn">
+                          <i class="layui-icon">&#xe654;</i>新增
+                      </button>
+                      <button class="layui-btn  layui-btn-warm" id="editBtn">
+                          <i class="layui-icon">&#xe642;</i>修改
+                      </button>
+                      <button class="layui-btn  layui-btn-danger" id="deleteBatchBtn">
+                          <i class="layui-icon">&#xe640;</i>删除
+                      </button>
+                  </div>
+                  <ul id="groupTree" class="ztree" style="margin-top: 10px;border: 2px solid #009688;background: #f2f2f2;height:450px;overflow-y:scroll;overflow-x:auto;"></ul>
               </div>
-              <div class="layui-col-xs12 layui-col-md8">
+              <div class="layui-col-xs12 layui-col-md9">
                   <div class="layui-field-box">
                       <div class="layui-form">
                           <div class="layui-form-item" style="text-align:center;">
@@ -34,14 +48,20 @@
                       </div>
                       <hr>
                       <div class="layui-btn-group">
-                          <button class="layui-btn  layui-btn-normal" id="addBtn">
-                              <i class="layui-icon">&#xe654;</i>新增
+                          <button class="layui-btn  layui-btn-normal" id="addUserBtn">
+                              <i class="layui-icon">&#xe654;</i>新增师生
                           </button>
-                          <button class="layui-btn  layui-btn-warm" id="editBtn">
-                              <i class="layui-icon">&#xe642;</i>修改
+                          <button class="layui-btn  layui-btn-warm" id="editUserBtn">
+                              <i class="layui-icon">&#xe642;</i>修改师生
                           </button>
-                          <button class="layui-btn  layui-btn-danger" id="deleteBatchBtn">
-                              <i class="layui-icon">&#xe640;</i>批量删除
+                          <button class="layui-btn  layui-btn-danger" id="deleteBatchUserBtn">
+                              <i class="layui-icon">&#xe640;</i>批量删除师生
+                          </button>
+                          <button class="layui-btn" id="downloadBtn">
+                              <i class="layui-icon">&#xe630;</i>下载导入模板
+                          </button>
+                          <button class="layui-btn  layui-bg-cyan" id="importBtn">
+                              <i class="layui-icon">&#xe613;</i>批量导入师生
                           </button>
                       </div>
                       <hr>
@@ -60,7 +80,53 @@
   {{#  if(d.flag == "2"){ }}
     <span class="layui-badge layui-bg-cyan">禁用</span>
   {{#  } }}
-</script>                
-<script type="text/javascript" src="/admin-static/javascript/pmsGroup/pmsGroup.js"></script>
+</script>
+
 <script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
-<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<!--<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>-->
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
+<script>
+    var allGroupUrl = "/app/pmsGroupList";//所有组织
+
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: onClick
+        }
+    };
+
+    var tree;
+
+    loadTree();
+
+    function loadTree() {
+        $.ajax({
+            type:"GET",
+            url:allGroupUrl,
+            success:function(resData) {
+                if (resData.status === 200) {
+                    var res = resData.data;
+                    console.log(res);
+                    tree = $.fn.zTree.init($("#groupTree"), setting, res);
+                    console.log(tree);
+                } else {
+                    //layer.msg(resData.msg, {icon: 5});
+                }
+            }
+        });
+    }
+
+
+    function onClick(event, treeId, treeNode, clickFlag) {
+        console.log(event);
+        console.log(treeId);
+        console.log(treeNode);
+        console.log(clickFlag);
+    }
+</script>
+<script type="text/javascript" src="/admin-static/javascript/pmsGroup/pmsGroup.js"></script>

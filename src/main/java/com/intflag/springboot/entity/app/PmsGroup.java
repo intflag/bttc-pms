@@ -82,4 +82,36 @@ public class PmsGroup {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+    private String id;
+    private String pId;
+    private String name;
+    private Boolean open = false;
+    private Boolean isParent = false;
+
+    public String getId() {
+        return groupId;
+    }
+
+    public String getpId() {
+        return pid;
+    }
+
+    public String getName() {
+        return groupName;
+    }
+
+    public Boolean getOpen() {
+        if (pId == null) {
+            return true;
+        }
+        return open;
+    }
+
+    public Boolean getParent() {
+        if (pId == null) {
+            return true;
+        }
+        return isParent;
+    }
 }
