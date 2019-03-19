@@ -2,23 +2,30 @@ package com.intflag.springboot.entity.admin;
 
 import java.util.Date;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.intflag.springboot.common.util.DateUtils;
 
 public class SysUser {
+
     private String userId;
 
+    @Excel(name = "学号/教师工号",width = 20)
     private String username;
 
     private String password;
 
+    @Excel(name = "姓名",width = 20)
     private String nickname;
 
+    @Excel(name = "性别",width = 20)
     private String gender;
 
+    @Excel(name = "邮箱",width = 20)
     private String email;
 
     private String address;
 
+    @Excel(name = "电话",width = 20)
     private String telephone;
 
     private String flag;
@@ -29,13 +36,16 @@ public class SysUser {
 
     private String description;
 
+    @Excel(name = "微信号",width = 20)
     private String wechatId;
 
+    @Excel(name = "QQ号",width = 20)
     private String qqId;
+
+    private String groupName;
 
     private String groupId;
 
-    private String groupName;
 
     // 角色ID
     private String roleId[];

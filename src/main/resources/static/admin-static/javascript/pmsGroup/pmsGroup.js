@@ -9,7 +9,7 @@ var pageQueryUrl = "/app/pmsGroups";//分页请求地址
 var addContentUrl = "/content/dist/views/app/pmsGroup/add.html";//新增页面请求地址
 var editContentUrl = "/content/dist/views/app/pmsGroup/edit.html";//修改页面请求地址
 
-
+var userImportTemplateUrl = "/app/pmsGroup/userImportTemplate/";//用户导入模板
 //扩展属性
 
 //分页属性
@@ -231,34 +231,13 @@ layui.use(['element', 'layer','table','form'], function () {
     //下载导出模板
     $("#downloadBtn").on("click",function(){
         //var treeObj=$.fn.zTree.getZTreeObj("groupTree");
-        console.log(tree);
-        var nodes=tree.getSelectedNodes();
-        console.log(nodes);
-        if (nodes.length > 1) {
-            layer.msg('只能在一个部门下添加子部门', {icon: 5});
-        } else {
-            console.log(nodes[0]);
-            if (nodes[0] != undefined) {
-                var parentId = nodes[0].id;
-                var parentName = nodes[0].name;
-            }
-            layer.open({
-                id:"addObj",
-                type: 2,
-                title: addTitle,
-                shadeClose: false,
-                shade: [0.3, '#000'],
-                maxmin: true, //开启最大化最小化按钮
-                area: [dailogWidth, dailogHeight],
-                content: addContentUrl+"?parentId="+parentId+"&parentName="+escape(parentName),
-                end : function() {
-                    //执行重载
-                    table.reload('objReload');
-                    loadTree();
-                    loadIcon = layer.load(2, {time: 10*1000});//加载中
-                }
-            });
-        }
+        var index = layer.confirm('确认要下载导入模板吗？', {
+            skin: 'layui-layer-molv',
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            window.location.href=userImportTemplateUrl;
+            layer.close(index);
+        });
 
     });
 });
