@@ -13,6 +13,7 @@
 		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
 			connectionURL="jdbc:mysql://localhost:3306/dev-bttc-pms?characterEncoding=utf8&amp;useSSL=true&amp;serverTimezone=GMT%2B8" userId="root"
 			password="admin123">
+            <property name="useInformationSchema" value="true"/>
 		</jdbcConnection>
 		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和 
 			NUMERIC 类型解析为java.math.BigDecimal -->
@@ -21,23 +22,23 @@
 		</javaTypeResolver>
 
 		<!-- targetProject:生成PO类的位置 -->
-		<javaModelGenerator targetPackage="com.intflag.springboot.entity.app" targetProject="D:/test/bttc-pms/src/main/java/">
+		<javaModelGenerator targetPackage="com.intflag.springboot.entity.app" targetProject="D:/010 - Working Space - 工作台/031 - Business/bttc-pms/src/main/java/">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 			<!-- 从数据库返回的值被清理前后的空格 -->
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
         <!-- targetProject:mapper映射文件生成的位置 -->
-		<sqlMapGenerator targetPackage="mapper.app" targetProject="D:/test/bttc-pms/src/main/resources/mybatis/">
+		<sqlMapGenerator targetPackage="mapper.app" targetProject="D:/010 - Working Space - 工作台/031 - Business/bttc-pms/src/main/resources/mybatis/">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<!-- targetPackage：mapper接口生成的位置 -->
-		<javaClientGenerator type="XMLMAPPER" targetPackage="com.intflag.springboot.mapper.app" targetProject="D:/test/bttc-pms/src/main/java/">
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.intflag.springboot.mapper.app" targetProject="D:/010 - Working Space - 工作台/031 - Business/bttc-pms/src/main/java/">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- 指定数据库表 -->
-		<table schema="" tableName="pms_blog_appendix"></table>
+		<table schema="" tableName="pms_group"></table>
 	</context>
 </generatorConfiguration>

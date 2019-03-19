@@ -5,142 +5,182 @@ import java.util.Date;
 import com.intflag.springboot.common.util.DateUtils;
 
 public class SysUser {
-	private String userId;
+    private String userId;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private String nickname;
+    private String nickname;
 
-	private String gender;
+    private String gender;
 
-	private String email;
+    private String email;
 
-	private String address;
+    private String address;
 
-	private String telephone;
+    private String telephone;
 
-	private String flag;
+    private String flag;
 
-	private Date cdate;
+    private Date cdate;
 
-	private Date mdate;
+    private Date mdate;
 
-	private String description;
+    private String description;
 
-	// 角色ID
-	private String roleId[];
+    private String wechatId;
 
-	public String getCdateStr() {
-		return DateUtils.date2String(this.cdate);
-	}
+    private String qqId;
 
-	public String getMdateStr() {
-		return DateUtils.date2String(this.mdate);
-	}
+    private String groupId;
 
-	public String[] getRoleId() {
-		return roleId;
-	}
+    private String groupName;
 
-	public void setRoleId(String[] roleId) {
-		this.roleId = roleId;
-	}
+    // 角色ID
+    private String roleId[];
 
-	public String getUserId() {
-		return userId;
-	}
+    public String getCdateStr() {
+        return DateUtils.date2String(this.cdate);
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId == null ? null : userId.trim();
-	}
+    public String getMdateStr() {
+        return DateUtils.date2String(this.mdate);
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String[] getRoleId() {
+        return roleId;
+    }
 
-	public void setUsername(String username) {
-		this.username = username == null ? null : username.trim();
-	}
+    public void setRoleId(String[] roleId) {
+        this.roleId = roleId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password == null ? null : password.trim();
-	}
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname == null ? null : nickname.trim();
-	}
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender == null ? null : gender.trim();
-	}
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public void setEmail(String email) {
-		this.email = email == null ? null : email.trim();
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setAddress(String address) {
-		this.address = address == null ? null : address.trim();
-	}
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
+    }
 
-	public String getTelephone() {
-		return telephone;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone == null ? null : telephone.trim();
-	}
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
 
-	public String getFlag() {
-		return flag;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setFlag(String flag) {
-		this.flag = flag == null ? null : flag.trim();
-	}
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
 
-	public Date getCdate() {
-		return cdate;
-	}
+    public String getTelephone() {
+        return telephone;
+    }
 
-	public void setCdate(Date cdate) {
-		this.cdate = cdate;
-	}
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
+    }
 
-	public Date getMdate() {
-		return mdate;
-	}
+    public String getFlag() {
+        return flag;
+    }
 
-	public void setMdate(Date mdate) {
-		this.mdate = mdate;
-	}
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Date getCdate() {
+        return cdate;
+    }
 
-	public void setDescription(String description) {
-		this.description = description == null ? null : description.trim();
-	}
+    public void setCdate(Date cdate) {
+        this.cdate = cdate;
+    }
+
+    public Date getMdate() {
+        return mdate;
+    }
+
+    public void setMdate(Date mdate) {
+        this.mdate = mdate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
+    }
+
+    public String getWechatId() {
+        return wechatId;
+    }
+
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId == null ? null : wechatId.trim();
+    }
+
+    public String getQqId() {
+        return qqId;
+    }
+
+    public void setQqId(String qqId) {
+        this.qqId = qqId == null ? null : qqId.trim();
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId == null ? null : groupId.trim();
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName == null ? null : groupName.trim();
+    }
 }

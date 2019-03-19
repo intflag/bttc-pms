@@ -14,6 +14,10 @@
     <result column="cdate" property="cdate" jdbcType="TIMESTAMP" />
     <result column="mdate" property="mdate" jdbcType="TIMESTAMP" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="qq_id" property="qqId" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, username, password, nickname, gender, email, address, telephone, flag, cdate, 
-    mdate, description
+    user_id, username, password, nickname, gender, email, address, telephone, flag, cdate,
+    mdate, description, wechat_id, qq_id, group_id, group_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.admin.SysUserExample" >
     select
@@ -92,7 +96,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sys_user
     where user_id = #{userId,jdbcType=VARCHAR}
@@ -108,16 +112,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.intflag.springboot.entity.admin.SysUser" >
-    insert into sys_user (user_id, username, password, 
-      nickname, gender, email, 
-      address, telephone, flag, 
-      cdate, mdate, description
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
-      #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}
-      )
+    insert into sys_user (user_id, username, password,
+      nickname, gender, email,
+      address, telephone, flag,
+      cdate, mdate, description,
+      wechat_id, qq_id, group_id,
+      group_name)
+    values (#{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR},
+      #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
+      #{wechatId,jdbcType=VARCHAR}, #{qqId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
+      #{groupName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.intflag.springboot.entity.admin.SysUser" >
     insert into sys_user
@@ -158,6 +164,18 @@
       <if test="description != null" >
         description,
       </if>
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="qqId != null" >
+        qq_id,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -195,6 +213,18 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="qqId != null" >
+        #{qqId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -243,6 +273,18 @@
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.wechatId != null" >
+        wechat_id = #{record.wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qqId != null" >
+        qq_id = #{record.qqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupName != null" >
+        group_name = #{record.groupName,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -251,17 +293,21 @@
   <update id="updateByExample" parameterType="map" >
     update sys_user
     set user_id = #{record.userId,jdbcType=VARCHAR},
-      username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      nickname = #{record.nickname,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
-      telephone = #{record.telephone,jdbcType=VARCHAR},
-      flag = #{record.flag,jdbcType=VARCHAR},
-      cdate = #{record.cdate,jdbcType=TIMESTAMP},
-      mdate = #{record.mdate,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=VARCHAR}
+    username = #{record.username,jdbcType=VARCHAR},
+    password = #{record.password,jdbcType=VARCHAR},
+    nickname = #{record.nickname,jdbcType=VARCHAR},
+    gender = #{record.gender,jdbcType=VARCHAR},
+    email = #{record.email,jdbcType=VARCHAR},
+    address = #{record.address,jdbcType=VARCHAR},
+    telephone = #{record.telephone,jdbcType=VARCHAR},
+    flag = #{record.flag,jdbcType=VARCHAR},
+    cdate = #{record.cdate,jdbcType=TIMESTAMP},
+    mdate = #{record.mdate,jdbcType=TIMESTAMP},
+    description = #{record.description,jdbcType=VARCHAR},
+    wechat_id = #{record.wechatId,jdbcType=VARCHAR},
+    qq_id = #{record.qqId,jdbcType=VARCHAR},
+    group_id = #{record.groupId,jdbcType=VARCHAR},
+    group_name = #{record.groupName,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,6 +348,18 @@
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="qqId != null" >
+        qq_id = #{qqId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
@@ -317,7 +375,11 @@
       flag = #{flag,jdbcType=VARCHAR},
       cdate = #{cdate,jdbcType=TIMESTAMP},
       mdate = #{mdate,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=VARCHAR}
+      description = #{description,jdbcType=VARCHAR},
+      wechat_id = #{wechatId,jdbcType=VARCHAR},
+      qq_id = #{qqId,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

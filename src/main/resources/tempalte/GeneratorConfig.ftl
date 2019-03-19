@@ -10,9 +10,10 @@
 			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
 		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
-		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost:3306/${dataBase}?characterEncoding=utf8&amp;useSSL=true" userId="${username}"
+		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/${dataBase}?characterEncoding=utf8&amp;useSSL=true&amp;serverTimezone=GMT%2B8" userId="${username}"
 			password="${password}">
+            <property name="useInformationSchema" value="true"/>
 		</jdbcConnection>
 		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和 
 			NUMERIC 类型解析为java.math.BigDecimal -->

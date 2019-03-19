@@ -924,6 +924,286 @@ public class SysUserExample {
             addCriterion("description not between", value1, value2, "description");
             return (Criteria) this;
         }
+
+        public Criteria andWechatIdIsNull() {
+            addCriterion("wechat_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdIsNotNull() {
+            addCriterion("wechat_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdEqualTo(String value) {
+            addCriterion("wechat_id =", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdNotEqualTo(String value) {
+            addCriterion("wechat_id <>", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdGreaterThan(String value) {
+            addCriterion("wechat_id >", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdGreaterThanOrEqualTo(String value) {
+            addCriterion("wechat_id >=", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdLessThan(String value) {
+            addCriterion("wechat_id <", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdLessThanOrEqualTo(String value) {
+            addCriterion("wechat_id <=", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdLike(String value) {
+            addCriterion("wechat_id like", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdNotLike(String value) {
+            addCriterion("wechat_id not like", value, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdIn(List<String> values) {
+            addCriterion("wechat_id in", values, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdNotIn(List<String> values) {
+            addCriterion("wechat_id not in", values, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdBetween(String value1, String value2) {
+            addCriterion("wechat_id between", value1, value2, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWechatIdNotBetween(String value1, String value2) {
+            addCriterion("wechat_id not between", value1, value2, "wechatId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdIsNull() {
+            addCriterion("qq_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdIsNotNull() {
+            addCriterion("qq_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdEqualTo(String value) {
+            addCriterion("qq_id =", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdNotEqualTo(String value) {
+            addCriterion("qq_id <>", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdGreaterThan(String value) {
+            addCriterion("qq_id >", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdGreaterThanOrEqualTo(String value) {
+            addCriterion("qq_id >=", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdLessThan(String value) {
+            addCriterion("qq_id <", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdLessThanOrEqualTo(String value) {
+            addCriterion("qq_id <=", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdLike(String value) {
+            addCriterion("qq_id like", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdNotLike(String value) {
+            addCriterion("qq_id not like", value, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdIn(List<String> values) {
+            addCriterion("qq_id in", values, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdNotIn(List<String> values) {
+            addCriterion("qq_id not in", values, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdBetween(String value1, String value2) {
+            addCriterion("qq_id between", value1, value2, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQqIdNotBetween(String value1, String value2) {
+            addCriterion("qq_id not between", value1, value2, "qqId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNull() {
+            addCriterion("group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNotNull() {
+            addCriterion("group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdEqualTo(String value) {
+            addCriterion("group_id =", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotEqualTo(String value) {
+            addCriterion("group_id <>", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThan(String value) {
+            addCriterion("group_id >", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThanOrEqualTo(String value) {
+            addCriterion("group_id >=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThan(String value) {
+            addCriterion("group_id <", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThanOrEqualTo(String value) {
+            addCriterion("group_id <=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLike(String value) {
+            addCriterion("group_id like", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotLike(String value) {
+            addCriterion("group_id not like", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIn(List<String> values) {
+            addCriterion("group_id in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotIn(List<String> values) {
+            addCriterion("group_id not in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdBetween(String value1, String value2) {
+            addCriterion("group_id between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotBetween(String value1, String value2) {
+            addCriterion("group_id not between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameIsNull() {
+            addCriterion("group_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameIsNotNull() {
+            addCriterion("group_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameEqualTo(String value) {
+            addCriterion("group_name =", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameNotEqualTo(String value) {
+            addCriterion("group_name <>", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameGreaterThan(String value) {
+            addCriterion("group_name >", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameGreaterThanOrEqualTo(String value) {
+            addCriterion("group_name >=", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameLessThan(String value) {
+            addCriterion("group_name <", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameLessThanOrEqualTo(String value) {
+            addCriterion("group_name <=", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameLike(String value) {
+            addCriterion("group_name like", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameNotLike(String value) {
+            addCriterion("group_name not like", value, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameIn(List<String> values) {
+            addCriterion("group_name in", values, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameNotIn(List<String> values) {
+            addCriterion("group_name not in", values, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameBetween(String value1, String value2) {
+            addCriterion("group_name between", value1, value2, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNameNotBetween(String value1, String value2) {
+            addCriterion("group_name not between", value1, value2, "groupName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
