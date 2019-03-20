@@ -18,6 +18,9 @@
     <result column="qq_id" property="qqId" jdbcType="VARCHAR" />
     <result column="group_id" property="groupId" jdbcType="VARCHAR" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     user_id, username, password, nickname, gender, email, address, telephone, flag, cdate,
-    mdate, description, wechat_id, qq_id, group_id, group_name
+    mdate, description, wechat_id, qq_id, group_id, group_name, user_type, field01, field02
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.admin.SysUserExample" >
     select
@@ -117,13 +120,15 @@
       address, telephone, flag,
       cdate, mdate, description,
       wechat_id, qq_id, group_id,
-      group_name)
+      group_name, user_type, field01,
+      field02)
     values (#{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR},
       #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
       #{wechatId,jdbcType=VARCHAR}, #{qqId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
-      #{groupName,jdbcType=VARCHAR})
+      #{groupName,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{field01,jdbcType=VARCHAR},
+      #{field02,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.intflag.springboot.entity.admin.SysUser" >
     insert into sys_user
@@ -176,6 +181,15 @@
       <if test="groupName != null" >
         group_name,
       </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -225,6 +239,15 @@
       </if>
       <if test="groupName != null" >
         #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="field01 != null" >
+        #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null" >
+        #{field02,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -285,6 +308,15 @@
       <if test="record.groupName != null" >
         group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
+      <if test="record.userType != null" >
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field01 != null" >
+        field01 = #{record.field01,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field02 != null" >
+        field02 = #{record.field02,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +339,10 @@
     wechat_id = #{record.wechatId,jdbcType=VARCHAR},
     qq_id = #{record.qqId,jdbcType=VARCHAR},
     group_id = #{record.groupId,jdbcType=VARCHAR},
-    group_name = #{record.groupName,jdbcType=VARCHAR}
+    group_name = #{record.groupName,jdbcType=VARCHAR},
+    user_type = #{record.userType,jdbcType=VARCHAR},
+    field01 = #{record.field01,jdbcType=VARCHAR},
+    field02 = #{record.field02,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +395,15 @@
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},
       </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
@@ -379,7 +423,10 @@
       wechat_id = #{wechatId,jdbcType=VARCHAR},
       qq_id = #{qqId,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
-      group_name = #{groupName,jdbcType=VARCHAR}
+      group_name = #{groupName,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=VARCHAR},
+      field01 = #{field01,jdbcType=VARCHAR},
+      field02 = #{field02,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -46,6 +46,12 @@ public class SysUser {
 
     private String groupId;
 
+    private String userType;
+
+    private String field01;
+
+    private String field02;
+
 
     // 角色ID
     private String roleId[];
@@ -192,5 +198,29 @@ public class SysUser {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName == null ? null : groupName.trim();
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType == null ? null : userType.trim();
+    }
+
+    public String getField01() {
+        return field01;
+    }
+
+    public void setField01(String field01) {
+        this.field01 = field01 == null ? null : field01.trim();
+    }
+
+    public String getField02() {
+        return field02;
+    }
+
+    public void setField02(String field02) {
+        this.field02 = field02 == null ? null : field02.trim();
     }
 }

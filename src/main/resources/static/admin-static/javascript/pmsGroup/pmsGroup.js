@@ -240,6 +240,36 @@ layui.use(['element', 'layer','table','form'], function () {
         });
 
     });
+    //修改
+    $("#importBtn").on("click",function(){
+        var checkStatus = table.checkStatus('objReload')
+            ,data = checkStatus.data;
+        var nodes=tree.getSelectedNodes();
+        if (nodes.length == 1) {
+            var editObjId = nodes[0].id;
+            layer.open({
+                id:"editObj",
+                type: 2,
+                title: editTitle,
+                shadeClose: false,
+                shade: [0.3, '#000'],
+                maxmin: true, //开启最大化最小化按钮
+                area: [dailogWidth, dailogHeight],
+                content: editContentUrl+"?editObjId="+editObjId,
+                success : function() {
+
+                },
+                end : function() {
+                    //执行重载
+                    table.reload('objReload');
+                    loadTree();
+                    loadIcon = layer.load(2, {time: 10*1000});//加载中
+                }
+            });
+        } else {
+            layer.msg('请选择一个组织部门进行导入', {icon: 5});
+        }
+    });
 });
 
 /*
