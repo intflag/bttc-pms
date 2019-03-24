@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="addUserForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" id="groupId" name="groupId" value="">
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属机构</label>
+		<div class="layui-input-block">
+			<input type="text" id="parentName" name="groupName" value=""
+				   lay-verify="" placeholder="所属机构" autocomplete="off" readonly="readonly"
+				   class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">用户类型</label>
+			<div class="layui-input-block">
+				<input type="radio" name="userType" value="1" title="学生" checked="">
+				<input type="radio" name="userType" value="2" title="教师" >
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<select name="flag" lay-filter="flag">
+					<option value="1" selected="">正常</option>
+					<option value="2">禁用</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">导入附件</label>
+		<div class="layui-input-block">
+			<div class="layui-upload">
+				<button type="button" class="layui-btn layui-btn-normal" id="selectFileBtn">选择多个附件</button>
+				<button type="button" class="layui-btn" id="uploadFileBtn">开始上传</button>
+				<div class="layui-upload-list">
+					<table class="layui-table">
+						<thead>
+						<tr><th>文件名</th>
+							<th>大小</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr></thead>
+						<tbody id="fileList"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div style="display: none;" id="appendixIds">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">信息预览</label>
+		<div class="layui-input-block">
+			<table class="layui-hide" id="userInfo"></table>
+		</div>
+	</div>
+
+	<div class="page-footer" style="position: fixed;bottom: 0;margin-bottom: 45px;">
+    	<div class="btn-list">
+        	<div class="btnlist" style="position: fixed;right: 0;margin-right: 10px;">
+            	<button class="layui-btn" lay-submit lay-filter="saveUserObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/pmsGroup/pmsGroup.js"></script>
+<script type="text/javascript">
+$(function(){
+    var id = getUrlParam('id');
+    var pId = getUrlParam('pId');
+    console.log(id);
+    console.log(pId);
+    if (undefined != id && 'undefined' != id) {
+        $("#groupId").val(id);
+        $.ajax({
+            type:"GET",
+            url:crudUrl+"/"+id,
+            success:function(resData) {
+                if (resData.status === 200) {
+                    var name = resData.data.groupName;
+                    var pid = resData.data.pId;
+                    console.log(name);
+                    console.log(pId);
+                    if (null != pId && 'null' != pId) {
+                        $.ajax({
+                            type:"GET",
+                            url:crudUrl+"/"+pId,
+                            success:function(resData) {
+                                if (resData.status === 200) {
+                                    var pname = resData.data.groupName;
+                                    name = pname + "-" + name;
+                                    $("#parentName").val(name);
+                                } else {
+                                    layer.msg(resData.msg, {icon: 5});
+                                }
+                            }
+                        });
+                    } else {
+                        $("#parentName").val(name);
+					}
+                } else {
+                    layer.msg(resData.msg, {icon: 5});
+                }
+            }
+        });
+    }
+});
+var uploadUrl = "/app/pmsGroup/userUpload"; //附件上传地址
+layui.use(['layedit','upload','table'], function(){
+    var layedit = layui.layedit;
+    var $ = layui.jquery
+        ,upload = layui.upload;
+    var table = layui.table;
+
+    /*layedit.set({
+        uploadImage: {
+            url: uploadUrl //接口url
+            ,type: 'post' //默认post
+        }
+    });
+    var fwb = layedit.build('blogDesc'); //建立编辑器*/
+    /*form.verify({
+        blogDesc: function(value){
+            layedit.sync(fwb);
+        }
+    });*/
+
+    //多文件列表示例
+    var fileListView = $('#fileList')
+        ,uploadListIns = upload.render({
+        elem: '#selectFileBtn'
+        ,url: uploadUrl
+        ,accept: 'file'
+        ,multiple: true
+        ,auto: false
+        ,bindAction: '#uploadFileBtn'
+        ,choose: function(obj){
+            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+            //读取本地文件
+            obj.preview(function(index, file, result){
+                var tr = $(['<tr id="upload-'+ index +'">'
+                    ,'<td>'+ file.name +'</td>'
+                    ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                    ,'<td>等待上传</td>'
+                    ,'<td>'
+                    ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                    ,'</td>'
+                    ,'</tr>'].join(''));
+
+                //单个重传
+                tr.find('.demo-reload').on('click', function(){
+                    obj.upload(index, file);
+                });
+
+                //删除
+                tr.find('.demo-delete').on('click', function(){
+                    delete files[index]; //删除对应的文件
+                    tr.remove();
+                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                });
+
+                fileListView.append(tr);
+            });
+        }
+        ,done: function(res, index, upload){
+            if(res.code == 0){ //上传成功
+                var tr = fileListView.find('tr#upload-'+ index)
+                    ,tds = tr.children();
+                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                tds.eq(3).html(''); //清空操作
+                //将附件appendixId设置到隐藏域
+                $("#appendixIds").append('<input name="appendixIds" value="'+res.data.appendixId+'">');
+                //展示已知数据
+                table.render({
+                    elem: '#userInfo'
+                    ,cols: [[ //标题栏
+                        {field: 'username', title: '学号/教师工号', minWidth: 125, sort: true}
+                        ,{field: 'nickname', title: '姓名', minWidth: 90}
+                        ,{field: 'gender', title: '性别', minWidth: 80, sort: true, align: 'center'}
+                        ,{field: 'email', title: '邮箱', minWidth: 180}
+                        ,{field: 'telephone', title: '电话'}
+                        ,{field: 'wechatId', title: '微信号'}
+                        ,{field: 'qqId', title: 'QQ号', sort: true}
+                    ]]
+                    ,data: res.data
+                    //,skin: 'line' //表格风格
+                    ,even: true
+                    ,page: true //是否显示分页
+                    ,limits: [10, 50, 100]
+                    ,limit: 10 //每页默认显示的数量
+                });
+                return delete this.files[index]; //删除文件队列已经上传成功的文件
+            }
+            this.error(index, upload);
+        }
+        ,error: function(index, upload){
+            var tr = fileListView.find('tr#upload-'+ index)
+                ,tds = tr.children();
+            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+        }
+    });
+});
+</script>
+</html>

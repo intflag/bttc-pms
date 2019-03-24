@@ -4,6 +4,8 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.app.PmsGroup;
 
+import java.util.List;
+
 /**
  * @author 刘国鑫QQ1598749808
  * @version V1.0
@@ -35,6 +37,14 @@ public interface PmsGroupService {
      * @return
      */
     StatusResult findById(String id) throws Exception;
+
+    /**
+     * 根据父级ID查找
+     * @param pId
+     * @return
+     * @throws Exception
+     */
+    List<PmsGroup> findByPid(String pId) throws Exception;
 
     /**
      * 分页

@@ -87,46 +87,6 @@
 <script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
 <script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
 <script>
-    var allGroupUrl = "/app/pmsGroupList";//所有组织
 
-    var setting = {
-        data: {
-            simpleData: {
-                enable: true
-            }
-        },
-        callback: {
-            onClick: onClick
-        }
-    };
-
-    var tree;
-
-    loadTree();
-
-    function loadTree() {
-        $.ajax({
-            type:"GET",
-            url:allGroupUrl,
-            success:function(resData) {
-                if (resData.status === 200) {
-                    var res = resData.data;
-                    console.log(res);
-                    tree = $.fn.zTree.init($("#groupTree"), setting, res);
-                    console.log(tree);
-                } else {
-                    //layer.msg(resData.msg, {icon: 5});
-                }
-            }
-        });
-    }
-
-
-    function onClick(event, treeId, treeNode, clickFlag) {
-        console.log(event);
-        console.log(treeId);
-        console.log(treeNode);
-        console.log(clickFlag);
-    }
 </script>
 <script type="text/javascript" src="/admin-static/javascript/pmsGroup/pmsGroup.js"></script>

@@ -188,6 +188,28 @@ public class SysUserController {
 	}
 
 	/**
+	 * 分页
+	 * @param pageBean
+	 * @param groupId
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/admin/sysUsers/group")
+	public PageBean pageQueryGroup(PageBean pageBean, String groupId,HttpSession session) {
+		try {
+			//SecurityUtils.getSubject().checkPermission("sysUser-list");
+			SysUser loginUser = (SysUser) session.getAttribute("loginUser");
+			return sysUserService.pageQuery(pageBean, groupId,loginUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return PageBean.noAuthority(pageBean);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return PageBean.error(pageBean);
+		}
+	}
+
+	/**
 	 * 新增
 	 * 
 	 * @param sysUser
@@ -198,6 +220,25 @@ public class SysUserController {
 		try {
 			SecurityUtils.getSubject().checkPermission("sysUser-add");
 			return sysUserService.add(sysUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.ADD_FAIL);
+		}
+	}
+	/**
+	 * 新增
+	 *
+	 * @param sysUser
+	 * @return
+	 */
+	@PostMapping("/admin/sysUser/importUser")
+	public StatusResult addImport(SysUser sysUser, HttpSession session) {
+		try {
+			SecurityUtils.getSubject().checkPermission("sysUser-add");
+			return sysUserService.addImportUser(sysUser,session);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);

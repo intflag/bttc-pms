@@ -1,10 +1,16 @@
 package com.intflag.springboot.controller.app;
 
 import cn.afterturn.easypoi.entity.vo.NormalExcelConstants;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.view.PoiBaseView;
+import com.intflag.springboot.common.util.FastDFSClient;
+import com.intflag.springboot.common.util.TenDirFileUtils;
+import com.intflag.springboot.common.util.UUIDUtils;
 import com.intflag.springboot.entity.admin.SysUser;
+import com.intflag.springboot.entity.app.PmsAppendix;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
@@ -17,9 +23,14 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.app.PmsGroup;
 import com.intflag.springboot.service.app.PmsGroupService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -166,7 +177,7 @@ public class PmsGroupController {
             map.put(NormalExcelConstants.FILE_NAME, "未知机构导入模板");
         }*/
 
-        ExportParams params = new ExportParams("学生&教师信息", "学生信息", ExcelType.XSSF);
+        ExportParams params = new ExportParams("学生&教师信息", "用户信息", ExcelType.XSSF);
         map.put(NormalExcelConstants.FILE_NAME, "BTTC-PMS学生&教师导入模板");
         map.put(NormalExcelConstants.DATA_LIST, new ArrayList<>());
         map.put(NormalExcelConstants.CLASS, SysUser.class);
@@ -174,6 +185,32 @@ public class PmsGroupController {
         PoiBaseView.render(map, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
 
     }
+
+	@PostMapping("/app/pmsGroup/userUpload")
+	public StatusResult appendixUpload(@RequestParam("file") MultipartFile file, HttpSession session) {
+		try {
+			//SecurityUtils.getSubject().checkPermission("pmsAppendix-add");//权限校验，配置菜单后去掉注释即可
+			if (file == null) {
+				return StatusResult.error("附件不能为空");
+			}
+			ImportParams params = new ImportParams();
+			params.setTitleRows(1);
+            File importFile = TenDirFileUtils.MultipartFile2File(file);
+            List<SysUser> list = ExcelImportUtil.importExcel(new FileInputStream(importFile), SysUser.class, params);
+            if (list == null) {
+                return StatusResult.error("导入信息不能为空");
+            } else {
+                session.setAttribute("importUserInfo",list);
+            }
+			return StatusResult.build(null,0,"文件上传成功",list);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error("附件上传失败");
+		}
+	}
 
     private String getFileNameByGroupId(String id) {
 	    Map<String,String> map = new HashMap<>(16);

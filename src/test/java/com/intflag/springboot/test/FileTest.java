@@ -1,8 +1,8 @@
 package com.intflag.springboot.test;
-/** 
+/**
 * @author 刘国鑫  QQ:1598749808
 * @date 2018年8月28日 下午6:46:27
-* @Description 
+* @Description
 * @version V1.0
 */
 
@@ -10,7 +10,10 @@ import com.intflag.springboot.common.util.FastDFSClient;
 import org.junit.Test;
 
 import com.intflag.springboot.common.util.FileHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 
 public class FileTest {
@@ -38,6 +41,5 @@ public class FileTest {
 		String url = fastDFSClient.uploadFile(path, extName);
         System.out.println(url);
 	}
-
 
 }

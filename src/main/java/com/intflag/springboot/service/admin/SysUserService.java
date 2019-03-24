@@ -4,6 +4,9 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.admin.SysUser;
 
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
 /**
  * @author 刘国鑫 QQ:1598749808
  * @date 2018年8月4日 上午11:35:30
@@ -61,10 +64,11 @@ public interface SysUserService {
 
 	/**
 	 * 根据用户ID查询菜单
-	 * 
 	 * @param userId
-	 * @param aDMIN_USERNAME
+	 * @param username
+	 * @param adminUsername
 	 * @return
+	 * @throws Exception
 	 */
 	StatusResult findMenu(String userId, String username, String adminUsername) throws Exception;
 
@@ -94,4 +98,14 @@ public interface SysUserService {
 	 */
 	StatusResult delete(String ids, SysUser loginUser) throws Exception;
 
+	/**
+	 * 添加导入用户
+	 * @param sysUser
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	StatusResult addImportUser(SysUser sysUser, HttpSession session) throws Exception;
+
+	PageBean pageQuery(PageBean pageBean, String groupId, SysUser loginUser) throws Exception;
 }
