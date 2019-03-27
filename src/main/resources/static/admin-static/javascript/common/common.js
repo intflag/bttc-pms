@@ -116,12 +116,18 @@ function setFormData(formId,dataObject) {
 					}
 				});
 			} else if ($node.length === 3 && property == "type") {
-				$node.each(function(i,n){
-					if ($(this).prop("value") == dataValue) {
-						$(this).prop("checked","checked");
-					}
-				});
-			} else {
+                $node.each(function(i,n){
+                    if ($(this).prop("value") == dataValue) {
+                        $(this).prop("checked","checked");
+                    }
+                });
+            } else if ($node.length === 3 && property == "planType") {
+                $node.each(function(i,n){
+                    if ($(this).prop("value") == dataValue) {
+                        $(this).prop("checked","checked");
+                    }
+                });
+            } else {
 				$node.val(dataValue);
 			}
 		} else {
@@ -143,6 +149,15 @@ function getDatesStr(m) {
     }
     var dateTime = year +"-"+ month +"-"+  day;
     return dateTime;
+}
+
+/**
+ * layui中的日期转日期字符串
+ * @param m
+ * @returns {string}
+ */
+function layuiDate2Str(m) {
+    return m.year+"-"+m.month+"-"+m.date;
 }
 //获取url中的参数
 function getUrlParam(name) {

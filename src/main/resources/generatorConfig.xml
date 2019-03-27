@@ -39,6 +39,6 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- 指定数据库表 -->
-		<table schema="" tableName="pms_group"></table>
+		<table schema="" tableName="pms_plan"></table>
 	</context>
 </generatorConfiguration>

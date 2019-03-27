@@ -1,0 +1,81 @@
+<title>论文计划管理</title>
+<head>
+    <link rel="stylesheet" href="/admin-static/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>API调用</cite></a>
+        <a><cite>论文计划管理</cite></a>
+    </div>
+</div>
+	
+<div class="layui-fluid">
+  <!-- 内容主体区域 -->
+  <div class="layui-card">
+      <div class="layui-tab-content">
+          <div class="layui-row">
+              <div class="layui-col-xs12 layui-col-md3">
+                  <blockquote class="layui-elem-quote layui-text">所有机构</blockquote>
+                  <ul id="groupTree" class="ztree" style="margin-top: 10px;border: 2px solid #009688;background: #f2f2f2;height:450px;overflow-y:scroll;overflow-x:auto;"></ul>
+              </div>
+              <div class="layui-col-xs12 layui-col-md9">
+                  <div class="layui-field-box">
+                      <div class="layui-form">
+                          <div class="layui-form-item" style="text-align:center;">
+                              <div class="layui-inline">
+                                  <div class="layui-input-inline">
+                                      <input type="text" id="keyWord" name="keyWord" value="" lay-verify="required" placeholder="请输入关键词查询" autocomplete="off" class="layui-input">
+                                  </div>
+                              </div>
+                              <div class="layui-inline" style="text-align:left;">
+                                  <div class="layui-input-inline">
+                                      <button class="layui-btn" id="searchBtn"><i class="layui-icon">&#xe615;</i>查询</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <div class="layui-btn-group">
+                          <button class="layui-btn  layui-btn-normal" id="addBtn">
+                              <i class="layui-icon">&#xe654;</i>新增
+                          </button>
+                          <button class="layui-btn  layui-btn-warm" id="editBtn">
+                              <i class="layui-icon">&#xe642;</i>修改
+                          </button>
+                          <button class="layui-btn  layui-btn-danger" id="deleteBatchBtn">
+                              <i class="layui-icon">&#xe640;</i>批量删除
+                          </button>
+                      </div>
+                      <hr>
+                      <table class="layui-hide" id="objTable" lay-filter="objT"></table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+  
+<script type="text/html" id="checkFlag">
+  {{#  if(d.flag == "1"){ }}
+    <span class="layui-badge layui-bg-orange">未完成</span>
+  {{#  } }}
+  {{#  if(d.flag == "2"){ }}
+    <span class="layui-badge layui-bg-cyan">已完成</span>
+  {{#  } }}
+</script>
+<script type="text/html" id="planType">
+  {{#  if(d.planType == "1"){ }}
+    <span class="layui-badge layui-bg-blue">开题报告</span>
+  {{#  } }}
+  {{#  if(d.planType == "2"){ }}
+    <span class="layui-badge layui-bg-green">论文初稿</span>
+  {{#  } }}
+  {{#  if(d.planType == "3"){ }}
+    <span class="layui-badge">论文终稿</span>
+  {{#  } }}
+</script>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/pmsPlan/pmsPlan.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
