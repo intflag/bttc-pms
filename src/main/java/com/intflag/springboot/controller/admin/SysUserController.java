@@ -149,10 +149,7 @@ public class SysUserController {
 
 	/**
 	 * 查询菜单
-	 * 
-	 * @param userId
-	 * @param username
-	 * @param adminUsername
+	 * @param session
 	 * @return
 	 */
 	@GetMapping("/admin/sysUser/menu")
@@ -234,6 +231,25 @@ public class SysUserController {
 	 * @param sysUser
 	 * @return
 	 */
+	@PostMapping("/admin/sysUser/user")
+	public StatusResult addUser(SysUser sysUser) {
+		try {
+			SecurityUtils.getSubject().checkPermission("sysUser-add");
+			return sysUserService.addUser(sysUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.ADD_FAIL);
+		}
+	}
+	/**
+	 * 新增
+	 *
+	 * @param sysUser
+	 * @return
+	 */
 	@PostMapping("/admin/sysUser/importUser")
 	public StatusResult addImport(SysUser sysUser, HttpSession session) {
 		try {
@@ -263,6 +279,21 @@ public class SysUserController {
 			return StatusResult.error(StatusResult.FIND_FAIL);
 		}
 	}
+	/**
+	 * 查找
+	 *
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping("/admin/sysUser/user/{userId}")
+	public StatusResult findUserById(@PathVariable String userId) {
+		try {
+			return sysUserService.findById(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.FIND_FAIL);
+		}
+	}
 
 	/**
 	 * 更新
@@ -284,6 +315,26 @@ public class SysUserController {
 			return StatusResult.error(StatusResult.UPDATE_FAIL);
 		}
 	}
+	/**
+	 * 更新用户
+	 *
+	 * @param sysUser
+	 * @return
+	 */
+	@PutMapping("/admin/sysUser/user")
+	public StatusResult updateUser(SysUser sysUser) {
+		try {
+			SecurityUtils.getSubject().checkPermission("sysUser-update");
+			return sysUserService.updateUser(sysUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 异常返回
+			return StatusResult.error(StatusResult.UPDATE_FAIL);
+		}
+	}
 
 	/**
 	 * 批量删除
@@ -294,6 +345,28 @@ public class SysUserController {
 	 */
 	@DeleteMapping("/admin/sysUser/{ids}")
 	public StatusResult deleteBatch(@PathVariable("ids") String ids, HttpSession session) {
+		try {
+			SecurityUtils.getSubject().checkPermission("sysUser-delete");
+			SysUser loginUser = (SysUser) session.getAttribute("loginUser");
+			return sysUserService.delete(ids, loginUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 异常返回
+			return StatusResult.error(StatusResult.DELETE_FAIL);
+		}
+	}
+	/**
+	 * 批量删除
+	 *
+	 * @param ids
+	 * @param session
+	 * @return
+	 */
+	@DeleteMapping("/admin/sysUser/user/{ids}")
+	public StatusResult deleteBatchUser(@PathVariable("ids") String ids, HttpSession session) {
 		try {
 			SecurityUtils.getSubject().checkPermission("sysUser-delete");
 			SysUser loginUser = (SysUser) session.getAttribute("loginUser");

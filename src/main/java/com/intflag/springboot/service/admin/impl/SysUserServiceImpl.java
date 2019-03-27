@@ -3,7 +3,9 @@ package com.intflag.springboot.service.admin.impl;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.intflag.springboot.entity.admin.*;
 import com.intflag.springboot.entity.app.PmsGroup;
+import com.intflag.springboot.mapper.admin.SysRoleMapper;
 import com.intflag.springboot.service.app.PmsGroupService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,6 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.common.util.MD5Utils;
 import com.intflag.springboot.common.util.UUIDUtils;
-import com.intflag.springboot.entity.admin.SysResource;
-import com.intflag.springboot.entity.admin.SysRoleUserExample;
-import com.intflag.springboot.entity.admin.SysRoleUserKey;
-import com.intflag.springboot.entity.admin.SysUser;
-import com.intflag.springboot.entity.admin.SysUserExample;
 import com.intflag.springboot.entity.admin.SysUserExample.Criteria;
 import com.intflag.springboot.mapper.admin.SysResourceMapper;
 import com.intflag.springboot.mapper.admin.SysRoleUserMapper;
@@ -51,6 +48,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private SysResourceMapper sysResourceMapper;
+
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public StatusResult findById(String userId) throws Exception {
@@ -295,15 +295,7 @@ public class SysUserServiceImpl implements SysUserService {
                 // 向用户表表中插入
                 sysUserMapper.insert(user);
                 // 向角色用户表中插入数据
-                String[] roleIds = user.getRoleId();
-                if (roleIds != null) {
-                    for (String roleId : roleIds) {
-                        SysRoleUserKey roleUserKey = new SysRoleUserKey();
-                        roleUserKey.setRoleId(roleId);
-                        roleUserKey.setUserId(user.getUserId());
-                        sysRoleUserMapper.insert(roleUserKey);
-                    }
-                }
+                addRolesInfo(user);
             }
 
         }
@@ -381,6 +373,57 @@ public class SysUserServiceImpl implements SysUserService {
         pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
         // 返回结果集
         return PageBean.ok(pageBean);
+    }
+
+    @Override
+    public StatusResult addUser(SysUser sysUser) throws Exception {
+        // 设置用户信息
+        sysUser.setUserId(UUIDUtils.getCode());
+        sysUser.setCdate(new Date());
+        sysUser.setMdate(new Date());
+        sysUser.setPassword(MD5Utils.md5(sysUser.getPassword()));
+        // 向用户表表中插入
+        sysUserMapper.insert(sysUser);
+        addRolesInfo(sysUser);
+        // 正常返回
+        return StatusResult.ok(StatusResult.ADD_SUCCESS);
+    }
+
+    @Override
+    public StatusResult updateUser(SysUser sysUser) {
+        // 设置属性
+        sysUser.setMdate(new Date());
+        sysUser.setPassword(MD5Utils.md5(sysUser.getPassword()));
+        // 根据主键更新
+        sysUserMapper.updateByPrimaryKeySelective(sysUser);
+        // 正常返回
+        return StatusResult.ok(StatusResult.UPDATE_SUCCESS);
+    }
+
+    private void addRolesInfo(SysUser sysUser) {
+        /**
+         * 判断角色，增加用户角色关系表信息
+         */
+        String userType = sysUser.getUserType();
+        String roleName = "";
+        if ("1".equals(userType)) {
+            roleName = "学生";
+        }
+        if ("2".equals(userType)) {
+            roleName = "教师";
+        }
+        SysRoleExample sysRoleExample = new SysRoleExample();
+        sysRoleExample.or().andRolenameEqualTo(roleName);
+        List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
+        if (sysRoles!= null && sysRoles.size() > 0) {
+            SysRoleUserKey roleUserKey = new SysRoleUserKey();
+            String roleId = sysRoles.get(0).getRoleId();
+            if (StringUtils.isNotBlank(roleId)) {
+                roleUserKey.setRoleId(roleId);
+                roleUserKey.setUserId(sysUser.getUserId());
+                sysRoleUserMapper.insert(roleUserKey);
+            }
+        }
     }
 
     @Autowired

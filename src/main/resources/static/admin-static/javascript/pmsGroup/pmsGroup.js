@@ -1,14 +1,20 @@
 //基础配置
 var objId = "groupId";//主键
+var objUserId = "userId";//主键
 var addTitle = "新增机构";//新增标题
+var addUsersTitle = "新增用户";//新增标题
 var addUserTitle = "导入用户信息";//新增标题
 var editTitle = "修改机构";//修改标题
+var editUserTitle = "修改用户";//修改标题
 var dailogWidth = "80%";//模态框宽度
 var dailogHeight = "80%";//模态框高度
 var crudUrl = "/app/pmsGroup";//增刪改查請求地址
+var crudUserUrl = "/admin/sysUser/user";//增刪改查請求地址
 var pageQueryUrl = "/admin/sysUsers/group";//分页请求地址
 var addContentUrl = "/content/dist/views/app/pmsGroup/add.html";//新增页面请求地址
+var addUserContentUrl = "/content/dist/views/app/pmsGroup/addUsers.html";//新增页面请求地址
 var editContentUrl = "/content/dist/views/app/pmsGroup/edit.html";//修改页面请求地址
+var editUserContentUrl = "/content/dist/views/app/pmsGroup/editUser.html";//修改页面请求地址
 var importUserInfoUrl = "/content/dist/views/app/pmsGroup/addUser.html";//导入用户请求地址
 var saveImportUserUrl = "/admin/sysUser/importUser";//导入用户保存
 
@@ -33,6 +39,7 @@ var pageField = [[
     ,{field:'telephone', title: '电话', align: 'center'} //单元格内容水平居中
     ,{field:'wechatId', title: '微信号', align: 'center'} //单元格内容水平居中
     ,{field:'qqId', title: 'QQ号', align: 'center'} //单元格内容水平居中
+    ,{field:'groupName', title: '所在组织', minWidth: 120, align: 'center'} //单元格内容水平居中
     ,{field:'flag', title: '状态', align: 'center',templet: '#checkFlag', unresize: true, sort: true}
     ,{field:'cdateStr', title: '创建时间', sort: true, align: 'center'}
     ,{field:'mdateStr', title: '修改时间', sort: true, align: 'center'}
@@ -72,6 +79,7 @@ layui.use(['element', 'layer','table','form'], function () {
                 if (resData.status === 200) {
                     var res = resData.data;
                     console.log(res);
+                    console.log("tree:"+tree);
                     tree = $.fn.zTree.init($("#groupTree"), setting, res);
                     console.log(tree);
 
@@ -201,12 +209,66 @@ layui.use(['element', 'layer','table','form'], function () {
 
     });
 
+    //新增用户
+    $("#addUserBtn").on("click",function(){
+        //var treeObj=$.fn.zTree.getZTreeObj("groupTree");
+        console.log(tree);
+        var nodes=tree.getSelectedNodes();
+        console.log(nodes);
+        if (nodes.length != 1) {
+            layer.msg('只能在一个部门下添加用户', {icon: 5});
+        } else {
+            console.log(nodes[0]);
+            if (nodes[0] != undefined) {
+                var groupId = nodes[0].id;
+                var groupName = nodes[0].name;
+                var pId = nodes[0].pId;
+            }
+            layer.open({
+                id:"addUserObj",
+                type: 2,
+                title: addUsersTitle,
+                shadeClose: false,
+                shade: [0.3, '#000'],
+                maxmin: true, //开启最大化最小化按钮
+                area: [dailogWidth, dailogHeight],
+                content: addUserContentUrl+"?groupId="+groupId+"&pId="+pId+"&groupName="+escape(groupName),
+                end : function() {
+                    //执行重载
+                    table.reload('objReload');
+                    loadTree();
+                    loadIcon = layer.load(2, {time: 10*1000});//加载中
+                }
+            });
+        }
+
+    });
+
     //监听保存
     form.on('submit(saveObj)', function (data) {
         $.ajax({
             type:"POST",
             url:crudUrl,
             data:$("#addForm").serialize(),
+            success:function(resData) {
+                if (resData.status === 200) {
+                    layer.msg(resData.msg, {icon: 1,time:1200},function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                } else {
+                    layer.msg(resData.msg, {icon: 5});
+                }
+            }
+        });
+        return false;//注释掉这行代码后，表单将会以普通方式提交表单，否则以ajax方式提交表单
+    });
+    //监听保存用户
+    form.on('submit(saveUsersObj)', function (data) {
+        $.ajax({
+            type:"POST",
+            url:crudUserUrl,
+            data:$("#addUsersForm").serialize(),
             success:function(resData) {
                 if (resData.status === 200) {
                     layer.msg(resData.msg, {icon: 1,time:1200},function(){
@@ -239,6 +301,25 @@ layui.use(['element', 'layer','table','form'], function () {
         });
         return false;//注释掉这行代码后，表单将会以普通方式提交表单，否则以ajax方式提交表单
     });
+    //监听更新用户
+    form.on('submit(updateUserObj)', function (data) {
+        $.ajax({
+            type:"PUT",
+            url:crudUserUrl,
+            data:$("#editUserForm").serialize(),
+            success:function(resData) {
+                if (resData.status === 200) {
+                    layer.msg(resData.msg, {icon: 1,time:1200},function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                } else {
+                    layer.msg(resData.msg, {icon: 5});
+                }
+            }
+        });
+        return false;//注释掉这行代码后，表单将会以普通方式提交表单，否则以ajax方式提交表单
+    });
 
     //修改
     $("#editBtn").on("click",function(){
@@ -256,6 +337,44 @@ layui.use(['element', 'layer','table','form'], function () {
                 maxmin: true, //开启最大化最小化按钮
                 area: [dailogWidth, dailogHeight],
                 content: editContentUrl+"?editObjId="+editObjId,
+                success : function() {
+
+                },
+                end : function() {
+                    //执行重载
+                    table.reload('objReload');
+                    loadTree();
+                    loadIcon = layer.load(2, {time: 10*1000});//加载中
+                }
+            });
+        } else {
+            layer.msg('请选择一条记录进行修改', {icon: 5});
+        }
+    });
+    //修改
+    $("#editUserBtn").on("click",function(){
+        var checkStatus = table.checkStatus('objReload')
+            ,data = checkStatus.data;
+        if (data.length == 1) {
+            var editObjId;
+            layui.each(data, function(index, obj) {
+                for (property in obj)  {
+                    if (objUserId == property) {
+                        var dataValue = obj[property];
+                        editObjId = dataValue;
+                        return false;
+                    }
+                }
+            });
+            layer.open({
+                id:"editUserObj",
+                type: 2,
+                title: editUserTitle,
+                shadeClose: false,
+                shade: [0.3, '#000'],
+                maxmin: true, //开启最大化最小化按钮
+                area: [dailogWidth, dailogHeight],
+                content: editUserContentUrl+"?editObjId="+editObjId,
                 success : function() {
 
                 },
@@ -307,6 +426,46 @@ layui.use(['element', 'layer','table','form'], function () {
                         //执行重载
                         table.reload('objReload');
                         loadTree();
+                    }
+                });
+            });
+        } else {
+            layer.msg('至少选择一条记录', {icon: 5});
+        }
+    });
+    //删除
+    //删除
+    $("#deleteBatchUserBtn").on("click",function(){
+        var checkStatus = table.checkStatus('objReload')
+            ,data = checkStatus.data;
+        if (data.length > 0) {
+            var array = new Array();
+            layui.each(data, function(index, obj) {
+                for (property in obj)  {
+                    if (objUserId == property) {
+                        var dataValue = obj[property];
+                        array.push(dataValue);
+                        return false;
+                    }
+                }
+            });
+            var objIds = array.join(",");
+            layer.confirm('确认要删除吗？', {
+                skin: 'layui-layer-molv',
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                //layer.msg('删除：'+ objIds);
+                $.ajax({
+                    type:"DELETE",
+                    url:crudUserUrl+"/"+objIds,
+                    success:function(resData) {
+                        if (resData.status === 200) {
+                            layer.msg(resData.msg, {icon: 1});
+                        } else {
+                            layer.msg(resData.msg, {icon: 5});
+                        }
+                        //执行重载
+                        table.reload('objReload');
                     }
                 });
             });
