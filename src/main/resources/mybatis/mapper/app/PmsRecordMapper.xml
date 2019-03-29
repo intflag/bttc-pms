@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.intflag.springboot.mapper.app.PmsRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.intflag.springboot.entity.app.PmsRecord" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+    <result column="plan_type" property="planType" jdbcType="VARCHAR" />
+    <result column="plan_name" property="planName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="teach_id" property="teachId" jdbcType="VARCHAR" />
+    <result column="teach_user" property="teachUser" jdbcType="VARCHAR" />
+    <result column="teach_nick" property="teachNick" jdbcType="VARCHAR" />
+    <result column="paper_name" property="paperName" jdbcType="VARCHAR" />
+    <result column="paper_submit_count" property="paperSubmitCount" jdbcType="INTEGER" />
+    <result column="guide_count" property="guideCount" jdbcType="INTEGER" />
+    <result column="release_date" property="releaseDate" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="cDate" property="cdate" jdbcType="TIMESTAMP" />
+    <result column="mDate" property="mdate" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    record_id, plan_id, plan_type, plan_name, user_id, username, nickname, teach_id, 
+    teach_user, teach_nick, paper_name, paper_submit_count, guide_count, release_date, 
+    flag, sort, cDate, mDate, description, field01, field02, field03
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.app.PmsRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pms_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pms_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pms_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.intflag.springboot.entity.app.PmsRecordExample" >
+    delete from pms_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.intflag.springboot.entity.app.PmsRecord" >
+    insert into pms_record (record_id, plan_id, plan_type, 
+      plan_name, user_id, username, 
+      nickname, teach_id, teach_user, 
+      teach_nick, paper_name, paper_submit_count, 
+      guide_count, release_date, flag, 
+      sort, cDate, mDate, 
+      description, field01, field02, 
+      field03)
+    values (#{recordId,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planType,jdbcType=VARCHAR}, 
+      #{planName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{teachId,jdbcType=VARCHAR}, #{teachUser,jdbcType=VARCHAR}, 
+      #{teachNick,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR}, #{paperSubmitCount,jdbcType=INTEGER}, 
+      #{guideCount,jdbcType=INTEGER}, #{releaseDate,jdbcType=TIMESTAMP}, #{flag,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{field01,jdbcType=VARCHAR}, #{field02,jdbcType=VARCHAR}, 
+      #{field03,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.intflag.springboot.entity.app.PmsRecord" >
+    insert into pms_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="planType != null" >
+        plan_type,
+      </if>
+      <if test="planName != null" >
+        plan_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="teachId != null" >
+        teach_id,
+      </if>
+      <if test="teachUser != null" >
+        teach_user,
+      </if>
+      <if test="teachNick != null" >
+        teach_nick,
+      </if>
+      <if test="paperName != null" >
+        paper_name,
+      </if>
+      <if test="paperSubmitCount != null" >
+        paper_submit_count,
+      </if>
+      <if test="guideCount != null" >
+        guide_count,
+      </if>
+      <if test="releaseDate != null" >
+        release_date,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="cdate != null" >
+        cDate,
+      </if>
+      <if test="mdate != null" >
+        mDate,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null" >
+        #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="planType != null" >
+        #{planType,jdbcType=VARCHAR},
+      </if>
+      <if test="planName != null" >
+        #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="teachId != null" >
+        #{teachId,jdbcType=VARCHAR},
+      </if>
+      <if test="teachUser != null" >
+        #{teachUser,jdbcType=VARCHAR},
+      </if>
+      <if test="teachNick != null" >
+        #{teachNick,jdbcType=VARCHAR},
+      </if>
+      <if test="paperName != null" >
+        #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="paperSubmitCount != null" >
+        #{paperSubmitCount,jdbcType=INTEGER},
+      </if>
+      <if test="guideCount != null" >
+        #{guideCount,jdbcType=INTEGER},
+      </if>
+      <if test="releaseDate != null" >
+        #{releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdate != null" >
+        #{mdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="field01 != null" >
+        #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null" >
+        #{field02,jdbcType=VARCHAR},
+      </if>
+      <if test="field03 != null" >
+        #{field03,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.intflag.springboot.entity.app.PmsRecordExample" resultType="java.lang.Integer" >
+    select count(*) from pms_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update pms_record
+    <set >
+      <if test="record.recordId != null" >
+        record_id = #{record.recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planId != null" >
+        plan_id = #{record.planId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planType != null" >
+        plan_type = #{record.planType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planName != null" >
+        plan_name = #{record.planName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickname != null" >
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachId != null" >
+        teach_id = #{record.teachId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachUser != null" >
+        teach_user = #{record.teachUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachNick != null" >
+        teach_nick = #{record.teachNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperName != null" >
+        paper_name = #{record.paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperSubmitCount != null" >
+        paper_submit_count = #{record.paperSubmitCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.guideCount != null" >
+        guide_count = #{record.guideCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.releaseDate != null" >
+        release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.cdate != null" >
+        cDate = #{record.cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mdate != null" >
+        mDate = #{record.mdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field01 != null" >
+        field01 = #{record.field01,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field02 != null" >
+        field02 = #{record.field02,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field03 != null" >
+        field03 = #{record.field03,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update pms_record
+    set record_id = #{record.recordId,jdbcType=VARCHAR},
+      plan_id = #{record.planId,jdbcType=VARCHAR},
+      plan_type = #{record.planType,jdbcType=VARCHAR},
+      plan_name = #{record.planName,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      nickname = #{record.nickname,jdbcType=VARCHAR},
+      teach_id = #{record.teachId,jdbcType=VARCHAR},
+      teach_user = #{record.teachUser,jdbcType=VARCHAR},
+      teach_nick = #{record.teachNick,jdbcType=VARCHAR},
+      paper_name = #{record.paperName,jdbcType=VARCHAR},
+      paper_submit_count = #{record.paperSubmitCount,jdbcType=INTEGER},
+      guide_count = #{record.guideCount,jdbcType=INTEGER},
+      release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      cDate = #{record.cdate,jdbcType=TIMESTAMP},
+      mDate = #{record.mdate,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR},
+      field01 = #{record.field01,jdbcType=VARCHAR},
+      field02 = #{record.field02,jdbcType=VARCHAR},
+      field03 = #{record.field03,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.intflag.springboot.entity.app.PmsRecord" >
+    update pms_record
+    <set >
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="planType != null" >
+        plan_type = #{planType,jdbcType=VARCHAR},
+      </if>
+      <if test="planName != null" >
+        plan_name = #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="teachId != null" >
+        teach_id = #{teachId,jdbcType=VARCHAR},
+      </if>
+      <if test="teachUser != null" >
+        teach_user = #{teachUser,jdbcType=VARCHAR},
+      </if>
+      <if test="teachNick != null" >
+        teach_nick = #{teachNick,jdbcType=VARCHAR},
+      </if>
+      <if test="paperName != null" >
+        paper_name = #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="paperSubmitCount != null" >
+        paper_submit_count = #{paperSubmitCount,jdbcType=INTEGER},
+      </if>
+      <if test="guideCount != null" >
+        guide_count = #{guideCount,jdbcType=INTEGER},
+      </if>
+      <if test="releaseDate != null" >
+        release_date = #{releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null" >
+        cDate = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdate != null" >
+        mDate = #{mdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02,jdbcType=VARCHAR},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.intflag.springboot.entity.app.PmsRecord" >
+    update pms_record
+    set plan_id = #{planId,jdbcType=VARCHAR},
+      plan_type = #{planType,jdbcType=VARCHAR},
+      plan_name = #{planName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      teach_id = #{teachId,jdbcType=VARCHAR},
+      teach_user = #{teachUser,jdbcType=VARCHAR},
+      teach_nick = #{teachNick,jdbcType=VARCHAR},
+      paper_name = #{paperName,jdbcType=VARCHAR},
+      paper_submit_count = #{paperSubmitCount,jdbcType=INTEGER},
+      guide_count = #{guideCount,jdbcType=INTEGER},
+      release_date = #{releaseDate,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      cDate = #{cdate,jdbcType=TIMESTAMP},
+      mDate = #{mdate,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      field01 = #{field01,jdbcType=VARCHAR},
+      field02 = #{field02,jdbcType=VARCHAR},
+      field03 = #{field03,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

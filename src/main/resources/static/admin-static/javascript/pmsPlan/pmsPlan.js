@@ -19,9 +19,13 @@ var pageField = [[
       ,{field:'groupName', title: '组织名称', align: 'center'}
       ,{field:'nickname', title: '计划创建人', align: 'center'}
       ,{field:'planType', title: '计划类型', align: 'center',templet: '#planType'}
+      ,{field:'submitDateStr', title: '开始时间', align: 'center'}
+      ,{field:'endDateStr', title: '结束时间', align: 'center'}
       ,{field:'planCount', title: '计划人数', align: 'center'}
       ,{field:'realityCount', title: '实际完成人数', align: 'center'}
       ,{field:'flag', title: '计划状态', align: 'center',templet: '#checkFlag'}
+      ,{field:'cdateStr', title: '创建时间', sort: true, align: 'center'}
+      ,{field:'mdateStr', title: '修改时间', sort: true, align: 'center'}
       ,{field:'description', title: '描述', align: 'center'}
     ]];
 

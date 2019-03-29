@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/admin-static/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-field-box" style="margin-top: 10px;">
+<form id="editForm" class="layui-form" action="" onsubmit="return false;">
+	<input type="hidden" name="paperId" value="">
+	<div class="layui-form-item">
+		<label class="layui-form-label">论文指导记录</label>
+		<div class="layui-input-block">
+			<input type="text" name="recordId" value=""
+				lay-verify="required" placeholder="请输入论文指导记录" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">论文名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="paperName" value=""
+				lay-verify="required" placeholder="请输入论文名称" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">学生学号</label>
+		<div class="layui-input-block">
+			<input type="text" name="stuNum" value=""
+				lay-verify="required" placeholder="请输入学生学号" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">学生名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="stuName" value=""
+				lay-verify="required" placeholder="请输入学生名称" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">指导教师ID</label>
+		<div class="layui-input-block">
+			<input type="text" name="teachId" value=""
+				lay-verify="required" placeholder="请输入指导教师ID" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">指导教师名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="teachName" value=""
+				lay-verify="required" placeholder="请输入指导教师名称" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">文件类型</label>
+		<div class="layui-input-block">
+			<input type="text" name="fileType" value=""
+				lay-verify="required" placeholder="请输入文件类型" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">文件位置</label>
+		<div class="layui-input-block">
+			<input type="text" name="fileUrl" value=""
+				lay-verify="required" placeholder="请输入文件位置" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">摘要</label>
+		<div class="layui-input-block">
+			<input type="text" name="summary" value=""
+				lay-verify="required" placeholder="请输入摘要" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">论文关键字</label>
+		<div class="layui-input-block">
+			<input type="text" name="keywords" value=""
+				lay-verify="required" placeholder="请输入论文关键字" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">标记</label>
+		<div class="layui-input-block">
+			<input type="text" name="flag" value=""
+				lay-verify="required" placeholder="请输入标记" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">描述</label>
+		<div class="layui-input-block">
+			<input type="text" name="description" value=""
+				lay-verify="required" placeholder="请输入描述" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<input type="text" name="field01" value=""
+				lay-verify="required" placeholder="请输入" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<input type="text" name="field02" value=""
+				lay-verify="required" placeholder="请输入" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<input type="text" name="field03" value=""
+				lay-verify="required" placeholder="请输入" autocomplete="off"
+				class="layui-input">
+		</div>
+	</div>
+     
+	<div class="page-footer">
+    	<div class="btn-list">
+        	<div class="btnlist">
+            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+            </div>
+       	</div>
+	</div>
+</form>
+</div>
+</body>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
+<script type="text/javascript" src="/admin-static/layui/layui.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script type="text/javascript" src="/admin-static/javascript/pmsPaper/pmsPaper.js"></script>
+<script type="text/javascript">
+$(function(){
+	//数据回显
+	var editObjId = getUrlParam('editObjId');
+	$.ajax({
+		type:"GET",
+		url:crudUrl+"/"+editObjId,
+		success:function(resData) {
+			if (resData.status === 200) {
+				var findObj = resData.data;
+				setFormData("editForm",findObj);
+			} else {
+				layer.msg(resData.msg, {icon: 5});
+			}
+		}
+	});
+});
+</script>
+</html>

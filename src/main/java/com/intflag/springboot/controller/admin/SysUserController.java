@@ -279,6 +279,21 @@ public class SysUserController {
 			return StatusResult.error(StatusResult.FIND_FAIL);
 		}
 	}
+
+	/**
+	 * 根据组织ID查找用户
+	 * @param groupId
+	 * @return
+	 */
+	@GetMapping("/admin/sysUser/group/{groupId}")
+	public StatusResult findByGroup(@PathVariable String groupId) {
+		try {
+			return sysUserService.findByGroup(groupId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.FIND_FAIL);
+		}
+	}
 	/**
 	 * 查找
 	 *

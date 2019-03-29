@@ -334,7 +334,7 @@ public class SysUserServiceImpl implements SysUserService {
                 setA.add(allGroup.getGroupId());
             }
         } else {
-            setA = findByPid(setA,groupId);
+            setA = findByPid(setA, groupId);
             if (setA.size() <= 0) {
                 setA.add(groupId);
             }
@@ -348,7 +348,7 @@ public class SysUserServiceImpl implements SysUserService {
                 setB.add(allGroup.getGroupId());
             }
         } else {
-            setB = findByPid(setB,uGid);
+            setB = findByPid(setB, uGid);
         }
         //两个结果取交集
         Set<String> res = new HashSet<>();
@@ -390,7 +390,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public StatusResult updateUser(SysUser sysUser) {
+    public StatusResult updateUser(SysUser sysUser) throws Exception {
         // 设置属性
         sysUser.setMdate(new Date());
         sysUser.setPassword(MD5Utils.md5(sysUser.getPassword()));
@@ -398,6 +398,28 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
         // 正常返回
         return StatusResult.ok(StatusResult.UPDATE_SUCCESS);
+    }
+
+    @Override
+    public StatusResult findByGroup(String userId) throws Exception {
+        if (StringUtils.isNotBlank(userId)) {
+            SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+            String groupId = sysUser.getGroupId();
+            if (StringUtils.isNotBlank(groupId)) {
+                Set<String> set = new HashSet<>();
+                set = findByPid(set, groupId);
+                set.add(groupId);
+
+                SysUserExample example = new SysUserExample();
+                Criteria criteria = example.createCriteria();
+                criteria.andGroupIdIn(new ArrayList<>(set)).andUserTypeIn(Arrays.asList("2", "3"));
+                List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+                if (sysUsers != null) {
+                    return StatusResult.ok(sysUsers);
+                }
+            }
+        }
+        return StatusResult.none(StatusResult.FIND_NONE);
     }
 
     private void addRolesInfo(SysUser sysUser) {
@@ -415,7 +437,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysRoleExample sysRoleExample = new SysRoleExample();
         sysRoleExample.or().andRolenameEqualTo(roleName);
         List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
-        if (sysRoles!= null && sysRoles.size() > 0) {
+        if (sysRoles != null && sysRoles.size() > 0) {
             SysRoleUserKey roleUserKey = new SysRoleUserKey();
             String roleId = sysRoles.get(0).getRoleId();
             if (StringUtils.isNotBlank(roleId)) {

@@ -1,6 +1,5 @@
 package com.intflag.springboot.controller.app;
 
-import com.intflag.springboot.entity.admin.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,32 +12,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
-import com.intflag.springboot.entity.app.PmsPlan;
-import com.intflag.springboot.service.app.PmsPlanService;
-
-import javax.servlet.http.HttpSession;
+import com.intflag.springboot.entity.app.PmsRecord;
+import com.intflag.springboot.service.app.PmsRecordService;
 
 /**
  * @author 刘国鑫QQ1598749808
- * @date 2019-03-27 21:31:50
- * @Description 论文计划管理
+ * @date 2019-03-29 15:58:59
+ * @Description 指导记录管理
  * @version V1.0
  */
 @RestController
-public class PmsPlanController {
+public class PmsRecordController {
 
 	@Autowired
-	private PmsPlanService pmsPlanService;
+	private PmsRecordService pmsRecordService;
 
 	/**
 	 * 分页
 	 */
-	@GetMapping("/app/pmsPlans")
-	public PageBean pageQuery(PageBean pageBean, String groupId,HttpSession session) {
+	@GetMapping("/app/pmsRecords")
+	public PageBean pageQuery(PageBean pageBean) {
 		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-list");//权限校验，配置菜单后去掉注释即可
-			SysUser loginUser = (SysUser) session.getAttribute("loginUser");
-			return pmsPlanService.pageQuery(pageBean, groupId,loginUser);
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-list");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.pageQuery(pageBean);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return PageBean.noAuthority(pageBean);
@@ -53,11 +49,11 @@ public class PmsPlanController {
 	 * 
 	 * @return
 	 */
-	@PostMapping("/app/pmsPlan")
-	public StatusResult add(PmsPlan pmsPlan, HttpSession session) {
+	@PostMapping("/app/pmsRecord")
+	public StatusResult add(PmsRecord pmsRecord) {
 		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-add");//权限校验，配置菜单后去掉注释即可
-			return pmsPlanService.add(pmsPlan,session);
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-add");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.add(pmsRecord);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -73,27 +69,11 @@ public class PmsPlanController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/app/pmsPlan/{id}")
+	@GetMapping("/app/pmsRecord/{id}")
 	public StatusResult findById(@PathVariable String id) {
 		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-find");//权限校验，配置菜单后去掉注释即可
-			return pmsPlanService.findById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return StatusResult.error(StatusResult.FIND_FAIL);
-		}
-	}
-
-	/**
-	 * 根据登录用户查找计划
-	 * @param session
-	 * @return
-	 */
-	@GetMapping("/app/pmsPlan/user")
-	public StatusResult findByUser(HttpSession session) {
-		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-find");//权限校验，配置菜单后去掉注释即可
-			return pmsPlanService.findByUser(session);
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-find");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.findById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.FIND_FAIL);
@@ -103,14 +83,14 @@ public class PmsPlanController {
 	/**
 	 * 修改
 	 * 
-	 * @param pmsPlan
+	 * @param pmsRecord
 	 * @return
 	 */
-	@PutMapping("/app/pmsPlan")
-	public StatusResult update(PmsPlan pmsPlan) {
+	@PutMapping("/app/pmsRecord")
+	public StatusResult update(PmsRecord pmsRecord) {
 		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-update");//权限校验，配置菜单后去掉注释即可
-			return pmsPlanService.update(pmsPlan);
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-update");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.update(pmsRecord);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -126,11 +106,11 @@ public class PmsPlanController {
 	 * @param ids
 	 * @return
 	 */
-	@DeleteMapping("/app/pmsPlan/{ids}")
+	@DeleteMapping("/app/pmsRecord/{ids}")
 	public StatusResult deleteBatch(@PathVariable("ids") String ids) {
 		try {
-			//SecurityUtils.getSubject().checkPermission("pmsPlan-delete");//权限校验，配置菜单后去掉注释即可
-			return pmsPlanService.delete(ids);
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-delete");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.delete(ids);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);

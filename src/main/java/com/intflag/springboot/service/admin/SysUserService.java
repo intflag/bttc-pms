@@ -135,5 +135,13 @@ public interface SysUserService {
      * @param sysUser
      * @return
      */
-    StatusResult updateUser(SysUser sysUser);
+    StatusResult updateUser(SysUser sysUser) throws Exception;
+
+    /**
+     * 根据组织ID查找用户
+     *
+     * @param groupId
+     * @return
+     */
+    StatusResult findByGroup(String groupId) throws Exception;
 }

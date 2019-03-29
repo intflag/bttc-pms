@@ -101,6 +101,7 @@ $(function(){
 		success:function(resData) {
 			if (resData.status === 200) {
 				var findObj = resData.data;
+				$("#date").val(findObj.submitDateStr + " - "+ findObj.endDateStr);
 				setFormData("editForm",findObj);
 			} else {
 				layer.msg(resData.msg, {icon: 5});

@@ -11,45 +11,45 @@ import com.github.pagehelper.PageInfo;
 import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.common.util.UUIDUtils;
-import com.intflag.springboot.entity.app.${classNameUppercase};
-import com.intflag.springboot.entity.app.${classNameUppercase}Example;
-import com.intflag.springboot.mapper.app.${classNameUppercase}Mapper;
-import com.intflag.springboot.service.app.${classNameUppercase}Service;
+import com.intflag.springboot.entity.app.PmsPaper;
+import com.intflag.springboot.entity.app.PmsPaperExample;
+import com.intflag.springboot.mapper.app.PmsPaperMapper;
+import com.intflag.springboot.service.app.PmsPaperService;
 
 /**
- * @author ${author}
- * @date ${date}
- * @Description ${functioncomment}业务层接口实现
+ * @author 刘国鑫QQ1598749808
+ * @date 2019-03-29 16:06:08
+ * @Description 论文提交业务层接口实现
  * @version V1.0
  */
 @Service
 @Transactional
-public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Service {
+public class PmsPaperServiceImpl implements PmsPaperService {
 
 	@Autowired
-	private ${classNameUppercase}Mapper ${classNameLowercase}Mapper;
+	private PmsPaperMapper pmsPaperMapper;
 
 	@Override
-	public StatusResult add(${classNameUppercase} ${classNameLowercase}) throws Exception {
+	public StatusResult add(PmsPaper pmsPaper) throws Exception {
 		// 设置信息
-		${classNameLowercase}.set${pkcolumn}(UUIDUtils.getCode());
-		${classNameLowercase}Mapper.insert(${classNameLowercase});
+		pmsPaper.setPaperId(UUIDUtils.getCode());
+		pmsPaperMapper.insert(pmsPaper);
 		// 正常返回
 		return StatusResult.ok(StatusResult.ADD_SUCCESS);
 	}
 
 	@Override
-	public StatusResult update(${classNameUppercase} ${classNameLowercase}) throws Exception {
-		${classNameLowercase}Mapper.updateByPrimaryKeySelective(${classNameLowercase});
+	public StatusResult update(PmsPaper pmsPaper) throws Exception {
+		pmsPaperMapper.updateByPrimaryKeySelective(pmsPaper);
 		// 正常返回
 		return StatusResult.ok(StatusResult.UPDATE_SUCCESS);
 	}
 
 	@Override
 	public StatusResult findById(String id) throws Exception {
-		${classNameUppercase} ${classNameLowercase} = ${classNameLowercase}Mapper.selectByPrimaryKey(id);
-		if (${classNameLowercase} != null) {
-			return StatusResult.ok(${classNameLowercase});
+		PmsPaper pmsPaper = pmsPaperMapper.selectByPrimaryKey(id);
+		if (pmsPaper != null) {
+			return StatusResult.ok(pmsPaper);
 		}
 		return StatusResult.none(StatusResult.FIND_NONE);
 	}
@@ -62,11 +62,11 @@ public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Se
 		// 查询当前页数据
 		PageHelper.startPage(pageNum, pageSize);// 设置分页信息
 		// 执行查询
-		${classNameUppercase}Example example = new ${classNameUppercase}Example();
-		example.or().and${keywordcolumn}Like("%" + keyWords + "%");
-		List<${classNameUppercase}> list = ${classNameLowercase}Mapper.selectByExample(example);
+		PmsPaperExample example = new PmsPaperExample();
+		example.or().andPaperNameLike("%" + keyWords + "%");
+		List<PmsPaper> list = pmsPaperMapper.selectByExample(example);
 		// 取出分页信息
-		PageInfo<${classNameUppercase}> pageInfo = new PageInfo<>(list);
+		PageInfo<PmsPaper> pageInfo = new PageInfo<>(list);
 		pageBean.setList(list);
 		pageBean.setTotalCount(pageInfo.getTotal());// 设置总记录数
 		pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
@@ -81,7 +81,7 @@ public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Se
 			if (objIds != null && objIds.length > 0) {
 				for (String id : objIds) {
 					// 根据主键删除
-					${classNameLowercase}Mapper.deleteByPrimaryKey(id);
+					pmsPaperMapper.deleteByPrimaryKey(id);
 				}
 				// 正常返回
 				return StatusResult.ok(StatusResult.DELETE_SUCCESS);

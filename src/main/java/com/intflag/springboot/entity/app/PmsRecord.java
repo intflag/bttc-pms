@@ -1,18 +1,15 @@
 package com.intflag.springboot.entity.app;
 
-import com.intflag.springboot.common.util.DateUtils;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
-public class PmsPlan {
+public class PmsRecord {
+    private String recordId;
+
     private String planId;
 
+    private String planType;
+
     private String planName;
-
-    private String groupId;
-
-    private String groupName;
 
     private String userId;
 
@@ -20,17 +17,19 @@ public class PmsPlan {
 
     private String nickname;
 
-    private String planType;
+    private String teachId;
 
-    private Integer planCount;
+    private String teachUser;
 
-    private Integer realityCount;
+    private String teachNick;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date submitDate;
+    private String paperName;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date endDate;
+    private Integer paperSubmitCount;
+
+    private Integer guideCount;
+
+    private Date releaseDate;
 
     private String flag;
 
@@ -48,20 +47,12 @@ public class PmsPlan {
 
     private String field03;
 
-    public String getCdateStr() {
-        return DateUtils.date2String(this.cdate);
+    public String getRecordId() {
+        return recordId;
     }
 
-    public String getMdateStr() {
-        return DateUtils.date2String(this.mdate);
-    }
-
-    public String getEndDateStr() {
-        return DateUtils.date2SimpleString(this.endDate);
-    }
-
-    public String getSubmitDateStr() {
-        return DateUtils.date2SimpleString(this.submitDate);
+    public void setRecordId(String recordId) {
+        this.recordId = recordId == null ? null : recordId.trim();
     }
 
     public String getPlanId() {
@@ -72,28 +63,20 @@ public class PmsPlan {
         this.planId = planId == null ? null : planId.trim();
     }
 
+    public String getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(String planType) {
+        this.planType = planType == null ? null : planType.trim();
+    }
+
     public String getPlanName() {
         return planName;
     }
 
     public void setPlanName(String planName) {
         this.planName = planName == null ? null : planName.trim();
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId == null ? null : groupId.trim();
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName == null ? null : groupName.trim();
     }
 
     public String getUserId() {
@@ -120,44 +103,60 @@ public class PmsPlan {
         this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public String getPlanType() {
-        return planType;
+    public String getTeachId() {
+        return teachId;
     }
 
-    public void setPlanType(String planType) {
-        this.planType = planType == null ? null : planType.trim();
+    public void setTeachId(String teachId) {
+        this.teachId = teachId == null ? null : teachId.trim();
     }
 
-    public Integer getPlanCount() {
-        return planCount;
+    public String getTeachUser() {
+        return teachUser;
     }
 
-    public void setPlanCount(Integer planCount) {
-        this.planCount = planCount;
+    public void setTeachUser(String teachUser) {
+        this.teachUser = teachUser == null ? null : teachUser.trim();
     }
 
-    public Integer getRealityCount() {
-        return realityCount;
+    public String getTeachNick() {
+        return teachNick;
     }
 
-    public void setRealityCount(Integer realityCount) {
-        this.realityCount = realityCount;
+    public void setTeachNick(String teachNick) {
+        this.teachNick = teachNick == null ? null : teachNick.trim();
     }
 
-    public Date getSubmitDate() {
-        return submitDate;
+    public String getPaperName() {
+        return paperName;
     }
 
-    public void setSubmitDate(Date submitDate) {
-        this.submitDate = submitDate;
+    public void setPaperName(String paperName) {
+        this.paperName = paperName == null ? null : paperName.trim();
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Integer getPaperSubmitCount() {
+        return paperSubmitCount;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setPaperSubmitCount(Integer paperSubmitCount) {
+        this.paperSubmitCount = paperSubmitCount;
+    }
+
+    public Integer getGuideCount() {
+        return guideCount;
+    }
+
+    public void setGuideCount(Integer guideCount) {
+        this.guideCount = guideCount;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getFlag() {

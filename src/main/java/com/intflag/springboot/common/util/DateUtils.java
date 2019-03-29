@@ -23,4 +23,16 @@ public class DateUtils {
 		}
 		return "";
 	}
+	/**
+	 * 根据时间转换为字符串类型
+	 * @param date
+	 * @return
+	 */
+	public static String date2SimpleString(Date date) {
+		if (date != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			return sdf.format(date);
+		}
+		return "";
+	}
 }

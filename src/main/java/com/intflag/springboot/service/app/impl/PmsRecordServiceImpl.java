@@ -11,45 +11,45 @@ import com.github.pagehelper.PageInfo;
 import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.common.util.UUIDUtils;
-import com.intflag.springboot.entity.app.${classNameUppercase};
-import com.intflag.springboot.entity.app.${classNameUppercase}Example;
-import com.intflag.springboot.mapper.app.${classNameUppercase}Mapper;
-import com.intflag.springboot.service.app.${classNameUppercase}Service;
+import com.intflag.springboot.entity.app.PmsRecord;
+import com.intflag.springboot.entity.app.PmsRecordExample;
+import com.intflag.springboot.mapper.app.PmsRecordMapper;
+import com.intflag.springboot.service.app.PmsRecordService;
 
 /**
- * @author ${author}
- * @date ${date}
- * @Description ${functioncomment}业务层接口实现
+ * @author 刘国鑫QQ1598749808
+ * @date 2019-03-29 15:58:59
+ * @Description 指导记录业务层接口实现
  * @version V1.0
  */
 @Service
 @Transactional
-public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Service {
+public class PmsRecordServiceImpl implements PmsRecordService {
 
 	@Autowired
-	private ${classNameUppercase}Mapper ${classNameLowercase}Mapper;
+	private PmsRecordMapper pmsRecordMapper;
 
 	@Override
-	public StatusResult add(${classNameUppercase} ${classNameLowercase}) throws Exception {
+	public StatusResult add(PmsRecord pmsRecord) throws Exception {
 		// 设置信息
-		${classNameLowercase}.set${pkcolumn}(UUIDUtils.getCode());
-		${classNameLowercase}Mapper.insert(${classNameLowercase});
+		pmsRecord.setRecordId(UUIDUtils.getCode());
+		pmsRecordMapper.insert(pmsRecord);
 		// 正常返回
 		return StatusResult.ok(StatusResult.ADD_SUCCESS);
 	}
 
 	@Override
-	public StatusResult update(${classNameUppercase} ${classNameLowercase}) throws Exception {
-		${classNameLowercase}Mapper.updateByPrimaryKeySelective(${classNameLowercase});
+	public StatusResult update(PmsRecord pmsRecord) throws Exception {
+		pmsRecordMapper.updateByPrimaryKeySelective(pmsRecord);
 		// 正常返回
 		return StatusResult.ok(StatusResult.UPDATE_SUCCESS);
 	}
 
 	@Override
 	public StatusResult findById(String id) throws Exception {
-		${classNameUppercase} ${classNameLowercase} = ${classNameLowercase}Mapper.selectByPrimaryKey(id);
-		if (${classNameLowercase} != null) {
-			return StatusResult.ok(${classNameLowercase});
+		PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(id);
+		if (pmsRecord != null) {
+			return StatusResult.ok(pmsRecord);
 		}
 		return StatusResult.none(StatusResult.FIND_NONE);
 	}
@@ -62,11 +62,11 @@ public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Se
 		// 查询当前页数据
 		PageHelper.startPage(pageNum, pageSize);// 设置分页信息
 		// 执行查询
-		${classNameUppercase}Example example = new ${classNameUppercase}Example();
-		example.or().and${keywordcolumn}Like("%" + keyWords + "%");
-		List<${classNameUppercase}> list = ${classNameLowercase}Mapper.selectByExample(example);
+		PmsRecordExample example = new PmsRecordExample();
+		example.or().andPlanNameLike("%" + keyWords + "%");
+		List<PmsRecord> list = pmsRecordMapper.selectByExample(example);
 		// 取出分页信息
-		PageInfo<${classNameUppercase}> pageInfo = new PageInfo<>(list);
+		PageInfo<PmsRecord> pageInfo = new PageInfo<>(list);
 		pageBean.setList(list);
 		pageBean.setTotalCount(pageInfo.getTotal());// 设置总记录数
 		pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
@@ -81,7 +81,7 @@ public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Se
 			if (objIds != null && objIds.length > 0) {
 				for (String id : objIds) {
 					// 根据主键删除
-					${classNameLowercase}Mapper.deleteByPrimaryKey(id);
+					pmsRecordMapper.deleteByPrimaryKey(id);
 				}
 				// 正常返回
 				return StatusResult.ok(StatusResult.DELETE_SUCCESS);
