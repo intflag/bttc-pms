@@ -1,5 +1,6 @@
 package com.intflag.springboot.entity.app;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PmsPaper {
@@ -19,7 +20,7 @@ public class PmsPaper {
 
     private String fileType;
 
-    private Long fileSize;
+    private BigDecimal fileSize;
 
     private String fileUrl;
 
@@ -109,11 +110,11 @@ public class PmsPaper {
         this.fileType = fileType == null ? null : fileType.trim();
     }
 
-    public Long getFileSize() {
+    public BigDecimal getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Long fileSize) {
+    public void setFileSize(BigDecimal fileSize) {
         this.fileSize = fileSize;
     }
 

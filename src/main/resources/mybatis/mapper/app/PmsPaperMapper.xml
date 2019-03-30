@@ -10,7 +10,7 @@
     <result column="teach_id" property="teachId" jdbcType="VARCHAR" />
     <result column="teach_name" property="teachName" jdbcType="VARCHAR" />
     <result column="file_type" property="fileType" jdbcType="VARCHAR" />
-    <result column="file_size" property="fileSize" jdbcType="BIGINT" />
+    <result column="file_size" property="fileSize" jdbcType="DECIMAL" />
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
     <result column="summary" property="summary" jdbcType="VARCHAR" />
@@ -83,8 +83,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    paper_id, record_id, paper_name, stu_num, stu_name, teach_id, teach_name, file_type, 
-    file_size, file_url, download_count, summary, keywords, flag, sort, cDate, mDate, 
+    paper_id, record_id, paper_name, stu_num, stu_name, teach_id, teach_name, file_type,
+    file_size, file_url, download_count, summary, keywords, flag, sort, cDate, mDate,
     description, field01, field02, field03
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.intflag.springboot.entity.app.PmsPaperExample" >
@@ -102,7 +102,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from pms_paper
     where paper_id = #{paperId,jdbcType=VARCHAR}
@@ -118,20 +118,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.intflag.springboot.entity.app.PmsPaper" >
-    insert into pms_paper (paper_id, record_id, paper_name, 
-      stu_num, stu_name, teach_id, 
-      teach_name, file_type, file_size, 
-      file_url, download_count, summary, 
-      keywords, flag, sort, 
-      cDate, mDate, description, 
+    insert into pms_paper (paper_id, record_id, paper_name,
+      stu_num, stu_name, teach_id,
+      teach_name, file_type, file_size,
+      file_url, download_count, summary,
+      keywords, flag, sort,
+      cDate, mDate, description,
       field01, field02, field03
       )
-    values (#{paperId,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR}, 
-      #{stuNum,jdbcType=VARCHAR}, #{stuName,jdbcType=VARCHAR}, #{teachId,jdbcType=VARCHAR}, 
-      #{teachName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{fileSize,jdbcType=BIGINT}, 
-      #{fileUrl,jdbcType=VARCHAR}, #{downloadCount,jdbcType=INTEGER}, #{summary,jdbcType=VARCHAR}, 
-      #{keywords,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
-      #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, 
+    values (#{paperId,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR},
+      #{stuNum,jdbcType=VARCHAR}, #{stuName,jdbcType=VARCHAR}, #{teachId,jdbcType=VARCHAR},
+      #{teachName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{fileSize,jdbcType=DECIMAL},
+      #{fileUrl,jdbcType=VARCHAR}, #{downloadCount,jdbcType=INTEGER}, #{summary,jdbcType=VARCHAR},
+      #{keywords,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+      #{cdate,jdbcType=TIMESTAMP}, #{mdate,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
       #{field01,jdbcType=VARCHAR}, #{field02,jdbcType=VARCHAR}, #{field03,jdbcType=VARCHAR}
       )
   </insert>
@@ -228,7 +228,7 @@
         #{fileType,jdbcType=VARCHAR},
       </if>
       <if test="fileSize != null" >
-        #{fileSize,jdbcType=BIGINT},
+        #{fileSize,jdbcType=DECIMAL},
       </if>
       <if test="fileUrl != null" >
         #{fileUrl,jdbcType=VARCHAR},
@@ -302,7 +302,7 @@
         file_type = #{record.fileType,jdbcType=VARCHAR},
       </if>
       <if test="record.fileSize != null" >
-        file_size = #{record.fileSize,jdbcType=BIGINT},
+        file_size = #{record.fileSize,jdbcType=DECIMAL},
       </if>
       <if test="record.fileUrl != null" >
         file_url = #{record.fileUrl,jdbcType=VARCHAR},
@@ -348,26 +348,26 @@
   <update id="updateByExample" parameterType="map" >
     update pms_paper
     set paper_id = #{record.paperId,jdbcType=VARCHAR},
-      record_id = #{record.recordId,jdbcType=VARCHAR},
-      paper_name = #{record.paperName,jdbcType=VARCHAR},
-      stu_num = #{record.stuNum,jdbcType=VARCHAR},
-      stu_name = #{record.stuName,jdbcType=VARCHAR},
-      teach_id = #{record.teachId,jdbcType=VARCHAR},
-      teach_name = #{record.teachName,jdbcType=VARCHAR},
-      file_type = #{record.fileType,jdbcType=VARCHAR},
-      file_size = #{record.fileSize,jdbcType=BIGINT},
-      file_url = #{record.fileUrl,jdbcType=VARCHAR},
-      download_count = #{record.downloadCount,jdbcType=INTEGER},
-      summary = #{record.summary,jdbcType=VARCHAR},
-      keywords = #{record.keywords,jdbcType=VARCHAR},
-      flag = #{record.flag,jdbcType=VARCHAR},
-      sort = #{record.sort,jdbcType=INTEGER},
-      cDate = #{record.cdate,jdbcType=TIMESTAMP},
-      mDate = #{record.mdate,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=VARCHAR},
-      field01 = #{record.field01,jdbcType=VARCHAR},
-      field02 = #{record.field02,jdbcType=VARCHAR},
-      field03 = #{record.field03,jdbcType=VARCHAR}
+    record_id = #{record.recordId,jdbcType=VARCHAR},
+    paper_name = #{record.paperName,jdbcType=VARCHAR},
+    stu_num = #{record.stuNum,jdbcType=VARCHAR},
+    stu_name = #{record.stuName,jdbcType=VARCHAR},
+    teach_id = #{record.teachId,jdbcType=VARCHAR},
+    teach_name = #{record.teachName,jdbcType=VARCHAR},
+    file_type = #{record.fileType,jdbcType=VARCHAR},
+    file_size = #{record.fileSize,jdbcType=DECIMAL},
+    file_url = #{record.fileUrl,jdbcType=VARCHAR},
+    download_count = #{record.downloadCount,jdbcType=INTEGER},
+    summary = #{record.summary,jdbcType=VARCHAR},
+    keywords = #{record.keywords,jdbcType=VARCHAR},
+    flag = #{record.flag,jdbcType=VARCHAR},
+    sort = #{record.sort,jdbcType=INTEGER},
+    cDate = #{record.cdate,jdbcType=TIMESTAMP},
+    mDate = #{record.mdate,jdbcType=TIMESTAMP},
+    description = #{record.description,jdbcType=VARCHAR},
+    field01 = #{record.field01,jdbcType=VARCHAR},
+    field02 = #{record.field02,jdbcType=VARCHAR},
+    field03 = #{record.field03,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -397,7 +397,7 @@
         file_type = #{fileType,jdbcType=VARCHAR},
       </if>
       <if test="fileSize != null" >
-        file_size = #{fileSize,jdbcType=BIGINT},
+        file_size = #{fileSize,jdbcType=DECIMAL},
       </if>
       <if test="fileUrl != null" >
         file_url = #{fileUrl,jdbcType=VARCHAR},
@@ -447,7 +447,7 @@
       teach_id = #{teachId,jdbcType=VARCHAR},
       teach_name = #{teachName,jdbcType=VARCHAR},
       file_type = #{fileType,jdbcType=VARCHAR},
-      file_size = #{fileSize,jdbcType=BIGINT},
+      file_size = #{fileSize,jdbcType=DECIMAL},
       file_url = #{fileUrl,jdbcType=VARCHAR},
       download_count = #{downloadCount,jdbcType=INTEGER},
       summary = #{summary,jdbcType=VARCHAR},

@@ -1,5 +1,6 @@
 package com.intflag.springboot.entity.app;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -675,52 +676,52 @@ public class PmsPaperExample {
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeEqualTo(Long value) {
+        public Criteria andFileSizeEqualTo(BigDecimal value) {
             addCriterion("file_size =", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeNotEqualTo(Long value) {
+        public Criteria andFileSizeNotEqualTo(BigDecimal value) {
             addCriterion("file_size <>", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeGreaterThan(Long value) {
+        public Criteria andFileSizeGreaterThan(BigDecimal value) {
             addCriterion("file_size >", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeGreaterThanOrEqualTo(Long value) {
+        public Criteria andFileSizeGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("file_size >=", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeLessThan(Long value) {
+        public Criteria andFileSizeLessThan(BigDecimal value) {
             addCriterion("file_size <", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeLessThanOrEqualTo(Long value) {
+        public Criteria andFileSizeLessThanOrEqualTo(BigDecimal value) {
             addCriterion("file_size <=", value, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeIn(List<Long> values) {
+        public Criteria andFileSizeIn(List<BigDecimal> values) {
             addCriterion("file_size in", values, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeNotIn(List<Long> values) {
+        public Criteria andFileSizeNotIn(List<BigDecimal> values) {
             addCriterion("file_size not in", values, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeBetween(Long value1, Long value2) {
+        public Criteria andFileSizeBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("file_size between", value1, value2, "fileSize");
             return (Criteria) this;
         }
 
-        public Criteria andFileSizeNotBetween(Long value1, Long value2) {
+        public Criteria andFileSizeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("file_size not between", value1, value2, "fileSize");
             return (Criteria) this;
         }

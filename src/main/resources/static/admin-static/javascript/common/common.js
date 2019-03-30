@@ -165,3 +165,15 @@ function getUrlParam(name) {
  var r = window.location.search.substr(1).match(reg); //匹配目标参数
  if (r != null) return unescape(r[2]); return null; //返回参数值
 }
+
+//询问是否下载文件，墨绿色风格
+function downloadFile(res) {
+    //询问框
+    var index = layer.confirm('确认要下载该文档吗？', {
+        skin: 'layui-layer-molv', //样式类名
+        btn: ['下载', '取消'] //按钮
+    }, function() {
+        location.href = res;
+        layer.close(index);
+    });
+}

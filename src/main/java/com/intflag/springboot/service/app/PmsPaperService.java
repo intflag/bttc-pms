@@ -4,6 +4,8 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.app.PmsPaper;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author 刘国鑫QQ1598749808
  * @date 2019-03-29 16:06:08
@@ -18,7 +20,7 @@ public interface PmsPaperService {
 	 * @param pmsPaper
 	 * @return
 	 */
-	StatusResult add(PmsPaper pmsPaper) throws Exception;
+	StatusResult add(PmsPaper pmsPaper, HttpSession session) throws Exception;
 
 	/**
 	 * 修改资源权限

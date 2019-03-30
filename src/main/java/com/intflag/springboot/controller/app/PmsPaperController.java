@@ -65,7 +65,10 @@ public class PmsPaperController {
             url = serverAddress + url;
             PmsPaper pmsPaper = new PmsPaper();
             pmsPaper.setFileType(extName);
-//            pmsPaper.setFileSize(fileSize);
+            pmsPaper.setFileSize(fileSize);
+            pmsPaper.setFileUrl(url);
+            pmsPaper.setField01(originalFilename);
+            session.setAttribute("tempPaper",pmsPaper);
 
             map.put("src", url);
             map.put("title", originalFilename);
@@ -102,10 +105,10 @@ public class PmsPaperController {
      * @return
      */
     @PostMapping("/app/pmsPaper")
-    public StatusResult add(PmsPaper pmsPaper) {
+    public StatusResult add(PmsPaper pmsPaper, HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-add");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.add(pmsPaper);
+            return pmsPaperService.add(pmsPaper,session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);

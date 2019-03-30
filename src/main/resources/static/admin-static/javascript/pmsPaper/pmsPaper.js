@@ -15,21 +15,17 @@ var uploadPaperUrl = "/app/pmsPaper/uploadPaper";
 //分页属性
 var pageField = [[
    	  {type:'checkbox', fixed: 'left'}
-      ,{field:'recordId', title: '论文指导记录', align: 'center'}
+      ,{field:'field02', title: '计划类型', align: 'center',templet: '#planType'}
+      ,{field:'field03', title: '计划名称', align: 'center'}
       ,{field:'paperName', title: '论文名称', align: 'center'}
-      ,{field:'stuNum', title: '学生学号', align: 'center'}
-      ,{field:'stuName', title: '学生名称', align: 'center'}
-      ,{field:'teachId', title: '指导教师ID', align: 'center'}
-      ,{field:'teachName', title: '指导教师名称', align: 'center'}
-      ,{field:'fileType', title: '文件类型', align: 'center'}
-      ,{field:'fileUrl', title: '文件位置', align: 'center'}
-      ,{field:'summary', title: '摘要', align: 'center'}
-      ,{field:'keywords', title: '论文关键字', align: 'center'}
-      ,{field:'flag', title: '标记', align: 'center'}
+      ,{field:'flag', title: '状态', align: 'center',templet: '#checkFlag'}
+      ,{field:'stuNum', title: '学号', align: 'center'}
+      ,{field:'stuName', title: '姓名', align: 'center'}
+      ,{field:'teachName', title: '指导教师', align: 'center'}
+      ,{field:'fileType', title: '文档类型', align: 'center'}
+      ,{field:'field01', title: '文档名称', align: 'center'}
       ,{field:'description', title: '描述', align: 'center'}
-      ,{field:'field01', title: '', align: 'center'}
-      ,{field:'field02', title: '', align: 'center'}
-      ,{field:'field03', title: '', align: 'center'}
+      ,{fixed: 'right', align:'center', toolbar: '#barDemo', width:120}
     ]];
 layui.use(['element', 'layer','table','form','laydate','upload'], function () {
     var element = layui.element;
@@ -94,7 +90,8 @@ layui.use(['element', 'layer','table','form','laydate','upload'], function () {
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                 tds.eq(3).html(''); //清空操作
                 //将附件appendixId设置到隐藏域
-                $("#appendixIds").append('<input name="appendixIds" value="'+res.data.appendixId+'">');
+                console.log(res);
+                $("input[name='fileUrl']").val(res.data.src);
                 return delete this.files[index]; //删除文件队列已经上传成功的文件
             }
             this.error(index, upload);
@@ -104,6 +101,27 @@ layui.use(['element', 'layer','table','form','laydate','upload'], function () {
                 ,tds = tr.children();
             tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
             tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+        }
+    });
+    //下载文档
+    $("#paperDownloadBtn").on("click",function(){
+        var checkStatus = table.checkStatus('objReload')
+            ,data = checkStatus.data;
+        if (data.length == 1) {
+            console.log(data);
+            downloadFile(data[0].fileUrl);
+        } else {
+            layer.msg('请选择一条要下载的文档记录', {icon: 5});
+        }
+    });
+    //监听工具条
+    table.on('tool(objT)', function(obj) {
+        var data = obj.data;
+        if (obj.event === 'download') {
+            console.log(data);
+            downloadFile(data.fileUrl);
+        } else if (obj.event === 'edit') {
+
         }
     });
 });
