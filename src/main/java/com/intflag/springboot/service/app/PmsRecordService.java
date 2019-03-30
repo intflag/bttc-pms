@@ -4,6 +4,8 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.app.PmsRecord;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author 刘国鑫QQ1598749808
  * @date 2019-03-29 15:58:59
@@ -18,7 +20,7 @@ public interface PmsRecordService {
 	 * @param pmsRecord
 	 * @return
 	 */
-	StatusResult add(PmsRecord pmsRecord) throws Exception;
+	StatusResult add(PmsRecord pmsRecord, HttpSession session) throws Exception;
 
 	/**
 	 * 修改资源权限
@@ -49,6 +51,13 @@ public interface PmsRecordService {
 	 * @param ids
 	 * @return
 	 */
-	StatusResult delete(String ids);
+	StatusResult delete(String ids) throws Exception;
 
+	/**
+	 * 根据用户查找指导记录
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+    StatusResult findByUser(HttpSession session) throws Exception;
 }

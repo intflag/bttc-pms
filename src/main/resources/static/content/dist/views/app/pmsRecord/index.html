@@ -53,7 +53,18 @@
   {{#  if(d.flag == "2"){ }}
     <span class="layui-badge layui-bg-cyan">禁用</span>
   {{#  } }}
-</script>                
+</script>
+<script type="text/html" id="planType">
+    {{#  if(d.planType == "1"){ }}
+    <span class="layui-badge layui-bg-blue">开题报告</span>
+    {{#  } }}
+    {{#  if(d.planType == "2"){ }}
+    <span class="layui-badge layui-bg-green">论文初稿</span>
+    {{#  } }}
+    {{#  if(d.planType == "3"){ }}
+    <span class="layui-badge">论文终稿</span>
+    {{#  } }}
+</script>
 <script type="text/javascript" src="/admin-static/javascript/pmsRecord/pmsRecord.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>

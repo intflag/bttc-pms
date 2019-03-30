@@ -2,7 +2,7 @@
 var objId = "recordId";//主键
 var addTitle = "新增指导记录";//新增标题
 var editTitle = "修改指导记录";//修改标题
-var dailogWidth = "80%";//模态框宽度
+var dailogWidth = "50%";//模态框宽度
 var dailogHeight = "80%";//模态框高度
 var crudUrl = "/app/pmsRecord";//增刪改查請求地址
 var pageQueryUrl = "/app/pmsRecords";//分页请求地址
@@ -17,21 +17,14 @@ var findUserById = "/admin/sysUser/user/";
 //分页属性
 var pageField = [[
    	  {type:'checkbox', fixed: 'left'}
-      ,{field:'planId', title: '计划主键', align: 'center'}
-      ,{field:'planType', title: '计划类型，1开题报告，2初稿提交，3终稿提交', align: 'center'}
+      ,{field:'planType', title: '计划类型', align: 'center',templet: '#planType'}
       ,{field:'planName', title: '计划名称', align: 'center'}
-      ,{field:'userId', title: '学生ID', align: 'center'}
       ,{field:'username', title: '学生学号', align: 'center'}
       ,{field:'nickname', title: '学生姓名', align: 'center'}
-      ,{field:'teachId', title: '教师ID', align: 'center'}
-      ,{field:'teachUser', title: '教师工号', align: 'center'}
-      ,{field:'teachNick', title: '教师姓名', align: 'center'}
+      ,{field:'teachNick', title: '指导教师', align: 'center'}
       ,{field:'paperName', title: '论文名称', align: 'center'}
-      ,{field:'flag', title: '标记', align: 'center'}
+      ,{field:'flag', title: '标记', align: 'center',templet: '#checkFlag'}
       ,{field:'description', title: '描述', align: 'center'}
-      ,{field:'field01', title: '', align: 'center'}
-      ,{field:'field02', title: '', align: 'center'}
-      ,{field:'field03', title: '', align: 'center'}
     ]];
 layui.use(['element', 'layer','table','form','laydate'], function () {
     var element = layui.element;
@@ -56,8 +49,8 @@ layui.use(['element', 'layer','table','form','laydate'], function () {
                     if (resData.status === 200) {
                         var groupId = resData.data.userId;
                         if (groupId != null && groupId.length > 0) {
-                            $("#addForm input[name='planType']").val(resData.data.planType);
-                            $("#addForm input[name='planName']").val(resData.data.planName);
+                            $("input[name='planType']").val(resData.data.planType);
+                            $("input[name='planName']").val(resData.data.planName);
                             $.ajax({
                                 type: "GET",
                                 url: findUserByGroupUrl+groupId,
@@ -89,8 +82,8 @@ layui.use(['element', 'layer','table','form','laydate'], function () {
                 url: findUserById+userId,
                 success: function (resData) {
                     if (resData.status === 200) {
-                        $("#addForm input[name='teachUser']").val(resData.data.username);
-                        $("#addForm input[name='teachNick']").val(resData.data.nickname);
+                        $("input[name='teachUser']").val(resData.data.username);
+                        $("input[name='teachNick']").val(resData.data.nickname);
                     }
                 }
             });

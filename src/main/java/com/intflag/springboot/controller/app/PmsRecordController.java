@@ -15,6 +15,8 @@ import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.entity.app.PmsRecord;
 import com.intflag.springboot.service.app.PmsRecordService;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author 刘国鑫QQ1598749808
  * @date 2019-03-29 15:58:59
@@ -50,10 +52,10 @@ public class PmsRecordController {
 	 * @return
 	 */
 	@PostMapping("/app/pmsRecord")
-	public StatusResult add(PmsRecord pmsRecord) {
+	public StatusResult add(PmsRecord pmsRecord, HttpSession session) {
 		try {
 			//SecurityUtils.getSubject().checkPermission("pmsRecord-add");//权限校验，配置菜单后去掉注释即可
-			return pmsRecordService.add(pmsRecord);
+			return pmsRecordService.add(pmsRecord,session);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -74,6 +76,22 @@ public class PmsRecordController {
 		try {
 			//SecurityUtils.getSubject().checkPermission("pmsRecord-find");//权限校验，配置菜单后去掉注释即可
 			return pmsRecordService.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.FIND_FAIL);
+		}
+	}
+
+	/**
+	 * 根据用户查找指导记录
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/app/pmsRecord/user")
+	public StatusResult findByUser(HttpSession session) {
+		try {
+			//SecurityUtils.getSubject().checkPermission("pmsRecord-find");//权限校验，配置菜单后去掉注释即可
+			return pmsRecordService.findByUser(session);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.FIND_FAIL);

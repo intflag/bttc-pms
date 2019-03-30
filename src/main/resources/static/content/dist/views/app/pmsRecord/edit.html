@@ -10,133 +10,67 @@
 <form id="editForm" class="layui-form" action="" onsubmit="return false;">
 	<input type="hidden" name="recordId" value="">
 	<div class="layui-form-item">
-		<label class="layui-form-label">计划主键</label>
+		<label class="layui-form-label">论文计划</label>
 		<div class="layui-input-block">
-			<input type="text" name="planId" value=""
-				lay-verify="required" placeholder="请输入计划主键" autocomplete="off"
-				class="layui-input">
+			<select id="planId" name="planId" lay-filter="planId">
+			</select>
 		</div>
 	</div>
 	<div class="layui-form-item">
-		<label class="layui-form-label">计划类型，1开题报告，2初稿提交，3终稿提交</label>
+		<label class="layui-form-label">指导教师</label>
+		<div class="layui-input-block">
+			<select id="teachId" name="teachId" lay-filter="teachId">
+			</select>
+		</div>
+	</div>
+
+	<div class="layui-form-item" style="display: none;">
+		<label class="layui-form-label">计划类型</label>
 		<div class="layui-input-block">
 			<input type="text" name="planType" value=""
-				lay-verify="required" placeholder="请输入计划类型，1开题报告，2初稿提交，3终稿提交" autocomplete="off"
-				class="layui-input">
+				   lay-verify="required" placeholder="请输入计划类型，1开题报告，2初稿提交，3终稿提交" autocomplete="off"
+				   class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
+	<div class="layui-form-item" style="display: none;">
 		<label class="layui-form-label">计划名称</label>
 		<div class="layui-input-block">
 			<input type="text" name="planName" value=""
-				lay-verify="required" placeholder="请输入计划名称" autocomplete="off"
-				class="layui-input">
+				   lay-verify="required" placeholder="请输入计划名称" autocomplete="off"
+				   class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">学生ID</label>
-		<div class="layui-input-block">
-			<input type="text" name="userId" value=""
-				lay-verify="required" placeholder="请输入学生ID" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">学生学号</label>
-		<div class="layui-input-block">
-			<input type="text" name="username" value=""
-				lay-verify="required" placeholder="请输入学生学号" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">学生姓名</label>
-		<div class="layui-input-block">
-			<input type="text" name="nickname" value=""
-				lay-verify="required" placeholder="请输入学生姓名" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">教师ID</label>
-		<div class="layui-input-block">
-			<input type="text" name="teachId" value=""
-				lay-verify="required" placeholder="请输入教师ID" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
+	<div class="layui-form-item" style="display: none;">
 		<label class="layui-form-label">教师工号</label>
 		<div class="layui-input-block">
 			<input type="text" name="teachUser" value=""
-				lay-verify="required" placeholder="请输入教师工号" autocomplete="off"
-				class="layui-input">
+				   lay-verify="required" placeholder="请输入教师工号" autocomplete="off"
+				   class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
+	<div class="layui-form-item" style="display: none;">
 		<label class="layui-form-label">教师姓名</label>
 		<div class="layui-input-block">
 			<input type="text" name="teachNick" value=""
-				lay-verify="required" placeholder="请输入教师姓名" autocomplete="off"
-				class="layui-input">
+				   lay-verify="required" placeholder="请输入教师姓名" autocomplete="off"
+				   class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">论文名称</label>
 		<div class="layui-input-block">
 			<input type="text" name="paperName" value=""
-				lay-verify="required" placeholder="请输入论文名称" autocomplete="off"
-				class="layui-input">
+				   lay-verify="required" placeholder="请输入论文名称" autocomplete="off"
+				   class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">标记</label>
-		<div class="layui-input-block">
-			<input type="text" name="flag" value=""
-				lay-verify="required" placeholder="请输入标记" autocomplete="off"
-				class="layui-input">
+	<div class="page-footer" style="position: fixed;bottom: 0;margin-bottom: 45px;">
+		<div class="btn-list">
+			<div class="btnlist" style="position: fixed;right: 0;margin-right: 10px;">
+				<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+				<button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
+			</div>
 		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">描述</label>
-		<div class="layui-input-block">
-			<input type="text" name="description" value=""
-				lay-verify="required" placeholder="请输入描述" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label"></label>
-		<div class="layui-input-block">
-			<input type="text" name="field01" value=""
-				lay-verify="required" placeholder="请输入" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label"></label>
-		<div class="layui-input-block">
-			<input type="text" name="field02" value=""
-				lay-verify="required" placeholder="请输入" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label"></label>
-		<div class="layui-input-block">
-			<input type="text" name="field03" value=""
-				lay-verify="required" placeholder="请输入" autocomplete="off"
-				class="layui-input">
-		</div>
-	</div>
-     
-	<div class="page-footer">
-    	<div class="btn-list">
-        	<div class="btnlist">
-            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
-                <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
-            </div>
-       	</div>
 	</div>
 </form>
 </div>
@@ -148,20 +82,70 @@
 <script type="text/javascript" src="/admin-static/javascript/pmsRecord/pmsRecord.js"></script>
 <script type="text/javascript">
 $(function(){
+    $.ajax({
+        type: "GET",
+        url: findPlanByUser,
+        success: function (resData) {
+            if (resData.status === 200) {
+                $("#planId").html("");
+                $("#planId").append('<option value="" selected="">请选择</option>');
+                var plans = resData.data;
+                for (var i =0;i < plans.length;i++) {
+                    var p = plans[i];
+                    $("#planId").append('<option value="'+p.planId+'">'+p.planName+'</option>');
+                }
+            }
+        }
+    });
 	//数据回显
 	var editObjId = getUrlParam('editObjId');
-	$.ajax({
-		type:"GET",
-		url:crudUrl+"/"+editObjId,
-		success:function(resData) {
-			if (resData.status === 200) {
-				var findObj = resData.data;
-				setFormData("editForm",findObj);
-			} else {
-				layer.msg(resData.msg, {icon: 5});
-			}
-		}
-	});
+    $.ajax({
+        type:"GET",
+        url:crudUrl+"/"+editObjId,
+        success:function(resData) {
+            if (resData.status === 200) {
+                var findObj = resData.data;
+                setFormData("editForm",findObj);
+                var planId = findObj.planId;
+                $.ajax({
+                    type: "GET",
+                    url: findPlanById+planId,
+                    success: function (resData) {
+                        if (resData.status === 200) {
+                            var groupId = resData.data.userId;
+                            if (groupId != null && groupId.length > 0) {
+                                $("input[name='planType']").val(resData.data.planType);
+                                $("input[name='planName']").val(resData.data.planName);
+                                $.ajax({
+                                    type: "GET",
+                                    url: findUserByGroupUrl+groupId,
+                                    success: function (resData) {
+                                        if (resData.status === 200) {
+                                            $("#teachId").html("");
+                                            $("#teachId").append('<option value="" selected="">请选择指导教师</option>');
+                                            var teachers = resData.data;
+                                            for (var i =0;i < teachers.length;i++) {
+                                                var p = teachers[i];
+                                                $("#teachId").append('<option value="'+p.userId+'">'+p.nickname+' 【'+p.groupName+'】</option>');
+                                            }
+                                            layui.use(['form'], function () {
+                                                var form = layui.form;
+                                                console.log("重新渲染表单");
+                                                setFormData("editForm",findObj);
+                                                form.render();
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                layer.msg(resData.msg, {icon: 5});
+            }
+        }
+    });
 });
 </script>
 </html>

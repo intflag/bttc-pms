@@ -75,7 +75,7 @@ public class ${classNameUppercase}ServiceImpl implements ${classNameUppercase}Se
 	}
 
 	@Override
-	public StatusResult delete(String ids) {
+	public StatusResult delete(String ids) throws Exception {
 		if (ids != null) {
 			String[] objIds = ids.split(",");
 			if (objIds != null && objIds.length > 0) {

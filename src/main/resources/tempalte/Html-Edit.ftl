@@ -19,15 +19,15 @@
 		</div>
 	</div>
 	</#list>
-     
-	<div class="page-footer">
-    	<div class="btn-list">
-        	<div class="btnlist">
-            	<button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
+
+    <div class="page-footer" style="position: fixed;bottom: 0;margin-bottom: 45px;">
+        <div class="btn-list">
+            <div class="btnlist" style="position: fixed;right: 0;margin-right: 10px;">
+                <button class="layui-btn" lay-submit lay-filter="updateObj"><i class="fa fa-floppy-o">&nbsp;</i>保存</button>
                 <button class="layui-btn openWindow"><i class="fa fa-undo">&nbsp;</i>返回</button>
             </div>
-       	</div>
-	</div>
+        </div>
+    </div>
 </form>
 </div>
 </body>

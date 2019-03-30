@@ -49,6 +49,6 @@ public interface ${classNameUppercase}Service {
 	 * @param ids
 	 * @return
 	 */
-	StatusResult delete(String ids);
+	StatusResult delete(String ids) throws Exception;
 
 }
