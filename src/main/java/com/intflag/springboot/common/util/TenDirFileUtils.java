@@ -1,10 +1,8 @@
 package com.intflag.springboot.common.util;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Base64;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -104,4 +102,55 @@ public class TenDirFileUtils {
 		}
 	}
 
+	/**
+	 * 从制定URL下载文件
+	 * @param url
+	 * @param method
+	 * @return
+	 */
+	public static File getFileByUrl(String url, String method) {
+		//System.out.println("fileName---->"+filePath);
+		//创建不同的文件夹目录
+		File file = null;
+		FileOutputStream fileOut = null;
+		HttpURLConnection conn = null;
+		InputStream inputStream = null;
+		try {
+			file = File.createTempFile("tmp", null);
+			// 建立链接
+			URL httpUrl = new URL(url);
+			conn = (HttpURLConnection) httpUrl.openConnection();
+			//以Post方式提交表单，默认get方式
+			conn.setRequestMethod(method);
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+			// post方式不能使用缓存
+			conn.setUseCaches(false);
+			//连接指定的资源
+			conn.connect();
+			//获取网络输入流
+			inputStream = conn.getInputStream();
+			BufferedInputStream bis = new BufferedInputStream(inputStream);
+			//写入到文件（注意文件保存路径的后面一定要加上文件的名称）
+			fileOut = new FileOutputStream(file);
+			BufferedOutputStream bos = new BufferedOutputStream(fileOut);
+
+			byte[] buf = new byte[4096];
+			int length = bis.read(buf);
+			//保存文件
+			while (length != -1) {
+				bos.write(buf, 0, length);
+				length = bis.read(buf);
+			}
+			bos.close();
+			bis.close();
+			conn.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("抛出异常！！");
+		}
+
+		return file;
+
+	}
 }

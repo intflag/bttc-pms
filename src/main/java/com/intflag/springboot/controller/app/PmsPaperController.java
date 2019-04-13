@@ -6,6 +6,7 @@ import com.intflag.springboot.entity.admin.SysUser;
 import com.intflag.springboot.entity.app.PmsAppendix;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
@@ -82,14 +83,15 @@ public class PmsPaperController {
         }
     }
 
+
     /**
      * 分页
      */
     @GetMapping("/app/pmsPapers")
-    public PageBean pageQuery(PageBean pageBean) {
+    public PageBean pageQuery(PageBean pageBean,HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-list");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.pageQuery(pageBean);
+            return pmsPaperService.pageQuery(pageBean,session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return PageBean.noAuthority(pageBean);
@@ -142,10 +144,10 @@ public class PmsPaperController {
      * @return
      */
     @PutMapping("/app/pmsPaper")
-    public StatusResult update(PmsPaper pmsPaper) {
+    public StatusResult update(PmsPaper pmsPaper, HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-update");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.update(pmsPaper);
+            return pmsPaperService.update(pmsPaper,session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);

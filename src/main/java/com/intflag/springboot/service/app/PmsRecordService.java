@@ -40,11 +40,12 @@ public interface PmsRecordService {
 
 	/**
 	 * 分页
-	 * 
 	 * @param pageBean
+	 * @param session
 	 * @return
+	 * @throws Exception
 	 */
-	PageBean pageQuery(PageBean pageBean) throws Exception;
+	PageBean pageQuery(PageBean pageBean,HttpSession session) throws Exception;
 
 	/**
 	 * 批量删除

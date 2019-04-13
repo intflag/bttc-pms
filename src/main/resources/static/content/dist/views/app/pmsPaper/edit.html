@@ -9,12 +9,24 @@
 <div class="layui-field-box" style="margin-top: 10px;">
 <form id="editForm" class="layui-form" action="" onsubmit="return false;">
 	<input type="hidden" name="paperId" value="">
-	<div class="layui-form-item">
+	<!--<div class="layui-form-item">
 		<label class="layui-form-label">指导记录</label>
 		<div class="layui-input-block">
 			<input type="text" name="field03" value="" readonly="readonly"
 				   lay-verify="required" placeholder="请输入指导记录名称" autocomplete="off"
 				   class="layui-input">
+		</div>
+	</div>-->
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">审核结果</label>
+			<div class="layui-input-block">
+				<select name="flag" lay-filter="flag" lay-verify="required" lay-search>
+					<option value="1">待审核</option>
+					<option value="2">继续修改</option>
+					<option value="3">审核通过</option>
+				</select>
+			</div>
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -38,14 +50,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="layui-form-item" style="display: none;">
+	<!--<div class="layui-form-item" style="display: none;">
 		<label class="layui-form-label">文件位置</label>
 		<div class="layui-input-block">
 			<input type="text" name="fileUrl" value=""
 				   lay-verify="required" placeholder="请输入文件位置" autocomplete="off"
 				   class="layui-input">
 		</div>
-	</div>
+	</div>-->
 
 	<div class="page-footer" style="position: fixed;bottom: 0;margin-bottom: 45px;">
 		<div class="btn-list">

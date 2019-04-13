@@ -30,6 +30,10 @@ spring:
   devtools:
     restart:
       enabled: true
+  mail:
+    host: smtp.163.com
+    username: 15848644100@163.com
+    password: include047740
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*/*.xml

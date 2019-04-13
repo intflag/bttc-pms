@@ -9,7 +9,6 @@ import java.util.List;
  * @Description 分页实体类
  * @version V1.0
  */
-@SuppressWarnings("rawtypes")
 public class PageBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +31,12 @@ public class PageBean implements Serializable {
 	}
 	public static PageBean error(PageBean pageBean) {
 		pageBean.setMsg("ERROR");
+		pageBean.setCode(500);
+		return pageBean;
+	}
+	public static PageBean error() {
+        PageBean pageBean = new PageBean();
+        pageBean.setMsg("ERROR");
 		pageBean.setCode(500);
 		return pageBean;
 	}

@@ -281,6 +281,30 @@ public class SysUserController {
 	}
 
 	/**
+	 * 查找当前用户信息
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/admin/sysUser/current")
+	public StatusResult findByCurrUser(HttpSession session) {
+		try {
+			// 设置信息
+			SysUser loginUser = (SysUser) session.getAttribute("loginUser");
+			if (loginUser == null) {
+				return StatusResult.error(StatusResult.FIND_FAIL);
+			}
+            StatusResult result = sysUserService.findById(loginUser.getUserId());
+            SysUser user = (SysUser) result.getData();
+            user.setPassword(null);
+            result.setData(user);
+            return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.FIND_FAIL);
+		}
+	}
+
+	/**
 	 * 根据组织ID查找用户
 	 * @param groupId
 	 * @return
@@ -341,6 +365,33 @@ public class SysUserController {
 		try {
 			SecurityUtils.getSubject().checkPermission("sysUser-update");
 			return sysUserService.updateUser(sysUser);
+		} catch (AuthorizationException e) {
+			e.printStackTrace();
+			return StatusResult.error(StatusResult.NO_AUTHORITY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 异常返回
+			return StatusResult.error(StatusResult.UPDATE_FAIL);
+		}
+	}
+	/**
+	 * 更新用户信息
+	 *
+	 * @param sysUser
+	 * @return
+	 */
+	@PutMapping("/admin/sysUser/userInfo")
+	public StatusResult updateUserInfo(SysUser sysUser) {
+		try {
+			SecurityUtils.getSubject().checkPermission("sysUser-update");
+            SysUser user = new SysUser();
+            user.setUserId(sysUser.getUserId());
+            user.setPassword(sysUser.getPassword());
+            user.setTelephone(sysUser.getTelephone());
+            user.setQqId(sysUser.getQqId());
+            user.setEmail(sysUser.getEmail());
+            user.setWechatId(sysUser.getWechatId());
+            return sysUserService.updateUser(user);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return StatusResult.error(StatusResult.NO_AUTHORITY);

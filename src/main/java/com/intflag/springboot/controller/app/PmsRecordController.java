@@ -33,10 +33,10 @@ public class PmsRecordController {
 	 * 分页
 	 */
 	@GetMapping("/app/pmsRecords")
-	public PageBean pageQuery(PageBean pageBean) {
+	public PageBean pageQuery(PageBean pageBean,HttpSession session) {
 		try {
 			//SecurityUtils.getSubject().checkPermission("pmsRecord-list");//权限校验，配置菜单后去掉注释即可
-			return pmsRecordService.pageQuery(pageBean);
+			return pmsRecordService.pageQuery(pageBean,session);
 		} catch (AuthorizationException e) {
 			e.printStackTrace();
 			return PageBean.noAuthority(pageBean);

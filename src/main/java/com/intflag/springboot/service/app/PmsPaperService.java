@@ -28,7 +28,7 @@ public interface PmsPaperService {
 	 * @param pmsPaper
 	 * @return
 	 */
-	StatusResult update(PmsPaper pmsPaper) throws Exception;
+	StatusResult update(PmsPaper pmsPaper, HttpSession session) throws Exception;
 
 	/**
 	 * 根据ID查询
@@ -44,7 +44,7 @@ public interface PmsPaperService {
 	 * @param pageBean
 	 * @return
 	 */
-	PageBean pageQuery(PageBean pageBean) throws Exception;
+	PageBean pageQuery(PageBean pageBean,HttpSession session) throws Exception;
 
 	/**
 	 * 批量删除
