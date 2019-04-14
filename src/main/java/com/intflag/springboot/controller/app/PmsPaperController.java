@@ -18,7 +18,9 @@ import com.intflag.springboot.entity.app.PmsPaper;
 import com.intflag.springboot.service.app.PmsPaperService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,7 +71,7 @@ public class PmsPaperController {
             pmsPaper.setFileSize(fileSize);
             pmsPaper.setFileUrl(url);
             pmsPaper.setField01(originalFilename);
-            session.setAttribute("tempPaper",pmsPaper);
+            session.setAttribute("tempPaper", pmsPaper);
 
             map.put("src", url);
             map.put("title", originalFilename);
@@ -88,10 +90,10 @@ public class PmsPaperController {
      * 分页
      */
     @GetMapping("/app/pmsPapers")
-    public PageBean pageQuery(PageBean pageBean,HttpSession session) {
+    public PageBean pageQuery(PageBean pageBean, HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-list");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.pageQuery(pageBean,session);
+            return pmsPaperService.pageQuery(pageBean, session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return PageBean.noAuthority(pageBean);
@@ -110,7 +112,7 @@ public class PmsPaperController {
     public StatusResult add(PmsPaper pmsPaper, HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-add");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.add(pmsPaper,session);
+            return pmsPaperService.add(pmsPaper, session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);
@@ -138,6 +140,51 @@ public class PmsPaperController {
     }
 
     /**
+     * 根据计划ID打包文档
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/app/pmsPaper/packDoc/{id}")
+    public void packDoc(@PathVariable String id, HttpServletResponse res) {
+        byte[] buff = new byte[1024];
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        try {
+            StatusResult result = pmsPaperService.packDoc(id);
+            if (!result.getStatus().equals(200)) {
+                return;
+            }
+            HashMap<String, String> map = (HashMap<String, String>) result.getData();
+            String fileName = map.get("fileName");
+            fileName=new String(fileName.getBytes("gbk"),"iso8859-1");
+            res.setHeader("content-type", "application/octet-stream");
+            res.setContentType("application/octet-stream");
+            res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+            os = res.getOutputStream();
+            bis = new BufferedInputStream(new FileInputStream(new File(map.get("filePath"))));
+            int i = bis.read(buff);
+            while (i != -1) {
+                os.write(buff, 0, buff.length);
+                os.flush();
+                i = bis.read(buff);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("success");
+    }
+
+    /**
      * 修改
      *
      * @param pmsPaper
@@ -147,7 +194,7 @@ public class PmsPaperController {
     public StatusResult update(PmsPaper pmsPaper, HttpSession session) {
         try {
             //SecurityUtils.getSubject().checkPermission("pmsPaper-update");//权限校验，配置菜单后去掉注释即可
-            return pmsPaperService.update(pmsPaper,session);
+            return pmsPaperService.update(pmsPaper, session);
         } catch (AuthorizationException e) {
             e.printStackTrace();
             return StatusResult.error(StatusResult.NO_AUTHORITY);

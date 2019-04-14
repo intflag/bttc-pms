@@ -89,6 +89,54 @@ public class PmsAppendixController {
             return StatusResult.error("附件上传失败");
         }
     }
+    @PostMapping("/app/appendixUpload2")
+    public StatusResult appendixUpload2(@RequestParam("file") MultipartFile file,HttpSession session) {
+        try {
+            //SecurityUtils.getSubject().checkPermission("pmsAppendix-add");//权限校验，配置菜单后去掉注释即可
+            if (file == null) {
+                return StatusResult.error("附件不能为空");
+            }
+            if (StringUtils.isEmpty(fileRootPath)) {
+                return StatusResult.error("没有配置附件的保存地址");
+            }
+            Map<String, Object> map = new HashMap<>(16);
+            // 将图片上传到图片服务器
+            FastDFSClient fastDFSClient = new FastDFSClient("classpath:client.conf");
+            // 返回图片文件名
+            String originalFilename = file.getOriginalFilename();
+            String extName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            String url = fastDFSClient.uploadFile(file.getBytes(), extName);
+            //将附件信息插入附件表
+            PmsAppendix pmsAppendix = new PmsAppendix();
+            pmsAppendix.setAppendixName(originalFilename);
+            pmsAppendix.setSize(new BigDecimal(file.getSize()/1024.0/1024.0));
+            SysUser loginUser = (SysUser) session.getAttribute("loginUser");
+            if (loginUser != null) {
+                pmsAppendix.setPublisher(loginUser.getNickname());
+                pmsAppendix.setUserId(loginUser.getUserId());
+            }
+
+            // 封装参数
+            url = serverAddress + url;
+            pmsAppendix.setAppendixUrl(url);
+            pmsAppendix.setFlag("1");
+            pmsAppendix.setCdate(new Date());
+            pmsAppendix.setMdate(new Date());
+            String appendixId = UUIDUtils.getCode();
+            pmsAppendix.setAppendixId(appendixId);
+//            pmsAppendixService.add(pmsAppendix);
+            map.put("src",url);
+            map.put("title",originalFilename);
+            map.put("appendixId",appendixId);
+            return StatusResult.build(null,0,"文件上传成功",map);
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+            return StatusResult.error(StatusResult.NO_AUTHORITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return StatusResult.error("附件上传失败");
+        }
+    }
 
     /**
      * 分页

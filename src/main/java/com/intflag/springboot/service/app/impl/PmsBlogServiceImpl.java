@@ -1,5 +1,6 @@
 package com.intflag.springboot.service.app.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.intflag.springboot.entity.app.PmsBlogAppendix;
@@ -41,7 +42,7 @@ public class PmsBlogServiceImpl implements PmsBlogService {
     }
 
     public StatusResult update(PmsBlog pmsBlog,String[] appendixIds) throws Exception {
-
+        pmsBlog.setMdate(new Date());
         pmsBlogMapper.updateByPrimaryKeySelective(pmsBlog);
         // 正常返回
         if (appendixIds != null && appendixIds.length > 0) {
@@ -75,6 +76,7 @@ public class PmsBlogServiceImpl implements PmsBlogService {
         // 执行查询
         PmsBlogExample example = new PmsBlogExample();
         example.or().andBlogTitleLike("%" + keyWords + "%");
+        example.setOrderByClause("mdate desc");
         List<PmsBlog> list = pmsBlogMapper.selectByExample(example);
         // 取出分页信息
         PageInfo<PmsBlog> pageInfo = new PageInfo<>(list);

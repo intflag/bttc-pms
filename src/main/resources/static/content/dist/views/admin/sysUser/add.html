@@ -40,8 +40,15 @@
         <input type="text" name="email" value="" lay-verify="email" placeholder="请输入正确的邮箱" autocomplete="off" class="layui-input">
       </div>
   </div>
-  
   	<div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userType" value="1" title="学生" checked="">
+                <input type="radio" name="userType" value="2" title="教师" >
+                <input type="radio" name="userType" value="3" title="系主任" >
+            </div>
+        </div>
 		<div class="layui-inline">
         	<label class="layui-form-label">性别</label>
         	<div class="layui-input-block">

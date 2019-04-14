@@ -121,6 +121,12 @@
             <version>5.0.3</version>
             <scope>compile</scope>
         </dependency>
+		<!-- ant.jar 用于解决文件解压缩乱码问题 -->
+		<dependency>
+			<groupId>ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.6.5</version>
+		</dependency>
     </dependencies>
 
 	<build>

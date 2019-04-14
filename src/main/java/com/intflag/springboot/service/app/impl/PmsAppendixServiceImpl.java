@@ -64,6 +64,7 @@ public class PmsAppendixServiceImpl implements PmsAppendixService {
         // 执行查询
         PmsAppendixExample example = new PmsAppendixExample();
         example.or().andAppendixNameLike("%" + keyWords + "%");
+        example.setOrderByClause("mdate desc");
         List<PmsAppendix> list = pmsAppendixMapper.selectByExample(example);
         // 取出分页信息
         PageInfo<PmsAppendix> pageInfo = new PageInfo<>(list);

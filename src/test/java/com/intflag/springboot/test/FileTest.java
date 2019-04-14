@@ -6,8 +6,10 @@ package com.intflag.springboot.test;
  * @version V1.0
  */
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.intflag.springboot.common.util.FastDFSClient;
 import com.intflag.springboot.common.util.TenDirFileUtils;
+import com.intflag.springboot.common.util.ZipUtils;
 import org.junit.Test;
 
 import com.intflag.springboot.common.util.FileHandle;
@@ -69,6 +71,22 @@ public class FileTest {
         String url = "http://192.168.25.133/group1/M00/00/01/wKgZhVyxqFaACbwEAAF2Or1YZ7k04.docx";
         File file = TenDirFileUtils.getFileByUrl(url, "GET");
         System.out.println(file.getName());
+    }
+    @Test
+    public void fun4() throws Exception {
+        String srcPath = "D:\\test\\zip\\信息学院";
+        String tarPath = "D:\\test\\15级论文.zip";
+        boolean b = ZipUtils.toZip(srcPath, tarPath, true);
+        System.out.println(b);
+    }
+    @Test
+    public void fun5() throws Exception {
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        System.out.println(now);
+        /**
+         * 你猜我是谁
+         */
+        String dddd = new String();
     }
 
 }

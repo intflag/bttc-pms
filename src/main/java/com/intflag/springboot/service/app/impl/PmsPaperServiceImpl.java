@@ -3,11 +3,11 @@ package com.intflag.springboot.service.app.impl;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.intflag.springboot.common.util.EmailUtils;
 import com.intflag.springboot.common.util.TenDirFileUtils;
+import com.intflag.springboot.common.util.ZipUtils;
 import com.intflag.springboot.entity.admin.SysUser;
 import com.intflag.springboot.entity.admin.SysUserExample;
 import com.intflag.springboot.entity.app.*;
@@ -16,6 +16,7 @@ import com.intflag.springboot.mapper.app.PmsPlanMapper;
 import com.intflag.springboot.mapper.app.PmsRecordMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -73,12 +74,15 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             return StatusResult.ok("请选择指导记录");
         }
         PmsPaperExample example = new PmsPaperExample();
-        example.or().andRecordIdEqualTo(recordId);
+        PmsPaperExample.Criteria criteria = example.createCriteria();
+        example.setOrderByClause("cdate desc");
+        criteria.andRecordIdEqualTo(recordId);
+
         List<PmsPaper> pmsPapers = pmsPaperMapper.selectByExample(example);
-        if (pmsPaper != null && "1".equals(pmsPaper.getFlag())) {
+        if (pmsPapers != null && pmsPapers.size()>0 && "1".equals(pmsPapers.get(0).getFlag())) {
             return StatusResult.ok("该指导记录下的文档正在被导师审核，不能重复提交");
         }
-        if (pmsPaper != null && "3".equals(pmsPaper.getFlag())) {
+        if (pmsPapers != null && pmsPapers.size()>0 && "3".equals(pmsPapers.get(0).getFlag())) {
             return StatusResult.ok("该指导记录下的文档已通过审核，不需要重复提交");
         }
         PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(recordId);
@@ -99,6 +103,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
         pmsPaper.setField01(tempPaper.getField01().substring(tempPaper.getField01().lastIndexOf("\\") + 1));
         pmsPaper.setField02(pmsRecord.getPlanType());
         pmsPaper.setField03(pmsRecord.getPlanName());
+        pmsPaper.setCdate(new Date());
         // 设置信息
         pmsPaper.setPaperId(UUIDUtils.getCode());
         pmsPaperMapper.insert(pmsPaper);
@@ -156,19 +161,20 @@ public class PmsPaperServiceImpl implements PmsPaperService {
         }
         PmsPaper paper = pmsPaperMapper.selectByPrimaryKey(pmsPaper.getPaperId());
         String flag = pmsPaper.getFlag();
-        if ("3".equals(paper.getFlag())){
+        if ("3".equals(paper.getFlag())) {
             return StatusResult.ok("已经审核通过的不需要重新审核");
         }
         if ("1".equals(loginUser.getUserType())) {
             return StatusResult.error("学生无审核权限");
         }
         PmsPaper tempPaper = (PmsPaper) session.getAttribute("tempPaper");
+        pmsPaper.setMdate(new Date());
         pmsPaperMapper.updateByPrimaryKeySelective(pmsPaper);
         if ("3".equals(flag)) {
             String recordId = paper.getRecordId();
             PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(recordId);
             if (pmsRecord != null) {
-                pmsRecord.setGuideCount(pmsRecord.getGuideCount()+1);
+                pmsRecord.setGuideCount(pmsRecord.getGuideCount() + 1);
                 pmsRecordMapper.updateByPrimaryKey(pmsRecord);
                 String planId = pmsRecord.getPlanId();
                 PmsPlan pmsPlan = pmsPlanMapper.selectByPrimaryKey(planId);
@@ -292,4 +298,49 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             return StatusResult.error(StatusResult.DELETE_FAIL);
         }
     }
+
+    @Value("${TenDir.file.rootPath}")
+    private String fileRootPath;
+
+    @Override
+    public StatusResult packDoc(String id) throws Exception {
+        PmsPlan pmsPlan = pmsPlanMapper.selectByPrimaryKey(id);
+        if (pmsPlan != null) {
+            PmsRecordExample pmsRecordExample = new PmsRecordExample();
+            pmsRecordExample.or().andPlanIdEqualTo(pmsPlan.getPlanId());
+            List<PmsRecord> pmsRecords = pmsRecordMapper.selectByExample(pmsRecordExample);
+            //创建该计划的目录
+            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            String planFilePath = fileRootPath + File.separator + pmsPlan.getPlanName() + "-" + now;
+            File planFile = new File(planFilePath);
+            if (!planFile.exists()) {
+                planFile.mkdirs();
+            }
+            //循环指导记录下通过审核的论文，进行下载
+            pmsRecords.forEach(r -> {
+                String recordId = r.getRecordId();
+                PmsPaperExample pmsPaperExample = new PmsPaperExample();
+                PmsPaperExample.Criteria criteria = pmsPaperExample.createCriteria();
+                criteria.andRecordIdEqualTo(recordId).andFlagEqualTo("3");
+                List<PmsPaper> pmsPapers = pmsPaperMapper.selectByExample(pmsPaperExample);
+                if (pmsPapers != null && pmsPapers.size() > 0) {
+                    String url = pmsPapers.get(0).getFileUrl();
+                    String fileName = pmsPapers.get(0).getField01();
+                    File file = TenDirFileUtils.getFileByUrl(url, planFilePath + File.separator + fileName, "GET");
+                }
+            });
+            //对下载完成的文件进行打包
+            boolean b = ZipUtils.toZip(planFilePath, planFilePath + ".zip", true);
+            if (b) {
+                Map<String, String> map = new HashMap<>();
+                map.put("fileName", pmsPlan.getPlanName() + "-" + now + ".zip");
+                map.put("filePath", planFilePath + ".zip");
+                return StatusResult.ok(map, pmsPlan.getPlanName() + "下的文档打包成功");
+            } else {
+                return StatusResult.error(pmsPlan.getPlanName() + "下的文档打包失败");
+            }
+        }
+        return StatusResult.error("文档打包失败");
+    }
+
 }

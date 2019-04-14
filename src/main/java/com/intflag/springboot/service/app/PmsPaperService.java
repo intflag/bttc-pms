@@ -53,4 +53,11 @@ public interface PmsPaperService {
 	 */
 	StatusResult delete(String ids);
 
+	/**
+	 * 根据计划ID打包文档
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+    StatusResult packDoc(String id) throws Exception;
 }

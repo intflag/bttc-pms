@@ -11,6 +11,7 @@ var editContentUrl = "/content/dist/views/app/pmsPlan/edit.html";//修改页面�
 //扩展属性
 var allGroupUrl = "/app/pmsGroupList";//所有组织
 var crudGroupUrl = "/app/pmsGroup";//所有组织
+var packDocUrl = "/app/pmsPaper/packDoc/";
 
 //分页属性
 var pageField = [[
@@ -346,6 +347,35 @@ layui.use(['element', 'layer','table','form','laydate'], function () {
             });
         } else {
             layer.msg('至少选择一条记录', {icon: 5});
+        }
+    });
+    //打包
+    $("#packDocBtn").on("click",function(){
+        var checkStatus = table.checkStatus('objReload')
+            ,data = checkStatus.data;
+        if (data.length == 1) {
+            var planId = data[0].planId;
+            var planName = data[0].planName;
+            var index = layer.confirm('确认要对'+planName+'下的文档进行打包吗？', {
+                skin: 'layui-layer-molv',
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                location.href = packDocUrl+"/"+planId;
+                layer.close(index);
+                /*$.ajax({
+                    type:"GET",
+                    url:packDocUrl+"/"+planId,
+                    success:function(resData) {
+                        if (resData.status === 200) {
+                            layer.msg(resData.msg, {icon: 1});
+                        } else {
+                            layer.msg(resData.msg, {icon: 5});
+                        }
+                    }
+                });*/
+            });
+        } else {
+            layer.msg('请选择一条计划进行打包', {icon: 5});
         }
     });
     //刷新

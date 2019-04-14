@@ -24,7 +24,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label">密码</label>
     <div class="layui-input-block">
-      <input type="password" name="password" value="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+      <input type="password" id="pwd" name="password" value="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
     </div>
   </div>
   
@@ -40,8 +40,21 @@
         <input type="text" name="email" value="" lay-verify="email" placeholder="请输入正确的邮箱" autocomplete="off" class="layui-input">
       </div>
   </div>
-  
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属组织</label>
+        <div class="layui-input-block">
+            <input type="text" name="groupName" value="" readonly="readonly" placeholder="请输入正确的组织机构" autocomplete="off" class="layui-input">
+        </div>
+    </div>
   	<div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userType" value="1" title="学生" >
+                <input type="radio" name="userType" value="2" title="教师" >
+                <input type="radio" name="userType" value="3" title="系主任" >
+            </div>
+        </div>
 		<div class="layui-inline">
         	<label class="layui-form-label">性别</label>
         	<div class="layui-input-block">
@@ -95,6 +108,7 @@ $(function(){
 			if (resData.status === 200) {
 				var findObj = resData.data;
 				setFormData("editForm",findObj);
+				$("#pwd").val("");
 			} else {
 				layer.msg(resData.msg, {icon: 5});
 			}
