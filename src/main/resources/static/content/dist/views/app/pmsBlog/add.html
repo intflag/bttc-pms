@@ -85,7 +85,7 @@
 <script type="text/javascript" src="/admin-static/javascript/pmsBlog/pmsBlog.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/wangEditor.min.js"></script>
 <script type="text/javascript">
-    var uploadUrl = "/app/appendixUpload2"; //附件上传地址
+    var uploadUrl2 = "/app/appendixUpload2"; //附件上传地址
     var E = window.wangEditor;
     var editor = new E('#editor');
     var $blogDesc = $('#blogDesc');
@@ -94,7 +94,7 @@
         $blogDesc.val(html);
     };
     // 配置服务器端地址
-    editor.customConfig.uploadImgServer = uploadUrl;
+    editor.customConfig.uploadImgServer = uploadUrl2;
     editor.customConfig.uploadFileName = 'file';
     editor.customConfig.uploadImgHooks = {
         before: function (xhr, editor, files) {

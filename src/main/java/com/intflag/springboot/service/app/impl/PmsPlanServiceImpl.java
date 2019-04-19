@@ -6,10 +6,9 @@ import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.common.util.UUIDUtils;
 import com.intflag.springboot.entity.admin.SysUser;
-import com.intflag.springboot.entity.app.PmsGroup;
-import com.intflag.springboot.entity.app.PmsPlan;
-import com.intflag.springboot.entity.app.PmsPlanExample;
+import com.intflag.springboot.entity.app.*;
 import com.intflag.springboot.mapper.app.PmsPlanMapper;
+import com.intflag.springboot.mapper.app.PmsRecordMapper;
 import com.intflag.springboot.service.app.PmsGroupService;
 import com.intflag.springboot.service.app.PmsPlanService;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +31,9 @@ public class PmsPlanServiceImpl implements PmsPlanService {
 
     @Autowired
     private PmsPlanMapper pmsPlanMapper;
+
+    @Autowired
+    private PmsRecordMapper pmsRecordMapper;
 
     @Override
     public StatusResult add(PmsPlan pmsPlan, HttpSession session) throws Exception {
@@ -103,6 +105,7 @@ public class PmsPlanServiceImpl implements PmsPlanService {
         }
 
         criteria.andPlanNameLike("%" + keyWords + "%");
+        example.setOrderByClause("mdate desc");
         List<PmsPlan> list = pmsPlanMapper.selectByExample(example);
         // 取出分页信息
         PageInfo<PmsPlan> pageInfo = new PageInfo<>(list);
@@ -120,7 +123,16 @@ public class PmsPlanServiceImpl implements PmsPlanService {
             if (objIds != null && objIds.length > 0) {
                 for (String id : objIds) {
                     // 根据主键删除
-                    pmsPlanMapper.deleteByPrimaryKey(id);
+                    //删除前查询该学术计划下是否存在指导记录，存在则不能删除
+                    PmsRecordExample example = new PmsRecordExample();
+                    example.or().andPlanIdEqualTo(id);
+                    int count = pmsRecordMapper.countByExample(example);
+                    if (count>0) {
+                        // 异常返回
+                        return StatusResult.error(StatusResult.DELETE_FAIL+"，请先删除该学术计划下所有指导记录");
+                    } else {
+                        pmsPlanMapper.deleteByPrimaryKey(id);
+                    }
                 }
                 // 正常返回
                 return StatusResult.ok(StatusResult.DELETE_SUCCESS);

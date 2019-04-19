@@ -1,29 +1,26 @@
 package com.intflag.springboot.service.app.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.intflag.springboot.entity.admin.SysUser;
-import com.intflag.springboot.entity.app.PmsPlan;
-import com.intflag.springboot.entity.app.PmsPlanExample;
-import com.intflag.springboot.mapper.app.PmsPlanMapper;
-import com.intflag.springboot.realm.TenDirRealm;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.intflag.springboot.common.entity.PageBean;
 import com.intflag.springboot.common.entity.StatusResult;
 import com.intflag.springboot.common.util.UUIDUtils;
-import com.intflag.springboot.entity.app.PmsRecord;
-import com.intflag.springboot.entity.app.PmsRecordExample;
+import com.intflag.springboot.entity.admin.SysUser;
+import com.intflag.springboot.entity.app.*;
+import com.intflag.springboot.mapper.app.PmsPaperMapper;
+import com.intflag.springboot.mapper.app.PmsPlanMapper;
 import com.intflag.springboot.mapper.app.PmsRecordMapper;
 import com.intflag.springboot.service.app.PmsRecordService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 刘国鑫QQ1598749808
@@ -33,6 +30,7 @@ import javax.servlet.http.HttpSession;
  */
 @Service
 @Transactional
+@CacheConfig(cacheNames = "pmsRecord")
 public class PmsRecordServiceImpl implements PmsRecordService {
 
     @Autowired
@@ -40,6 +38,9 @@ public class PmsRecordServiceImpl implements PmsRecordService {
 
     @Autowired
     private PmsPlanMapper pmsPlanMapper;
+
+    @Autowired
+    private PmsPaperMapper pmsPaperMapper;
 
     @Override
     public StatusResult add(PmsRecord pmsRecord, HttpSession session) throws Exception {
@@ -79,6 +80,7 @@ public class PmsRecordServiceImpl implements PmsRecordService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"pmsRecord"})
     public StatusResult findById(String id) throws Exception {
         PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(id);
         if (pmsRecord != null) {
@@ -87,13 +89,13 @@ public class PmsRecordServiceImpl implements PmsRecordService {
         return StatusResult.none(StatusResult.FIND_NONE);
     }
 
+
     @Override
     public PageBean pageQuery(PageBean pageBean, HttpSession session) throws Exception {
         String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();// 关键字
         int pageNum = pageBean.getCurrPage();// 当前页
         int pageSize = pageBean.getPageSize();// 每页显示条数
-        // 查询当前页数据
-        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
+
         // 执行查询
         PmsRecordExample example = new PmsRecordExample();
         PmsRecordExample.Criteria criteria = example.createCriteria();
@@ -113,12 +115,16 @@ public class PmsRecordServiceImpl implements PmsRecordService {
             pmsPlanExample.or().andUserIdEqualTo(loginUser.getUserId());
             List<PmsPlan> pmsPlans = pmsPlanMapper.selectByExample(pmsPlanExample);
             List<String> pmsPlanIds = new ArrayList<>();
-            pmsPlans.forEach(p -> {
-                pmsPlanIds.add(p.getPlanId());
-            });
-            criteria.andPlanIdIn(pmsPlanIds);
+            if (pmsPlanIds != null && pmsPlanIds.size() > 0) {
+                pmsPlans.forEach(p -> {
+                    pmsPlanIds.add(p.getPlanId());
+                });
+                criteria.andPlanIdIn(pmsPlanIds);
+            }
         }
         criteria.andPlanNameLike("%" + keyWords + "%");
+        // 查询当前页数据
+        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
         List<PmsRecord> list = pmsRecordMapper.selectByExample(example);
         // 取出分页信息
         PageInfo<PmsRecord> pageInfo = new PageInfo<>(list);
@@ -136,7 +142,17 @@ public class PmsRecordServiceImpl implements PmsRecordService {
             if (objIds != null && objIds.length > 0) {
                 for (String id : objIds) {
                     // 根据主键删除
-                    pmsRecordMapper.deleteByPrimaryKey(id);
+                    //删除前先查询该指导记录下是否有论文提交信息，有则不能删除
+                    PmsPaperExample example = new PmsPaperExample();
+                    example.or().andRecordIdEqualTo(id);
+                    int count = pmsPaperMapper.countByExample(example);
+                    if (count > 0) {
+                        // 异常返回
+                        return StatusResult.error(StatusResult.DELETE_FAIL + "，请先删除该指导记录下所有论文提交记录");
+                    } else {
+                        pmsRecordMapper.deleteByPrimaryKey(id);
+                    }
+
                 }
                 // 正常返回
                 return StatusResult.ok(StatusResult.DELETE_SUCCESS);

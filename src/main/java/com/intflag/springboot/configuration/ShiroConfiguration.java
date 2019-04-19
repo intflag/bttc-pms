@@ -56,6 +56,7 @@ public class ShiroConfiguration {
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 表示可以匿名访问
         filterChainDefinitionMap.put("/admin/sysUser/validateCode", "anon");
+        filterChainDefinitionMap.put("/admin/sysUser/code", "anon");
 		filterChainDefinitionMap.put("/admin/sysUser/login", "anon");
 		filterChainDefinitionMap.put("/admin/sysUser/logout", "anon");
 		// 释放静态资源

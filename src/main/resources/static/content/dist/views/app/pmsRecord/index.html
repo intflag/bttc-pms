@@ -28,16 +28,16 @@
               </div>
             </div>
             <hr>
-            <div class="layui-btn-group">
+            <div class="layui-btn-group" id="methodBtn">
                 <button class="layui-btn  layui-btn-normal" id="addBtn">
                     <i class="layui-icon">&#xe654;</i>新增
                 </button>
-                <button class="layui-btn  layui-btn-warm" id="editBtn">
+                <button class="layui-btn  layui-btn-warm" id="editBtn" style="display: none">
                     <i class="layui-icon">&#xe642;</i>修改
                 </button>
-                <button class="layui-btn  layui-btn-danger" id="deleteBatchBtn">
+                <!--<button class="layui-btn  layui-btn-danger" id="deleteBatchBtn" style="display: none">
                     <i class="layui-icon">&#xe640;</i>批量删除
-                </button>
+                </button>-->
             </div>
             <hr>
             <table class="layui-hide" id="objTable" lay-filter="objT"></table>
@@ -65,6 +65,26 @@
     <span class="layui-badge">论文终稿</span>
     {{#  } }}
 </script>
+<script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/pmsRecord/pmsRecord.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
 <script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>
+<script>
+    //验证权限
+    $.ajax({
+        type:"GET",
+        url:"/admin/sysUser/currentUser",
+        success:function(resData) {
+            if (resData.status === 200) {
+                var user = resData.data;
+                if (user.userType !== "1") {
+                    $("#methodBtn").append('');
+                    layui.use('element', function() {
+                        var element = layui.element;
+                        element.init();
+                    });
+                }
+            }
+        }
+    });
+</script>

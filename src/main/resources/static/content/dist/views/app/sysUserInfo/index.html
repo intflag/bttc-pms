@@ -18,50 +18,58 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">学号&工号</label>
                         <div class="layui-input-block">
-                            <input type="text" id="username" readonly="readonly" name="username" value="" lay-verify="required" placeholder="请输入学号&工号" autocomplete="off" class="layui-input">
+                            <input type="text" id="username" readonly="readonly" name="username" value=""
+                                   lay-verify="required" placeholder="请输入学号&工号" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">姓名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="nickname" readonly="readonly" value="" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                            <input type="text" name="nickname" readonly="readonly" value="" lay-verify="required"
+                                   placeholder="请输入姓名" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">所属组织</label>
                         <div class="layui-input-block">
-                            <input type="text" id="groupName" name="groupName" value="" readonly="readonly" placeholder="请输入正确的组织机构" autocomplete="off" class="layui-input">
+                            <input type="text" id="groupName" name="groupName" value="" readonly="readonly"
+                                   placeholder="请输入正确的组织机构" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码</label>
                         <div class="layui-input-block">
-                            <input type="password" id="pwd" name="password" value="" lay-verify="required" placeholder="请输入密码" autocomplete="new-password" class="layui-input">
+                            <input type="password" id="pwd" name="password" value="" lay-verify="required"
+                                   placeholder="请输入密码" autocomplete="new-password" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">手机</label>
                         <div class="layui-input-block">
-                            <input type="tel" name="telephone" value="" lay-verify="required|phone" placeholder="请输入正确的手机号" autocomplete="off" class="layui-input">
+                            <input type="tel" name="telephone" value="" lay-verify="required|phone"
+                                   placeholder="请输入正确的手机号" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱</label>
                         <div class="layui-input-block">
-                            <input type="text" name="email" value="" lay-verify="email" placeholder="请输入正确的邮箱" autocomplete="off" class="layui-input">
+                            <input type="text" name="email" value="" lay-verify="email" placeholder="请输入正确的邮箱"
+                                   autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">微信号</label>
                         <div class="layui-input-block">
-                            <input type="text" name="wechatId" value=""  placeholder="请输入正确的微信号" autocomplete="off" class="layui-input">
+                            <input type="text" name="wechatId" value="" placeholder="请输入正确的微信号" autocomplete="off"
+                                   class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">QQ号</label>
                         <div class="layui-input-block">
-                            <input type="text" name="qqId" value=""  placeholder="请输入正确的QQ号" autocomplete="off" class="layui-input">
+                            <input type="text" name="qqId" value="" placeholder="请输入正确的QQ号" autocomplete="off"
+                                   class="layui-input">
                         </div>
                     </div>
                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 0px;">
@@ -69,7 +77,9 @@
                     <div class="page-footer">
                         <div class="btn-list">
                             <div class="btnlist">
-                                <button id="editUserInfoBtn" class="layui-btn" lay-submit lay-filter="saveUsersObj"><i class="fa fa-floppy-o">&nbsp;</i>确认修改</button>
+                                <button id="editUserInfoBtn" class="layui-btn" lay-submit lay-filter="saveUsersObj"><i
+                                        class="fa fa-floppy-o">&nbsp;</i>确认修改
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -93,28 +103,38 @@
     var currUserUrl = "/admin/sysUser/current";
     var currUserUpdateUrl = "/admin/sysUser/userInfo";
     $.ajax({
-        type:"GET",
-        url:currUserUrl,
-        success:function(resData) {
+        type: "GET",
+        url: currUserUrl,
+        success: function (resData) {
             if (resData.status === 200) {
                 var findObj = resData.data;
-                setFormData("editUserInfoForm",findObj);
+                setFormData("editUserInfoForm", findObj);
             } else {
                 layer.msg(resData.msg, {icon: 5});
             }
         }
     });
-    $("#editUserInfoBtn").on("click",function () {
+    $("#editUserInfoBtn").on("click", function () {
         var pwd = $("#pwd").val();
         console.log(pwd);
         if (undefined != pwd && 'undefined' != pwd && pwd != null && pwd.length > 0) {
             $.ajax({
-                type:"PUT",
-                url:currUserUpdateUrl,
-                data:$("#editUserInfoForm").serialize(),
-                success:function(resData) {
+                type: "PUT",
+                url: currUserUpdateUrl,
+                data: $("#editUserInfoForm").serialize(),
+                success: function (resData) {
                     if (resData.status === 200) {
-                        layer.msg(resData.msg, {icon: 1,time:1200},function(){
+                        layer.msg(resData.msg, {icon: 1, time: 1200}, function () {
+                            //密码修改成功后需要重新登录系统
+                            $.ajax({
+                                type: "GET",
+                                url: "/admin/sysUser/logout",
+                                success: function (resData) {
+                                    if (resData.status === 200) {
+                                        location.href = "/login.html";
+                                    }
+                                }
+                            });
                         });
                     } else {
                         layer.msg(resData.msg, {icon: 5});

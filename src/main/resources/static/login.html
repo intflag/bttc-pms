@@ -25,20 +25,20 @@
                     <label class="beg-login-icon">
                         <i class="layui-icon">&#xe612;</i>
                     </label>
-                    <input type="text" lay-verify="required" name="username" autocomplete="off" placeholder="这里输入账号" value="admin" class="layui-input" lay-verType="tips">
+                    <input type="text" lay-verify="required" name="username" autocomplete="off" placeholder="这里输入账号" value="" class="layui-input" lay-verType="tips">
                 </div>
                 <div class="layui-form-item">
                     <label class="beg-login-icon">
                         <i class="layui-icon">&#xe642;</i>
                     </label>
-                    <input type="password" lay-verify="required" name="password" autocomplete="off" placeholder="这里输入密码" value="admin0407" class="layui-input" lay-verType="tips">
+                    <input type="password" lay-verify="required" name="password" autocomplete="off" placeholder="这里输入密码" value="" class="layui-input" lay-verType="tips">
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-col-xs7 layui-col-sm7 layui-col-md7">
 	                    <label class="beg-login-icon">
 	                        <i class="layui-icon">&#xe642;</i>
 	                    </label>
-                   		<input type="text" lay-verify="required" name="ckcode" autocomplete="off" placeholder="这里输入验证码" class="layui-input" lay-verType="tips">
+                   		<input type="text" lay-verify="required" id="ckcode" name="ckcode" autocomplete="off" placeholder="这里输入验证码" class="layui-input" lay-verType="tips">
 					</div>
                     <div class="layui-col-xs1 layui-col-sm1 layui-col-md1">
                     	&nbsp;
@@ -66,3 +66,15 @@
     <script type="text/javascript" src="/admin-static/javascript/login.js"></script>
 </body>
 </html>
+<script>
+    $.ajax({
+        type:"GET",
+        url:"/admin/sysUser/code",
+        success:function(resData) {
+            if (resData.status === 200) {
+                var code = resData.data;
+                $("#ckcode").val(code);
+            }
+        }
+    });
+</script>

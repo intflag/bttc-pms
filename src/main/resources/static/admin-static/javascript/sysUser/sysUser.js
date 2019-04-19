@@ -17,6 +17,7 @@ var pageField = [[
    	  {type:'checkbox', fixed: 'left'}
       ,{field:'username', title: '登录名',fixed: 'left', align: 'center'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
       ,{field:'nickname', title: '昵称',fixed: 'left', align: 'center'}
+      ,{field:'userType', title: '用户类型',templet: '#checkUserType', unresize: true, align: 'center', sort: true}
       ,{field:'gender', title: '性别',templet: '#checkGender', unresize: true, align: 'center', sort: true}
       ,{field:'email', title: '邮箱', align: 'center'} //单元格内容水平居中
       ,{field:'telephone', title: '电话', align: 'center'} //单元格内容水平居中

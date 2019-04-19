@@ -28,19 +28,19 @@
               </div>
             </div>
             <hr>
-            <div class="layui-btn-group">
+            <div class="layui-btn-group" id="methodBtn">
                 <button class="layui-btn  layui-btn-normal" id="addBtn">
                     <i class="layui-icon">&#xe654;</i>提交文档
                 </button>
-                <button class="layui-btn  layui-btn-warm" id="editBtn">
-                    <i class="layui-icon">&#xe642;</i>审核文档
+                <button class="layui-btn  layui-btn-warm" id="editBtn" style="display: none">
+                    <i class="layui-icon">&#xe642;</i>审核
                 </button>
-                <!--<button class="layui-btn  layui-btn-danger" id="deleteBatchBtn">
+                <!--<button class="layui-btn  layui-btn-danger" id="deleteBatchBtn" style="display: none">
                     <i class="layui-icon">&#xe640;</i>批量删除
                 </button>-->
-                <button class="layui-btn  layui-bg-green" id="paperDownloadBtn">
+                <!--<button class="layui-btn  layui-bg-green" id="paperDownloadBtn" style="display: none">
                     <i class="layui-icon">&#xe601;</i>下载文档
-                </button>
+                </button>-->
             </div>
             <hr>
             <table class="layui-hide" id="objTable" lay-filter="objT"></table>

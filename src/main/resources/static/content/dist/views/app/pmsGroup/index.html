@@ -89,6 +89,14 @@
     <span class="layui-badge layui-bg-orange"><i class="fa fa-venus"></i> 女</span>
     {{#  } }}
 </script>
+<script type="text/html" id="checkUserType">
+    {{#  if(d.userType == "1"){ }}
+    <span class="layui-badge layui-bg-green"><i class="fa fa-mars"></i> 学生</span>
+    {{#  } }}
+    {{#  if(d.userType == "2"){ }}
+    <span class="layui-badge layui-bg-cyan"><i class="fa fa-venus"></i> 教师</span>
+    {{#  } }}
+</script>
 <script type="text/javascript" src="/admin-static/javascript/common/common.js"></script>
 <!--<script type="text/javascript" src="/admin-static/javascript/common/common-list.js"></script>-->
 <script type="text/javascript" src="/admin-static/javascript/jquery.min.js"></script>

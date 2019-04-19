@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.intflag.springboot.entity.app.PmsBlogAppendix;
+import com.intflag.springboot.mapper.app.PmsAppendixMapper;
 import com.intflag.springboot.mapper.app.PmsBlogAppendixMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +30,17 @@ import com.intflag.springboot.service.app.PmsBlogService;
  */
 @Service
 @Transactional
+@CacheConfig(cacheNames = "pmsBlog")
 public class PmsBlogServiceImpl implements PmsBlogService {
 
     @Autowired
     private PmsBlogMapper pmsBlogMapper;
+
+    @Autowired
+    private PmsBlogAppendixMapper pmsBlogAppendixMapper;
+
+    @Autowired
+    private PmsAppendixMapper pmsAppendixMapper;
 
     public StatusResult add(PmsBlog pmsBlog) throws Exception {
         // 设置信息
@@ -57,6 +67,7 @@ public class PmsBlogServiceImpl implements PmsBlogService {
         return StatusResult.ok(StatusResult.UPDATE_SUCCESS);
     }
 
+    @Cacheable(cacheNames = {"pmsBlog"})
     public StatusResult findById(String id) throws Exception {
         PmsBlog pmsBlog = pmsBlogMapper.selectByPrimaryKey(id);
         if (pmsBlog != null) {
@@ -93,6 +104,17 @@ public class PmsBlogServiceImpl implements PmsBlogService {
             if (objIds != null && objIds.length > 0) {
                 for (String id : objIds) {
                     // 根据主键删除
+                    //从中间表获得所有和博客管理的附件id
+                    PmsBlogAppendix pmsBlogAppendix = new PmsBlogAppendix();
+                    pmsBlogAppendix.setBlogId(id);
+                    List<PmsBlogAppendix> blogAppendixList = pmsBlogAppendixMapper.findByBlogId(pmsBlogAppendix);
+
+                    blogAppendixList.forEach(ba->{
+                        //删除这些附件，同时删除附件管理表对应的记录
+                        pmsAppendixMapper.deleteByPrimaryKey(ba.getAppendixId());
+                        pmsBlogAppendixMapper.delete(ba);
+                    });
+
                     pmsBlogMapper.deleteByPrimaryKey(id);
                 }
                 // 正常返回
@@ -106,9 +128,6 @@ public class PmsBlogServiceImpl implements PmsBlogService {
             return StatusResult.error(StatusResult.DELETE_FAIL);
         }
     }
-
-    @Autowired
-    private PmsBlogAppendixMapper pmsBlogAppendixMapper;
 
     @Override
     public StatusResult add(PmsBlog pmsBlog, String[] appendixIds) {

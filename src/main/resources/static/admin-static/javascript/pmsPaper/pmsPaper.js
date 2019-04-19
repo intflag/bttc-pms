@@ -124,4 +124,18 @@ layui.use(['element', 'layer','table','form','laydate','upload'], function () {
 
         }
     });
+    //验证权限
+    $.ajax({
+        type:"GET",
+        url:"/admin/sysUser/currentUser",
+        success:function(resData) {
+            if (resData.status === 200) {
+                var user = resData.data;
+                if (user.userType !== "1") {
+                    $("#editBtn").show();
+                    // $("#deleteBatchBtn").show();
+                }
+            }
+        }
+    });
 });

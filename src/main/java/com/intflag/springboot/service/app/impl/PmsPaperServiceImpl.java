@@ -230,8 +230,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
         String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();// 关键字
         int pageNum = pageBean.getCurrPage();// 当前页
         int pageSize = pageBean.getPageSize();// 每页显示条数
-        // 查询当前页数据
-        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
+
         // 执行查询
         PmsPaperExample example = new PmsPaperExample();
         PmsPaperExample.Criteria criteria = example.createCriteria();
@@ -252,22 +251,30 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             pmsPlanExample.or().andUserIdEqualTo(loginUser.getUserId());
             List<PmsPlan> pmsPlans = pmsPlanMapper.selectByExample(pmsPlanExample);
             List<String> pmsPlanIds = new ArrayList<>();
-            pmsPlans.forEach(p -> {
-                pmsPlanIds.add(p.getPlanId());
-            });
-            //查找所有计划下的指导记录
-            PmsRecordExample pmsRecordExample = new PmsRecordExample();
-            pmsRecordExample.or().andPlanIdIn(pmsPlanIds);
-            List<PmsRecord> pmsRecords = pmsRecordMapper.selectByExample(pmsRecordExample);
-            List<String> pmsRecordIds = new ArrayList<>();
-            pmsRecords.forEach(r -> {
-                pmsRecordIds.add(r.getRecordId());
-            });
-            criteria.andRecordIdIn(pmsRecordIds);
+            if (pmsPlanIds!=null && pmsPlanIds.size() >0) {
+
+                pmsPlans.forEach(p -> {
+                    pmsPlanIds.add(p.getPlanId());
+                });
+                //查找所有计划下的指导记录
+                PmsRecordExample pmsRecordExample = new PmsRecordExample();
+                pmsRecordExample.or().andPlanIdIn(pmsPlanIds);
+                List<PmsRecord> pmsRecords = pmsRecordMapper.selectByExample(pmsRecordExample);
+                List<String> pmsRecordIds = new ArrayList<>();
+                if (pmsRecordIds!=null && pmsRecordIds.size()>0) {
+
+                    pmsRecords.forEach(r -> {
+                        pmsRecordIds.add(r.getRecordId());
+                    });
+                    criteria.andRecordIdIn(pmsRecordIds);
+                }
+            }
         }
 
 
         criteria.andPaperNameLike("%" + keyWords + "%");
+        // 查询当前页数据
+        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
         List<PmsPaper> list = pmsPaperMapper.selectByExample(example);
         // 取出分页信息
         PageInfo<PmsPaper> pageInfo = new PageInfo<>(list);

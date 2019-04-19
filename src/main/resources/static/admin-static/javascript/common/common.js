@@ -133,6 +133,12 @@ function setFormData(formId,dataObject) {
                         $(this).prop("checked","checked");
                     }
                 });
+            }   else if ($node.length === 2 && property == "userType") {
+                $node.each(function(i,n){
+                    if ($(this).prop("value") == dataValue) {
+                        $(this).prop("checked","checked");
+                    }
+                });
             } else {
 				$node.val(dataValue);
 			}

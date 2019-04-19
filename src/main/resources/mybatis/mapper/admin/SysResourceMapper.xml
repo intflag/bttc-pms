@@ -90,6 +90,7 @@
 	LEFT JOIN sys_role_user ru ON r.role_id = ru.role_id
 	LEFT JOIN sys_user u ON ru.user_id = u.user_id
 	WHERE u.user_id = #{userId,jdbcType=VARCHAR}
+	ORDER BY s.sort
   </select>
   <!-- 根据类型查询菜单 -->
   <select id="selectByType" resultMap="MyBaseResultMap" parameterType="java.lang.String" >

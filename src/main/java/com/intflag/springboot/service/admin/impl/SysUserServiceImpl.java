@@ -72,6 +72,16 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public StatusResult add(SysUser sysUser) throws Exception {
+        if (sysUser != null && sysUser.getUsername() != null) {
+            SysUserExample example = new SysUserExample();
+            example.or().andUsernameEqualTo(sysUser.getUsername());
+            List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+            if (sysUsers != null && sysUsers.size() > 0) {
+                return StatusResult.error("该用户"+StatusResult.FIND_EXIST);
+            }
+        } else {
+            return StatusResult.error(StatusResult.ADD_FAIL);
+        }
         // 设置用户信息
         sysUser.setUserId(UUIDUtils.getCode());
         sysUser.setCdate(new Date());
@@ -314,8 +324,7 @@ public class SysUserServiceImpl implements SysUserService {
         String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();// 关键字
         int pageNum = pageBean.getCurrPage();// 当前页
         int pageSize = pageBean.getPageSize();// 每页显示条数
-        // 查询当前页数据
-        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
+
         // 执行查询
         SysUserExample example = new SysUserExample();
         Criteria criteria = example.createCriteria();
@@ -335,9 +344,9 @@ public class SysUserServiceImpl implements SysUserService {
             }
         } else {
             setA = findByPid(setA, groupId);
-            if (setA.size() <= 0) {
-                setA.add(groupId);
-            }
+            setA.add(groupId);
+            /*if (setA.size() <= 0) {
+            }*/
         }
         String uGid = loginUser.getGroupId();
         Set<String> setB = new HashSet<>();
@@ -349,19 +358,25 @@ public class SysUserServiceImpl implements SysUserService {
             }
         } else {
             setB = findByPid(setB, uGid);
+            //将自身条件到集合中去
+            setB.add(uGid);
         }
         //两个结果取交集
         Set<String> res = new HashSet<>();
         res.addAll(setA);
         res.retainAll(setB);
 
-        //setA.retainAll(setB);
-
         criteria.andGroupIdIn(new ArrayList<>(res));
 
+        criteria.andUserTypeIn(Arrays.asList(new String[]{"1","2"}));
+        criteria.andUserIdNotEqualTo(loginUser.getUserId());
         criteria.andNicknameLike("%" + keyWords + "%");
         example.setOrderByClause("mdate desc");
+        example.setDistinct(true);
         List<SysUser> list = new ArrayList<>();
+
+        // 查询当前页数据
+        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
         if (res.size() > 0) {
             list = sysUserMapper.selectByExample(example);
         }
@@ -369,14 +384,24 @@ public class SysUserServiceImpl implements SysUserService {
         // 取出分页信息
         PageInfo<SysUser> pageInfo = new PageInfo<>(list);
         pageBean.setList(list);
-        pageBean.setTotalCount(pageInfo.getTotal());// 设置总记录数
-        pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
+        pageBean.setTotalCount(pageInfo.getTotal());
+        pageBean.setTotalPage(pageInfo.getPages());
         // 返回结果集
         return PageBean.ok(pageBean);
     }
 
     @Override
     public StatusResult addUser(SysUser sysUser) throws Exception {
+        if (sysUser != null && sysUser.getUsername() != null) {
+            SysUserExample example = new SysUserExample();
+            example.or().andUsernameEqualTo(sysUser.getUsername());
+            List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+            if (sysUsers != null && sysUsers.size() > 0) {
+                return StatusResult.error("该用户"+StatusResult.FIND_EXIST);
+            }
+        } else {
+            return StatusResult.error(StatusResult.ADD_FAIL);
+        }
         // 设置用户信息
         sysUser.setUserId(UUIDUtils.getCode());
         sysUser.setCdate(new Date());
