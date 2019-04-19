@@ -79,10 +79,10 @@ public class PmsPaperServiceImpl implements PmsPaperService {
         criteria.andRecordIdEqualTo(recordId);
 
         List<PmsPaper> pmsPapers = pmsPaperMapper.selectByExample(example);
-        if (pmsPapers != null && pmsPapers.size()>0 && "1".equals(pmsPapers.get(0).getFlag())) {
+        if (pmsPapers != null && pmsPapers.size() > 0 && "1".equals(pmsPapers.get(0).getFlag())) {
             return StatusResult.ok("该指导记录下的文档正在被导师审核，不能重复提交");
         }
-        if (pmsPapers != null && pmsPapers.size()>0 && "3".equals(pmsPapers.get(0).getFlag())) {
+        if (pmsPapers != null && pmsPapers.size() > 0 && "3".equals(pmsPapers.get(0).getFlag())) {
             return StatusResult.ok("该指导记录下的文档已通过审核，不需要重复提交");
         }
         PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(recordId);
@@ -104,6 +104,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
         pmsPaper.setField02(pmsRecord.getPlanType());
         pmsPaper.setField03(pmsRecord.getPlanName());
         pmsPaper.setCdate(new Date());
+        pmsPaper.setMdate(new Date());
         // 设置信息
         pmsPaper.setPaperId(UUIDUtils.getCode());
         pmsPaperMapper.insert(pmsPaper);
@@ -168,8 +169,12 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             return StatusResult.error("学生无审核权限");
         }
         PmsPaper tempPaper = (PmsPaper) session.getAttribute("tempPaper");
-        pmsPaper.setMdate(new Date());
-        pmsPaperMapper.updateByPrimaryKeySelective(pmsPaper);
+        PmsPaper updatedPmsPaper = new PmsPaper();
+        updatedPmsPaper.setPaperId(pmsPaper.getPaperId());
+        updatedPmsPaper.setMdate(new Date());
+        updatedPmsPaper.setFlag(pmsPaper.getFlag());
+
+        pmsPaperMapper.updateByPrimaryKeySelective(updatedPmsPaper);
         if ("3".equals(flag)) {
             String recordId = paper.getRecordId();
             PmsRecord pmsRecord = pmsRecordMapper.selectByPrimaryKey(recordId);
@@ -198,7 +203,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             String subject = "BTTC-PMS：论文审核通知";
             String contentText = "";
             File attachFile = null;
-            if (tempPaper == null) {
+            if (tempPaper == null || StringUtils.isBlank(pmsPaper.getFileUrl()) || "".equals(pmsPaper.getFileUrl())) {
                 contentText = "<h3>您的指导老师：" + loginUser.getNickname() + "，已于" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日HH时mm分ss秒")) + "对您的" + planTypeName + "进行了审核，审核的结果为" + ("2".equals(flag) ? "继续修改" : "审核通过");
             } else {
                 contentText = "<h3>您的指导老师：" + loginUser.getNickname() + "，已于" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日HH时mm分ss秒")) + "对您的" + planTypeName + "进行了审核，审核的结果为" + ("2".equals(flag) ? "继续修改" : "审核通过") + "，审核后的" + planTypeName + "见附件</h3>";
@@ -207,7 +212,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             boolean isHtml = true;
             boolean send = EmailUtils.send(javaMailSender, mailProperties, toAddress, subject, contentText, isHtml, tempPaper == null ? null : tempPaper.getField01(), attachFile);
             if (send) {
-                return StatusResult.ok(StatusResult.ADD_SUCCESS + " 已通知导师审核");
+                return StatusResult.ok(StatusResult.ADD_SUCCESS + " 已邮件通知学生");
             } else {
                 return StatusResult.ok(StatusResult.ADD_SUCCESS + " 发送审核邮件失败");
             }
@@ -251,7 +256,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
             pmsPlanExample.or().andUserIdEqualTo(loginUser.getUserId());
             List<PmsPlan> pmsPlans = pmsPlanMapper.selectByExample(pmsPlanExample);
             List<String> pmsPlanIds = new ArrayList<>();
-            if (pmsPlanIds!=null && pmsPlanIds.size() >0) {
+            if (pmsPlanIds != null && pmsPlanIds.size() > 0) {
 
                 pmsPlans.forEach(p -> {
                     pmsPlanIds.add(p.getPlanId());
@@ -261,7 +266,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
                 pmsRecordExample.or().andPlanIdIn(pmsPlanIds);
                 List<PmsRecord> pmsRecords = pmsRecordMapper.selectByExample(pmsRecordExample);
                 List<String> pmsRecordIds = new ArrayList<>();
-                if (pmsRecordIds!=null && pmsRecordIds.size()>0) {
+                if (pmsRecordIds != null && pmsRecordIds.size() > 0) {
 
                     pmsRecords.forEach(r -> {
                         pmsRecordIds.add(r.getRecordId());
@@ -273,6 +278,7 @@ public class PmsPaperServiceImpl implements PmsPaperService {
 
 
         criteria.andPaperNameLike("%" + keyWords + "%");
+        example.setOrderByClause("mdate desc");
         // 查询当前页数据
         PageHelper.startPage(pageNum, pageSize);// 设置分页信息
         List<PmsPaper> list = pmsPaperMapper.selectByExample(example);
