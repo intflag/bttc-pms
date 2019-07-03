@@ -5,7 +5,6 @@
 - 系统目前处于内测阶段，欢迎大家进行反馈，我们一定会虚心采纳各位老师和同学们的宝贵意见！
 ## 项目架构图
 ![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/BTTC-PMS%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.png)
-![image]()
 ## 运行截图
 ### 门户首页
 ![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/001-%E9%A6%96%E9%A1%B5.png)
