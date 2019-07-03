@@ -79,11 +79,11 @@ public class PmsBlogServiceImpl implements PmsBlogService {
     }
 
     public PageBean pageQuery(PageBean pageBean) throws Exception {
-        String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();// 关键字
-        int pageNum = pageBean.getCurrPage();// 当前页
-        int pageSize = pageBean.getPageSize();// 每页显示条数
+        String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();
+        int pageNum = pageBean.getCurrPage();
+        int pageSize = pageBean.getPageSize();
         // 查询当前页数据
-        PageHelper.startPage(pageNum, pageSize);// 设置分页信息
+        PageHelper.startPage(pageNum, pageSize);
         // 执行查询
         PmsBlogExample example = new PmsBlogExample();
         example.or().andBlogTitleLike("%" + keyWords + "%");
@@ -92,8 +92,8 @@ public class PmsBlogServiceImpl implements PmsBlogService {
         // 取出分页信息
         PageInfo<PmsBlog> pageInfo = new PageInfo<>(list);
         pageBean.setList(list);
-        pageBean.setTotalCount(pageInfo.getTotal());// 设置总记录数
-        pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
+        pageBean.setTotalCount(pageInfo.getTotal());
+        pageBean.setTotalPage(pageInfo.getPages());
         // 返回结果集
         return PageBean.ok(pageBean);
     }

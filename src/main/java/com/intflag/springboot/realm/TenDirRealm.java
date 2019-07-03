@@ -27,7 +27,7 @@ import com.intflag.springboot.mapper.admin.SysUserMapper;
 /**
  * @author 刘国鑫 QQ:1598749808
  * @date 2018年8月19日17:07:46
- * @Description 自定义realm
+ * @Description 权限控制
  * @version V1.0
  */
 public class TenDirRealm extends AuthorizingRealm {

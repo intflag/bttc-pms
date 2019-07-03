@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * @author 刘国鑫 QQ:1598749808
  * @version V1.0
  * @date 2018年8月4日 上午11:37:12
- * @Description 用户业务层接口
+ * @Description 师生用户业务层接口
  */
 @Service
 @Transactional

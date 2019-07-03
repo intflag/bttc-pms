@@ -57,14 +57,6 @@ public class PmsGroupServiceImpl implements PmsGroupService {
         return StatusResult.none(StatusResult.FIND_NONE);
     }
 
-    @Override
-    public List<PmsGroup> findByPid(String pId) throws Exception {
-        PmsGroupExample pmsGroupExample = new PmsGroupExample();
-        pmsGroupExample.or().andPidEqualTo(pId);
-        List<PmsGroup> pmsGroups = pmsGroupMapper.selectByExample(pmsGroupExample);
-        return pmsGroups;
-    }
-
     public PageBean pageQuery(PageBean pageBean) throws Exception {
         String keyWords = pageBean.getKeyWords() == null ? "" : pageBean.getKeyWords();// 关键字
         int pageNum = pageBean.getCurrPage();// 当前页
@@ -82,6 +74,14 @@ public class PmsGroupServiceImpl implements PmsGroupService {
         pageBean.setTotalPage(pageInfo.getPages());// 设置总页数
         // 返回结果集
         return PageBean.ok(pageBean);
+    }
+
+    @Override
+    public List<PmsGroup> findByPid(String pId) throws Exception {
+        PmsGroupExample pmsGroupExample = new PmsGroupExample();
+        pmsGroupExample.or().andPidEqualTo(pId);
+        List<PmsGroup> pmsGroups = pmsGroupMapper.selectByExample(pmsGroupExample);
+        return pmsGroups;
     }
 
     public StatusResult delete(String ids) {

@@ -99,15 +99,4 @@ public class TenDirSpringBootXApplicationTests {
 
     }
 
-    @Test
-    public void sendEmail2() throws Exception {
-        String toAddress = "1598749808@qq.com";
-        String subject = "BTTC-PMS：论文审核通知";
-        String contentText = "各位领导好：2019年04月18日，北京中心KPI考核成功率、文件传输中断情况的统计结果如下。统计周期为：2019年04月17日15点-22点和2019年04月18日8点-15点。<br /><br />1、KPI考核成功率统计：<p></p><table border='1' style='border:1px solid #000;text-align: center;'><tr><th>系统</th><th>成功率</th></tr><tr><td>一级客服</td><td>0</td></tr><tr><td>一级BBOSS</td><td>0</td></tr><tr><td>网状网</td><td>0</td></tr><tr><td>一级能力开放平台</td><td>0</td></tr></table><p></p>成功率统计说明：成功率为统计周期内，截至当天下午15点成功率(非月累计或年累计)。<br /><br />2、文件传输中断统计：<p></p><table border='1'style='border: 1px solid #000000;text-align: center;'><tr><th>系统</th><th>中断次数</th></tr><tr><td>一级客服</td><td>28.00</td></tr><tr><td>一级BBOSS</td><td>28.00</td></tr><tr><td>网状网</td><td>28.00</td></tr><tr><td>一级能力开放平台</td><td>28.00</td></tr></table><p></p>文件传输中断次数统计说明：为统计周期内，截至当天下午15点，仍为中断的次数，接口文件情况见附件。<br /><br />";
-        boolean isHtml = true;
-
-        boolean send = EmailUtils.send(javaMailSender, mailProperties, toAddress, subject, contentText, isHtml, null, null);
-        System.out.println(send);
-
-    }
 }
