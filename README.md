@@ -5,3 +5,13 @@
 - 系统目前处于内测阶段，欢迎大家进行反馈，我们一定会虚心采纳各位老师和同学们的宝贵意见！
 ## 项目架构图
 ![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/BTTC-PMS%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.png)
+![image]()
+## 运行截图
+### 门户首页
+![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/001-%E9%A6%96%E9%A1%B5.png)
+### 公告详情页
+![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/001-%E8%AF%A6%E6%83%85%E9%A1%B5.png)
+### 后台首页
+![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/002-%E5%90%8E%E5%8F%B0%E9%A6%96%E9%A1%B5.png)
+### 师生信息管理
+![image](https://raw.githubusercontent.com/intflag/bttc-pms/master/images/003-%E5%B8%88%E7%94%9F%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86%E9%A1%B52.png)
